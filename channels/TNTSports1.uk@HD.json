@@ -1,0 +1,26 @@
+{
+  "duration": -1,
+  "displayName": "TNT Sports 1",
+  "urls": [
+    {
+      "url": "https://7nyaler.streamhostingcdn.top/stream/13/index.m3u8",
+      "provider": "playlist-sync",
+      "priority": 0,
+      "format": "hls",
+      "metadata": {
+        "source": "playlist-sync",
+        "last_sync_at": "2026-08-22T22:19:38Z"
+      },
+      "httpUserAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36"
+    }
+  ],
+  "attributes": {
+    "tvg-id": "TNTSports1.uk@HD",
+    "tvg-logo": "https://raw.githubusercontent.com/tv-logo/tv-logos/refs/heads/main/countries/united-kingdom/tnt-sports-1-uk.png",
+    "group-title": "Sports",
+    "channel-id": "6518"
+  },
+  "metadata": {
+    "last_sync_at": "2026-08-22T22:19:38Z"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "duration": -1,
+  "displayName": "Spiler 1",
+  "urls": [
+    {
+      "url": "http://88.212.15.19/live/spiler1/index.m3u8",
+      "provider": "playlist-sync",
+      "priority": 0,
+      "format": "hls",
+      "metadata": {
+        "source": "playlist-sync",
+        "last_sync_at": "2026-08-22T22:19:38Z"
+      },
+      "httpUserAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36"
+    }
+  ],
+  "attributes": {
+    "tvg-id": "Spiler1.hu@SD",
+    "tvg-logo": "https://i.imgur.com/pbk8c4x.png",
+    "group-title": "Sports",
+    "channel-id": "5180"
+  },
+  "metadata": {
+    "last_sync_at": "2026-08-22T22:19:38Z"
+  }
+}

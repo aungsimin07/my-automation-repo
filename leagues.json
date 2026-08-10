@@ -1,0 +1,302 @@
+[
+  {
+    "idLeague": "4480",
+    "idAPIfootballv3": "2",
+    "idCup": "1",
+    "strLeague": "UEFA Champions League",
+    "strCurrentSeason": "2026-2027",
+    "strComplete": "yes",
+    "strBadge": "https://r2.thesportsdb.com/images/media/league/badge/facv1u1742998896.png",
+    "strWebsite": "uefa.com/uefachampionsleague/index.html",
+    "leagueUrl": "https://www.thesportsdb.com/league/4480-uefa-champions-league",
+    "metadata": {
+      "leagueLogo": 42,
+      "last_sync_at": "2026-08-22T17:42:44Z"
+    }
+  },
+  {
+    "idLeague": "4481",
+    "idAPIfootballv3": "3",
+    "idCup": "1",
+    "strLeague": "UEFA Europa League",
+    "strCurrentSeason": "2026-2027",
+    "strComplete": "yes",
+    "strBadge": "https://r2.thesportsdb.com/images/media/league/badge/mlsr7d1718774547.png",
+    "strWebsite": "www.uefa.com/uefaeuropaleague/index.html",
+    "leagueUrl": "https://www.thesportsdb.com/league/4481-uefa-europa-league",
+    "metadata": {
+      "leagueLogo": 73,
+      "last_sync_at": "2026-08-22T17:42:47Z"
+    }
+  },
+  {
+    "idLeague": "4501",
+    "idAPIfootballv3": "13",
+    "idCup": "1",
+    "strLeague": "Copa Libertadores",
+    "strCurrentSeason": "2026",
+    "strComplete": "No",
+    "strBadge": "https://r2.thesportsdb.com/images/media/league/badge/9shr931685425181.png",
+    "strWebsite": "www.copalibertadores.com",
+    "leagueUrl": "https://www.thesportsdb.com/league/4501-copa-libertadores",
+    "metadata": {
+      "leagueLogo": 45,
+      "last_sync_at": "2026-08-22T17:42:49Z"
+    }
+  },
+  {
+    "idLeague": "4328",
+    "idAPIfootballv3": "39",
+    "idCup": "0",
+    "strLeague": "English Premier League",
+    "strCurrentSeason": "2026-2027",
+    "strComplete": "yes",
+    "strBadge": "https://r2.thesportsdb.com/images/media/league/badge/gasy9d1737743125.png",
+    "strWebsite": "www.premierleague.com",
+    "leagueUrl": "https://www.thesportsdb.com/league/4328-english-premier-league",
+    "metadata": {
+      "leagueLogo": null,
+      "last_sync_at": "2026-08-22T17:42:51Z"
+    }
+  },
+  {
+    "idLeague": "4329",
+    "idAPIfootballv3": "40",
+    "idCup": "0",
+    "strLeague": "English League Championship",
+    "strCurrentSeason": "2026-2027",
+    "strComplete": "yes",
+    "strBadge": "https://r2.thesportsdb.com/images/media/league/badge/ty5a681688770169.png",
+    "strWebsite": "www.efl.com/competitions/efl-championship",
+    "leagueUrl": "https://www.thesportsdb.com/league/4329-english-league-championship",
+    "metadata": {
+      "leagueLogo": 48,
+      "last_sync_at": "2026-08-22T17:42:53Z"
+    }
+  },
+  {
+    "idLeague": "4482",
+    "idAPIfootballv3": "45",
+    "idCup": "1",
+    "strLeague": "FA Cup",
+    "strCurrentSeason": "2025-2026",
+    "strComplete": "No",
+    "strBadge": "https://r2.thesportsdb.com/images/media/league/badge/vk7isd1598802862.png",
+    "strWebsite": "www.thefa.com/competitions/thefacup",
+    "leagueUrl": "https://www.thesportsdb.com/league/4482-fa-cup",
+    "metadata": {
+      "leagueLogo": 132,
+      "last_sync_at": "2026-08-22T17:42:55Z"
+    }
+  },
+  {
+    "idLeague": "4847",
+    "idAPIfootballv3": "46",
+    "idCup": "1",
+    "strLeague": "EFL Trophy",
+    "strCurrentSeason": "2026-2027",
+    "strComplete": "No",
+    "strBadge": "https://r2.thesportsdb.com/images/media/league/badge/txpqvs1757440532.png",
+    "strWebsite": "www.efl.com/efl-trophy",
+    "leagueUrl": "https://www.thesportsdb.com/league/4847-efl-trophy",
+    "metadata": {
+      "leagueLogo": 142,
+      "last_sync_at": "2026-08-22T17:42:57Z"
+    }
+  },
+  {
+    "idLeague": "4570",
+    "idAPIfootballv3": "48",
+    "idCup": "1",
+    "strLeague": "EFL Cup",
+    "strCurrentSeason": "2026-2027",
+    "strComplete": "yes",
+    "strBadge": "https://r2.thesportsdb.com/images/media/league/badge/x1va771565372556.png",
+    "strWebsite": "www.efl.com/carabao-cup",
+    "leagueUrl": "https://www.thesportsdb.com/league/4570-efl-cup",
+    "metadata": {
+      "leagueLogo": 133,
+      "last_sync_at": "2026-08-22T17:43:00Z"
+    }
+  },
+  {
+    "idLeague": "4334",
+    "idAPIfootballv3": "61",
+    "idCup": "0",
+    "strLeague": "French Ligue 1",
+    "strCurrentSeason": "2026-2027",
+    "strComplete": "yes",
+    "strBadge": "https://r2.thesportsdb.com/images/media/league/badge/9f7z9d1742983155.png",
+    "strWebsite": "www.ligue1.com",
+    "leagueUrl": "https://www.thesportsdb.com/league/4334-french-ligue-1",
+    "metadata": {
+      "leagueLogo": null,
+      "last_sync_at": "2026-08-22T17:43:02Z"
+    }
+  },
+  {
+    "idLeague": "4331",
+    "idAPIfootballv3": "78",
+    "idCup": "0",
+    "strLeague": "German Bundesliga",
+    "strCurrentSeason": "2026-2027",
+    "strComplete": "yes",
+    "strBadge": "https://r2.thesportsdb.com/images/media/league/badge/teqh1b1679952008.png",
+    "strWebsite": "www.bundesliga.com/en",
+    "leagueUrl": "https://www.thesportsdb.com/league/4331-german-bundesliga",
+    "metadata": {
+      "leagueLogo": 54,
+      "last_sync_at": "2026-08-22T17:43:04Z"
+    }
+  },
+  {
+    "idLeague": "4344",
+    "idAPIfootballv3": "94",
+    "idCup": "0",
+    "strLeague": "Portuguese Primeira Liga",
+    "strCurrentSeason": "2026-2027",
+    "strComplete": "yes",
+    "strBadge": "https://r2.thesportsdb.com/images/media/league/badge/3tgdke1782689102.png",
+    "strWebsite": "www.ligaportugal.pt",
+    "leagueUrl": "https://www.thesportsdb.com/league/4344-portuguese-primeira-liga",
+    "metadata": {
+      "leagueLogo": 61,
+      "last_sync_at": "2026-08-22T17:43:06Z"
+    }
+  },
+  {
+    "idLeague": "4332",
+    "idAPIfootballv3": "135",
+    "idCup": "0",
+    "strLeague": "Italian Serie A",
+    "strCurrentSeason": "2026-2027",
+    "strComplete": "yes",
+    "strBadge": "https://r2.thesportsdb.com/images/media/league/badge/67q3q21679951383.png",
+    "strWebsite": "www.legaseriea.it/it",
+    "leagueUrl": "https://www.thesportsdb.com/league/4332-italian-serie-a",
+    "metadata": {
+      "leagueLogo": 55,
+      "last_sync_at": "2026-08-22T17:43:08Z"
+    }
+  },
+  {
+    "idLeague": "4506",
+    "idAPIfootballv3": "137",
+    "idCup": "1",
+    "strLeague": "Coppa Italia",
+    "strCurrentSeason": "2026-2027",
+    "strComplete": "yes",
+    "strBadge": "https://r2.thesportsdb.com/images/media/league/badge/hrm1vo1692679408.png",
+    "strWebsite": "www.legaseriea.it/en/coppa-italia",
+    "leagueUrl": "https://www.thesportsdb.com/league/4506-coppa-italia",
+    "metadata": {
+      "leagueLogo": 141,
+      "last_sync_at": "2026-08-22T17:43:10Z"
+    }
+  },
+  {
+    "idLeague": "4335",
+    "idAPIfootballv3": "140",
+    "idCup": "0",
+    "strLeague": "Spanish La Liga",
+    "strCurrentSeason": "2026-2027",
+    "strComplete": "yes",
+    "strBadge": "https://r2.thesportsdb.com/images/media/league/badge/ja4it51687628717.png",
+    "strWebsite": "www.laliga.com",
+    "leagueUrl": "https://www.thesportsdb.com/league/4335-spanish-la-liga",
+    "metadata": {
+      "leagueLogo": 87,
+      "last_sync_at": "2026-08-22T17:43:13Z"
+    }
+  },
+  {
+    "idLeague": "4346",
+    "idAPIfootballv3": "253",
+    "idCup": "0",
+    "strLeague": "American Major League Soccer",
+    "strCurrentSeason": "2026-2027",
+    "strComplete": "yes",
+    "strBadge": "https://r2.thesportsdb.com/images/media/league/badge/dqo6r91549878326.png",
+    "strWebsite": "www.mlssoccer.com",
+    "leagueUrl": "https://www.thesportsdb.com/league/4346-american-major-league-soccer",
+    "metadata": {
+      "leagueLogo": 130,
+      "last_sync_at": "2026-08-22T17:43:15Z"
+    }
+  },
+  {
+    "idLeague": "4668",
+    "idAPIfootballv3": "307",
+    "idCup": "0",
+    "strLeague": "Saudi-Arabian Pro League",
+    "strCurrentSeason": "2026-2027",
+    "strComplete": "yes",
+    "strBadge": "https://r2.thesportsdb.com/images/media/league/badge/w67i621701772123.png",
+    "strWebsite": "www.spl.com.sa",
+    "leagueUrl": "https://www.thesportsdb.com/league/4668-saudi-arabian-pro-league",
+    "metadata": {
+      "leagueLogo": 536,
+      "last_sync_at": "2026-08-22T17:43:17Z"
+    }
+  },
+  {
+    "idLeague": "4512",
+    "idAPIfootballv3": "531",
+    "idCup": "1",
+    "strLeague": "UEFA Super Cup",
+    "strCurrentSeason": "2026",
+    "strComplete": "No",
+    "strBadge": "https://r2.thesportsdb.com/images/media/league/badge/1eimvx1551123834.png",
+    "strWebsite": "www.uefa.com/uefasupercup",
+    "leagueUrl": "https://www.thesportsdb.com/league/4512-uefa-super-cup",
+    "metadata": {
+      "leagueLogo": 74,
+      "last_sync_at": "2026-08-22T17:43:19Z"
+    }
+  },
+  {
+    "idLeague": "4569",
+    "idAPIfootballv3": "667",
+    "idCup": "1",
+    "strLeague": "Club Friendlies",
+    "strCurrentSeason": "2026",
+    "strComplete": "No",
+    "strBadge": "https://r2.thesportsdb.com/images/media/league/badge/gb18781565430778.png",
+    "strWebsite": "",
+    "leagueUrl": "https://www.thesportsdb.com/league/4569-club-friendlies",
+    "metadata": {
+      "leagueLogo": 489,
+      "last_sync_at": "2026-08-22T17:43:21Z"
+    }
+  },
+  {
+    "idLeague": "5281",
+    "idAPIfootballv3": "772",
+    "idCup": "1",
+    "strLeague": "Leagues Cup",
+    "strCurrentSeason": "2026",
+    "strComplete": "No",
+    "strBadge": "https://r2.thesportsdb.com/images/media/league/badge/8dqvox1650475851.png",
+    "strWebsite": "www.leaguescup.com",
+    "leagueUrl": "https://www.thesportsdb.com/league/5281-leagues-cup",
+    "metadata": {
+      "leagueLogo": 10043,
+      "last_sync_at": "2026-08-22T17:43:24Z"
+    }
+  },
+  {
+    "idLeague": "5071",
+    "idAPIfootballv3": "848",
+    "idCup": "1",
+    "strLeague": "UEFA Conference League",
+    "strCurrentSeason": "2026-2027",
+    "strComplete": "No",
+    "strBadge": "https://r2.thesportsdb.com/images/media/league/badge/ymfo5j1718775759.png",
+    "strWebsite": "www.uefa.com/uefaeuropaconferenceleague",
+    "leagueUrl": "https://www.thesportsdb.com/league/5071-uefa-conference-league",
+    "metadata": {
+      "leagueLogo": 10216,
+      "last_sync_at": "2026-08-22T17:43:26Z"
+    }
+  }
+]
