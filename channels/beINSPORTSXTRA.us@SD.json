@@ -1,0 +1,26 @@
+{
+  "duration": -1,
+  "displayName": "beIN SPORTS XTRA",
+  "urls": [
+    {
+      "url": "https://bein-xtra-bein.amagi.tv/playlist.m3u8",
+      "provider": "playlist-sync",
+      "priority": 0,
+      "format": "hls",
+      "metadata": {
+        "source": "playlist-sync",
+        "last_sync_at": "2026-09-04T01:35:57Z"
+      },
+      "quality": "FHD",
+      "httpUserAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36"
+    }
+  ],
+  "attributes": {
+    "tvg-id": "beINSPORTSXTRA.us@SD",
+    "tvg-logo": "https://i.ibb.co/HT49GPmB/XTRA-2.png",
+    "group-title": "Sports"
+  },
+  "metadata": {
+    "last_sync_at": "2026-09-04T01:35:57Z"
+  }
+}

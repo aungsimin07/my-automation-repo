@@ -1,0 +1,39 @@
+{
+  "duration": -1,
+  "displayName": "Belarus-5",
+  "urls": [
+    {
+      "url": "http://stream.mcquack.net/33/index.m3u8",
+      "provider": "playlist-sync",
+      "priority": 1,
+      "format": "hls",
+      "metadata": {
+        "source": "playlist-sync",
+        "last_sync_at": "2026-09-04T01:35:57Z"
+      },
+      "quality": "FHD",
+      "httpUserAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36"
+    },
+    {
+      "url": "https://streaming.thestream.cyou/live/7001.m3u8",
+      "provider": "playlist-sync",
+      "priority": 2,
+      "format": "hls",
+      "metadata": {
+        "source": "playlist-sync",
+        "last_sync_at": "2026-09-04T01:35:57Z"
+      },
+      "quality": "SD",
+      "httpUserAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36"
+    }
+  ],
+  "attributes": {
+    "tvg-id": "Belarus5.by@SD",
+    "tvg-logo": "https://i.imgur.com/NJsRFud.png",
+    "group-title": "Sports",
+    "channel-id": "1648"
+  },
+  "metadata": {
+    "last_sync_at": "2026-09-04T01:35:57Z"
+  }
+}
