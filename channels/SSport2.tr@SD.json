@@ -1,0 +1,27 @@
+{
+  "duration": -1,
+  "displayName": "S Sport 2",
+  "urls": [
+    {
+      "url": "https://7nyaler.streamhostingcdn.top/stream/52/index.m3u8",
+      "provider": "playlist-sync",
+      "priority": 1,
+      "format": "hls",
+      "metadata": {
+        "source": "playlist-sync",
+        "last_sync_at": "2026-09-04T01:35:57Z"
+      },
+      "quality": "HD",
+      "httpUserAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36"
+    }
+  ],
+  "attributes": {
+    "tvg-id": "SSport2.tr@SD",
+    "tvg-logo": "https://r2.thesportsdb.com/images/media/channel/logo/nrrvxp1643201048.png",
+    "group-title": "Sports",
+    "channel-id": "5006"
+  },
+  "metadata": {
+    "last_sync_at": "2026-09-04T01:35:57Z"
+  }
+}

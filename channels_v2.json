@@ -1,0 +1,894 @@
+[
+  {
+    "duration": -1,
+    "title": "Arena Sport 1 Premium",
+    "tvg": {
+      "id": "ArenaSport1Premium.rs@SD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/wmvrmi1643205486.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/2377-arena-sport-1-premium-rs-tv-schedule",
+    "quality": {
+      "label": "1080P"
+    },
+    "loadControl": {
+      "minBufferMs": 40000,
+      "maxBufferMs": 80000,
+      "bufferForPlaybackMs": 10000,
+      "bufferForPlaybackAfterRebufferMs": 20000
+    },
+    "url": "http://tpjgkqnu.vexiumis.top/iptv/ZFMBTT94BTSVQMFVDASEV6XS/31599/index.m3u8"
+  },
+  {
+    "duration": -1,
+    "title": "Arena Sport 2 Premium",
+    "tvg": {
+      "id": "ArenaSport2Premium.rs@SD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/l4y8gt1643205498.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/2378-arena-sport-2-premium-rs-tv-schedule",
+    "quality": {
+      "label": "1080P"
+    },
+    "loadControl": {
+      "minBufferMs": 40000,
+      "maxBufferMs": 90000,
+      "bufferForPlaybackMs": 10000,
+      "bufferForPlaybackAfterRebufferMs": 30000
+    },
+    "url": "http://tpjgkqnu.vexiumis.top/iptv/ZFMBTT94BTSVQMFVDASEV6XS/31600/index.m3u8"
+  },
+  {
+    "duration": -1,
+    "title": "Arena Sport 3 Premium",
+    "tvg": {
+      "id": "ArenaSport3Premium.rs@SD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/gtlulj1643205508.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/2379-arena-sport-3-premium-rs-tv-schedule",
+    "quality": {
+      "label": "1080P"
+    },
+    "loadControl": {
+      "minBufferMs": 40000,
+      "maxBufferMs": 80000,
+      "bufferForPlaybackMs": 10000,
+      "bufferForPlaybackAfterRebufferMs": 20000
+    },
+    "url": "http://tpjgkqnu.vexiumis.top/iptv/ZFMBTT94BTSVQMFVDASEV6XS/31601/index.m3u8"
+  },
+  {
+    "duration": -1,
+    "title": "Arena Sport 1",
+    "tvg": {
+      "id": "ArenaSport1.sk@HD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/aq5ccz1649341842.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/5178-arena-sport-1-sk-tv-schedule",
+    "quality": {
+      "label": "1080P"
+    },
+    "loadControl": {
+      "minBufferMs": 24000,
+      "maxBufferMs": 48000,
+      "bufferForPlaybackMs": 9000,
+      "bufferForPlaybackAfterRebufferMs": 18000
+    },
+    "url": "http://88.212.15.50/live/test_arenasport/playlist.m3u8"
+  },
+  {
+    "duration": -1,
+    "title": "Arena Sport 2",
+    "tvg": {
+      "id": "ArenaSport2.sk@HD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/f10lfv1649341865.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/5179-arena-sport-2-sk-tv-schedule",
+    "quality": {
+      "label": "1080P"
+    },
+    "loadControl": {
+      "minBufferMs": 24000,
+      "maxBufferMs": 48000,
+      "bufferForPlaybackMs": 9000,
+      "bufferForPlaybackAfterRebufferMs": 18000
+    },
+    "url": "http://88.212.15.50/live/test_arenasport_dva/playlist.m3u8"
+  },
+  {
+    "duration": -1,
+    "title": "Belarus 5",
+    "tvg": {
+      "id": "Belarus5.by@SD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/iq25nh1627494674.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/1648-belarus-5-tv-schedule",
+    "quality": {
+      "label": "1080P"
+    },
+    "loadControl": {
+      "minBufferMs": 30000,
+      "maxBufferMs": 60000,
+      "bufferForPlaybackMs": 10000,
+      "bufferForPlaybackAfterRebufferMs": 20000
+    },
+    "url": "http://stream.mcquack.net/33/index.m3u8"
+  },
+  {
+    "duration": -1,
+    "title": "Belarus 5 Alt",
+    "tvg": {
+      "id": "Belarus5.by@SD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/iq25nh1627494674.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/1648-belarus-5-tv-schedule",
+    "quality": {
+      "label": "SD"
+    },
+    "loadControl": {
+      "minBufferMs": 30000,
+      "maxBufferMs": 60000,
+      "bufferForPlaybackMs": 10000,
+      "bufferForPlaybackAfterRebufferMs": 20000
+    },
+    "url": "https://streaming.thestream.cyou/live/7001.m3u8"
+  },
+  {
+    "duration": -1,
+    "title": "CBC Sport",
+    "tvg": {
+      "id": "CBCSport.az@SD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/g6uzx21616618908.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/4563-cbc-sport-aze-tv-schedule",
+    "quality": {
+      "label": "720P"
+    },
+    "url": "https://andro.2385437.xyz/checklist/androstreamlivecbcs.m3u8"
+  },
+  {
+    "duration": -1,
+    "title": "CBS Sports Network USA",
+    "tvg": {
+      "id": "CBSSportsNetworkUSA.us@SD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/77gqjl1624103918.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/5990-cbs-sports-network-usa-tv-schedule",
+    "quality": {
+      "label": "720P"
+    },
+    "url": "http://kstv.us:8080/jimmyrhale/JE1974aa$$/15944"
+  },
+  {
+    "duration": -1,
+    "title": "CT Sport",
+    "tvg": {
+      "id": "CTSport.cz@SD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/emke3z1616616067.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/2907-ct-sport-tv-schedule",
+    "quality": {
+      "label": "720P"
+    },
+    "loadControl": {
+      "minBufferMs": 24000,
+      "maxBufferMs": 48000,
+      "bufferForPlaybackMs": 9000,
+      "bufferForPlaybackAfterRebufferMs": 18000
+    },
+    "url": "http://88.212.7.11/live/test_ctsport_25p/playlist.m3u8"
+  },
+  {
+    "duration": -1,
+    "title": "Magenta Sport 1",
+    "tvg": {
+      "id": "MagentaSport1.gr@HD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/dqalbp1789194525.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/5940-magenta-sport-1-gr-tv-schedule",
+    "quality": {
+      "label": "1080P"
+    },
+    "loadControl": {
+      "minBufferMs": 40000,
+      "maxBufferMs": 80000,
+      "bufferForPlaybackMs": 10000,
+      "bufferForPlaybackAfterRebufferMs": 20000
+    },
+    "url": "http://tpjgkqnu.vexiumis.top/iptv/ZFMBTT94BTSVQMFVDASEV6XS/31578/index.m3u8"
+  },
+  {
+    "duration": -1,
+    "title": "Magenta Sport 2",
+    "tvg": {
+      "id": "MagentaSport2.gr@HD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/2ohgm01789194537.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/5941-magenta-sport-2-gr-tv-schedule",
+    "quality": {
+      "label": "720P"
+    },
+    "loadControl": {
+      "minBufferMs": 40000,
+      "maxBufferMs": 80000,
+      "bufferForPlaybackMs": 10000,
+      "bufferForPlaybackAfterRebufferMs": 20000
+    },
+    "url": "http://tpjgkqnu.vexiumis.top/iptv/ZFMBTT94BTSVQMFVDASEV6XS/31579/index.m3u8"
+  },
+  {
+    "duration": -1,
+    "title": "Magenta Sport 3",
+    "tvg": {
+      "id": "MagentaSport3.gr@HD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/m14cdh1789194628.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/5942-magenta-sport-3-gr-tv-schedule",
+    "quality": {
+      "label": "1080P"
+    },
+    "loadControl": {
+      "minBufferMs": 40000,
+      "maxBufferMs": 80000,
+      "bufferForPlaybackMs": 10000,
+      "bufferForPlaybackAfterRebufferMs": 20000
+    },
+    "url": "http://tpjgkqnu.vexiumis.top/iptv/ZFMBTT94BTSVQMFVDASEV6XS/31581/index.m3u8"
+  },
+  {
+    "duration": -1,
+    "title": "Magenta Sport 4",
+    "tvg": {
+      "id": "MagentaSport4.gr@HD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/idctqy1789194642.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/5943-magenta-sport-4-gr-tv-schedule",
+    "quality": {
+      "label": "1080P"
+    },
+    "loadControl": {
+      "minBufferMs": 40000,
+      "maxBufferMs": 80000,
+      "bufferForPlaybackMs": 10000,
+      "bufferForPlaybackAfterRebufferMs": 20000
+    },
+    "url": "http://tpjgkqnu.vexiumis.top/iptv/ZFMBTT94BTSVQMFVDASEV6XS/31582/index.m3u8"
+  },
+  {
+    "duration": -1,
+    "title": "Magenta Sport 5",
+    "tvg": {
+      "id": "MagentaSport5.gr@HD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/kpja821789194690.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/5944-magenta-sport-5-gr-tv-schedule",
+    "quality": {
+      "label": "1080P"
+    },
+    "loadControl": {
+      "minBufferMs": 40000,
+      "maxBufferMs": 80000,
+      "bufferForPlaybackMs": 10000,
+      "bufferForPlaybackAfterRebufferMs": 20000
+    },
+    "url": "http://tpjgkqnu.vexiumis.top/iptv/ZFMBTT94BTSVQMFVDASEV6XS/31583/index.m3u8"
+  },
+  {
+    "duration": -1,
+    "title": "Magenta Sport 6",
+    "tvg": {
+      "id": "MagentaSport6.gr@HD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/pq3voa1789194696.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/5945-magenta-sport-6-gr-tv-schedule",
+    "quality": {
+      "label": "1080P"
+    },
+    "loadControl": {
+      "minBufferMs": 40000,
+      "maxBufferMs": 80000,
+      "bufferForPlaybackMs": 10000,
+      "bufferForPlaybackAfterRebufferMs": 20000
+    },
+    "url": "http://tpjgkqnu.vexiumis.top/iptv/ZFMBTT94BTSVQMFVDASEV6XS/31584/index.m3u8"
+  },
+  {
+    "duration": -1,
+    "title": "Magenta Sport 7",
+    "tvg": {
+      "id": "MagentaSport7.gr@HD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/vodml61789194703.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/5946-magenta-sport-7-gr-tv-schedule",
+    "quality": {
+      "label": "1080P"
+    },
+    "loadControl": {
+      "minBufferMs": 40000,
+      "maxBufferMs": 80000,
+      "bufferForPlaybackMs": 10000,
+      "bufferForPlaybackAfterRebufferMs": 20000
+    },
+    "url": "http://tpjgkqnu.vexiumis.top/iptv/ZFMBTT94BTSVQMFVDASEV6XS/31585/index.m3u8"
+  },
+  {
+    "duration": -1,
+    "title": "Magenta Sport 8",
+    "tvg": {
+      "id": "MagentaSport8.gr@HD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/c0vhpf1789194712.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/5947-magenta-sport-8-gr-tv-schedule",
+    "quality": {
+      "label": "720P"
+    },
+    "loadControl": {
+      "minBufferMs": 40000,
+      "maxBufferMs": 80000,
+      "bufferForPlaybackMs": 10000,
+      "bufferForPlaybackAfterRebufferMs": 20000
+    },
+    "url": "http://tpjgkqnu.vexiumis.top/iptv/ZFMBTT94BTSVQMFVDASEV6XS/31586/index.m3u8"
+  },
+  {
+    "duration": -1,
+    "title": "Magenta Sport 9",
+    "tvg": {
+      "id": "MagentaSport9.gr@HD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/sozv7e1789194729.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/5948-magenta-sport-9-gr-tv-schedule",
+    "quality": {
+      "label": "1080P"
+    },
+    "loadControl": {
+      "minBufferMs": 40000,
+      "maxBufferMs": 80000,
+      "bufferForPlaybackMs": 10000,
+      "bufferForPlaybackAfterRebufferMs": 20000
+    },
+    "url": "http://tpjgkqnu.vexiumis.top/iptv/ZFMBTT94BTSVQMFVDASEV6XS/31587/index.m3u8"
+  },
+  {
+    "duration": -1,
+    "title": "Digi Sport 1",
+    "tvg": {
+      "id": "DigiSport1.ro@HD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/svrprs1436105433.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/4229-digi-sport-1-romania-tv-schedule",
+    "quality": {
+      "label": "1080P"
+    },
+    "loadControl": {
+      "minBufferMs": 40000,
+      "maxBufferMs": 90000,
+      "bufferForPlaybackMs": 10000,
+      "bufferForPlaybackAfterRebufferMs": 30000
+    },
+    "url": "http://tpjgkqnu.vexiumis.top/iptv/ZFMBTT94BTSVQMFVDASEV6XS/2523/index.m3u8"
+  },
+  {
+    "duration": -1,
+    "title": "ESPN 2 US",
+    "tvg": {
+      "id": "ESPN2.us@HD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/e0jjaa1660762501.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/5036-espn-2-us-tv-schedule",
+    "quality": {
+      "label": "720P"
+    },
+    "url": "http://85.237.89.160:9590/usa-s/ESPN-2-HD/index.m3u8"
+  },
+  {
+    "duration": -1,
+    "title": "Fox Sports 1",
+    "tvg": {
+      "id": "FoxSports1.us@HD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/FOX_Sports_1_US.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/5037-fox-sports-1-us-tv-schedule",
+    "quality": {
+      "label": "720P"
+    },
+    "url": "http://85.237.89.160:9590/usa-s/FOX-SPORTS-1/index.m3u8"
+  },
+  {
+    "duration": -1,
+    "title": "M4 Sport",
+    "tvg": {
+      "id": "M4Sport.hu@SD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/wiw4ze1590153070.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/4031-m4-sport-hu-tv-schedule",
+    "quality": {
+      "label": "1080P"
+    },
+    "loadControl": {
+      "minBufferMs": 40000,
+      "maxBufferMs": 90000,
+      "bufferForPlaybackMs": 10000,
+      "bufferForPlaybackAfterRebufferMs": 30000
+    },
+    "url": "http://tpjgkqnu.vexiumis.top/iptv/ZFMBTT94BTSVQMFVDASEV6XS/31593/index.m3u8"
+  },
+  {
+    "duration": -1,
+    "title": "Nova Sport 3",
+    "tvg": {
+      "id": "NovaSport3.cz@HD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/tcj7gr1649341445.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/5175-nova-sport-3-cz-tv-schedule",
+    "quality": {
+      "label": "1080P"
+    },
+    "loadControl": {
+      "minBufferMs": 44000,
+      "maxBufferMs": 88000,
+      "bufferForPlaybackMs": 11000,
+      "bufferForPlaybackAfterRebufferMs": 22000
+    },
+    "url": "http://tpjgkqnu.vexiumis.top/iptv/ZFMBTT94BTSVQMFVDASEV6XS/31570/index.m3u8"
+  },
+  {
+    "duration": -1,
+    "title": "Nova Sport 4",
+    "tvg": {
+      "id": "NovaSport4.cz@HD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/59o8o81649341463.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/5176-nova-sport-4-cz-tv-schedule",
+    "quality": {
+      "label": "1080P"
+    },
+    "loadControl": {
+      "minBufferMs": 48000,
+      "maxBufferMs": 96000,
+      "bufferForPlaybackMs": 12000,
+      "bufferForPlaybackAfterRebufferMs": 24000
+    },
+    "url": "http://tpjgkqnu.vexiumis.top/iptv/ZFMBTT94BTSVQMFVDASEV6XS/31571/index.m3u8"
+  },
+  {
+    "duration": -1,
+    "title": "Sport 1 (CZ)",
+    "tvg": {
+      "id": "Sport1.cz@HD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/rsuyrx1455541493.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/2936-sport-1-czechia-tv-schedule",
+    "quality": {
+      "label": "1080P"
+    },
+    "loadControl": {
+      "minBufferMs": 24000,
+      "maxBufferMs": 48000,
+      "bufferForPlaybackMs": 9000,
+      "bufferForPlaybackAfterRebufferMs": 18000
+    },
+    "url": "http://88.212.15.50/live/test_sport1_25p/playlist.m3u8"
+  },
+  {
+    "duration": -1,
+    "title": "Sky Sports Premier League",
+    "tvg": {
+      "id": "SkySportsPremierLeagueROI.uk@HD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/b8avz51719570023.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/8647-sky-sports-premier-league-tv-schedule",
+    "quality": {
+      "label": "1080P"
+    },
+    "url": "http://moilist.ottolok.net/iptv/FX8YANKAXDBBEM/9334/index.m3u8"
+  },
+  {
+    "duration": -1,
+    "title": "Sky Sports Premier League",
+    "tvg": {
+      "id": "SkySportsPremierLeagueROI.uk@HD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/b8avz51719570023.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/8647-sky-sports-premier-league-tv-schedule",
+    "quality": {
+      "label": "1080P"
+    },
+    "url": "http://kstv.us:8080/jimmyrhale/JE1974aa$$/47871"
+  },
+  {
+    "duration": -1,
+    "title": "Sky Sports Main Event",
+    "tvg": {
+      "id": "SkySportsMainEvent.uk@HD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/ub8szd1780683863.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/8646-sky-sports-main-event-tv-schedule",
+    "quality": {
+      "label": "1080P"
+    },
+    "url": "http://moilist.ottolok.net/iptv/FX8YANKAXDBBEM/9308/index.m3u8"
+  },
+  {
+    "duration": -1,
+    "title": "Sky Sports Main Event",
+    "tvg": {
+      "id": "SkySportsMainEvent.uk@HD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/ub8szd1780683863.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/8646-sky-sports-main-event-tv-schedule",
+    "quality": {
+      "label": "1080P"
+    },
+    "url": "http://kstv.us:8080/jimmyrhale/JE1974aa$$/47868"
+  },
+  {
+    "duration": -1,
+    "title": "Sky Sports Main Event",
+    "tvg": {
+      "id": "SkySportsMainEvent.uk@HD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/ub8szd1780683863.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/8646-sky-sports-main-event-tv-schedule",
+    "quality": {
+      "label": "1080P"
+    },
+    "url": "http://kstv.us:8080/live/Kh2fHxR0c8/3333726709/47868.ts"
+  },
+  {
+    "duration": -1,
+    "title": "Sky Sports Main Event 4K",
+    "tvg": {
+      "id": "SkySportsMainEvent.uk@HD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/ub8szd1780683863.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/8646-sky-sports-main-event-tv-schedule",
+    "quality": {
+      "label": "4K"
+    },
+    "url": "http://ysift55.xyz:80/live/WJ74AC4SRKQQYR7/pahruAQRs8/1281430.m3u8"
+  },
+  {
+    "duration": -1,
+    "title": "Sky Sports Mix",
+    "tvg": {
+      "id": "SkySportsMix.uk@HD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/ir8di71688294404.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/8698-sky-sports-mix-tv-schedule",
+    "quality": {
+      "label": "1080P"
+    },
+    "loadControl": {
+      "minBufferMs": 40000,
+      "maxBufferMs": 90000,
+      "bufferForPlaybackMs": 10000,
+      "bufferForPlaybackAfterRebufferMs": 30000
+    },
+    "url": "http://kstv.us:8080/live/jimmyrhale/JE1974aa$$/47869.m3u8"
+  },
+  {
+    "duration": -1,
+    "title": "Sky Sports Football",
+    "tvg": {
+      "id": "SkySportsFootball.uk@HD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/lnd1p01502554851.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/8648-sky-sports-football-tv-schedule",
+    "quality": {
+      "label": "1080P"
+    },
+    "url": "http://kstv.us:8080/jimmyrhale/JE1974aa$$/47866"
+  },
+  {
+    "duration": -1,
+    "title": "Spiler 1",
+    "tvg": {
+      "id": "Spiler1.hu@SD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/nnd0xi1649342265.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/5180-sp%c3%adler1-hu-tv-schedule",
+    "quality": {
+      "label": "1080P"
+    },
+    "loadControl": {
+      "minBufferMs": 24000,
+      "maxBufferMs": 48000,
+      "bufferForPlaybackMs": 9000,
+      "bufferForPlaybackAfterRebufferMs": 18000
+    },
+    "url": "http://88.212.15.19/live/spiler1/index.m3u8"
+  },
+  {
+    "duration": -1,
+    "title": "Spiler 2",
+    "tvg": {
+      "id": "Spiler2.hu@SD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/foupei1649342285.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/5181-sp%c3%adler2-hu-tv-schedule",
+    "quality": {
+      "label": "1080P"
+    },
+    "loadControl": {
+      "minBufferMs": 18000,
+      "maxBufferMs": 60000,
+      "bufferForPlaybackMs": 6000,
+      "bufferForPlaybackAfterRebufferMs": 6000
+    },
+    "url": "http://88.212.15.19/live/spiler2/index.m3u8"
+  },
+  {
+    "duration": -1,
+    "title": "Sport TV +",
+    "tvg": {
+      "id": "SportTVPlus.pt@SD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/qxxyst1474691176.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/2561-sport-tv-\u00c1frica-1-tv-schedule",
+    "loadControl": {
+      "minBufferMs": 40000,
+      "maxBufferMs": 80000,
+      "bufferForPlaybackMs": 10000,
+      "bufferForPlaybackAfterRebufferMs": 20000
+    },
+    "url": "http://tpjgkqnu.vexiumis.top/iptv/ZFMBTT94BTSVQMFVDASEV6XS/31590/index.m3u8"
+  },
+  {
+    "duration": -1,
+    "title": "Super Sport 1",
+    "tvg": {
+      "id": "SuperSport1.al@SD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/cwxvau1592206077.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/13-super-sport-1-hd-%28albania%29-tv-schedule",
+    "url": "http://line01.serveuser.com:80/QIWQ3GPOEZ/GCOULCY30Q/1562258"
+  },
+  {
+    "duration": -1,
+    "title": "TNT Sports 1",
+    "tvg": {
+      "id": "TNTSports1.uk@HD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/153ikz1689746051.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/6518-tnt-sports-1-tv-schedule",
+    "quality": {
+      "label": "720P"
+    },
+    "url": "http://kstv.us:8080/jimmyrhale/JE1974aa$$/47850"
+  },
+  {
+    "duration": -1,
+    "title": "TNT Sports 1",
+    "tvg": {
+      "id": "TNTSports1.uk@HD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/153ikz1689746051.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/6518-tnt-sports-1-tv-schedule",
+    "quality": {
+      "label": "1080P"
+    },
+    "url": "http://line.watchtivo-8k.com:80/play/live.php?mac=00:1A:79:3F:0C:96&stream=894977&extension=ts&play_token=W2HvDO5iES"
+  },
+  {
+    "duration": -1,
+    "title": "TNT Sports 2",
+    "tvg": {
+      "id": "TNTSports2.uk@HD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/lzqo991689746090.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/6519-tnt-sports-2-tv-schedule",
+    "quality": {
+      "label": "720P"
+    },
+    "url": "http://kstv.us:8080/jimmyrhale/JE1974aa$$/47851"
+  },
+  {
+    "duration": -1,
+    "title": "TNT Sports 3",
+    "tvg": {
+      "id": "TNTSports3.uk@HD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/iwotea1701768457.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/8654-tnt-sports-3-tv-schedule",
+    "quality": {
+      "label": "720P"
+    },
+    "url": "http://kstv.us:8080/jimmyrhale/JE1974aa$$/47852"
+  },
+  {
+    "duration": -1,
+    "title": "TNT Sports 4",
+    "tvg": {
+      "id": "TNTSports4.uk@HD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/81twnr1689746183.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/8163-tnt-sports-4-tv-schedule",
+    "quality": {
+      "label": "720P"
+    },
+    "url": "http://kstv.us:8080/jimmyrhale/JE1974aa$$/47853"
+  },
+  {
+    "duration": -1,
+    "title": "TSN 1",
+    "tvg": {
+      "id": "TSN1.ca@HD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/upsspx1433379567.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/5715-tsn-1-tv-schedule",
+    "quality": {
+      "label": "1080P"
+    },
+    "url": "http://85.237.89.160:9590/usa-s/TSN-HD-1/index.m3u8"
+  },
+  {
+    "duration": -1,
+    "title": "TSN 1",
+    "tvg": {
+      "id": "TSN1.ca@HD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/upsspx1433379567.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/5715-tsn-1-tv-schedule",
+    "quality": {
+      "label": "720P"
+    },
+    "url": "http://kstv.us:8080/live/Kh2fHxR0c8/3333726709/15929.ts"
+  },
+  {
+    "duration": -1,
+    "title": "TSN 2",
+    "tvg": {
+      "id": "TSN2.ca@HD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/sutruq1433379787.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/5809-tsn-2-tv-schedule",
+    "quality": {
+      "label": "720P"
+    },
+    "url": "http://kstv.us:8080/live/Kh2fHxR0c8/3333726709/15928.ts"
+  },
+  {
+    "duration": -1,
+    "title": "TSN 3",
+    "tvg": {
+      "id": "TSN3.ca@HD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/ssxtux1433380256.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/5499-tsn-3-tv-schedule",
+    "quality": {
+      "label": "1080P"
+    },
+    "url": "http://kstv.us:8080/live/Kh2fHxR0c8/3333726709/15927.ts"
+  },
+  {
+    "duration": -1,
+    "title": "TSN 4",
+    "tvg": {
+      "id": "TSN4.ca@HD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/yrrvpq1433380019.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/5519-tsn-4-tv-schedule",
+    "quality": {
+      "label": "720P"
+    },
+    "url": "http://kstv.us:8080/live/Kh2fHxR0c8/3333726709/15926.ts"
+  },
+  {
+    "duration": -1,
+    "title": "TSN 5",
+    "tvg": {
+      "id": "TSN5.ca@HD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/sytpty1433380112.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/5653-tsn-5-tv-schedule",
+    "quality": {
+      "label": "720P"
+    },
+    "url": "http://kstv.us:8080/live/Kh2fHxR0c8/3333726709/15925.ts"
+  },
+  {
+    "duration": -1,
+    "title": "TyC Sports",
+    "tvg": {
+      "id": "TyCSports.ar@HD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/zmpjy41624030194.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/5001-tyc-sports-arg-tv-schedule",
+    "quality": {
+      "label": "720P"
+    },
+    "url": "http://line.ciao-ott.net:80/play/live.php?mac=00:1A:79:C8:7B:30&stream=1090606&extension=ts&play_token=UU20nTSWow"
+  },
+  {
+    "duration": -1,
+    "title": "USA Network",
+    "tvg": {
+      "id": "USANetwork.us@HD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/yswxwr1433432126.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/5938-usa-network-tv-schedule",
+    "quality": {
+      "label": "720P"
+    },
+    "url": "http://kstv.us:8080/jimmyrhale/JE1974aa$$/15905"
+  },
+  {
+    "duration": -1,
+    "title": "V Sport Football",
+    "tvg": {
+      "id": "VSportFootball.fi@HD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/mm7fap1641504563.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/8115-v-sport-football-tv-schedule",
+    "quality": {
+      "label": "720P"
+    },
+    "url": "http://moilist.ottolok.net/iptv/FX8YANKAXDBBEM/12076/index.m3u8"
+  },
+  {
+    "duration": -1,
+    "title": "V Sport Premium",
+    "tvg": {
+      "id": "VSportPremium.fi@HD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/de69jw1641504870.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/8099-v-sport-premium-tv-schedule",
+    "quality": {
+      "label": "720P"
+    },
+    "url": "http://moilist.ottolok.net/iptv/FX8YANKAXDBBEM/12079/index.m3u8"
+  }
+]
