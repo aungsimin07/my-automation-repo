@@ -1,0 +1,2447 @@
+{
+  "leagues": [
+    {
+      "idLeague": "4501",
+      "idAPIfootballv3": "13",
+      "idCup": "1",
+      "strLeague": "Copa Libertadores",
+      "strCurrentSeason": "2026",
+      "strComplete": "No",
+      "strBadge": "https://r2.thesportsdb.com/images/media/league/badge/9shr931685425181.png",
+      "strWebsite": "gol.conmebol.com/libertadores/es",
+      "leagueUrl": "https://www.thesportsdb.com/league/4501-copa-libertadores",
+      "metadata": {
+        "leagueLogo": 45,
+        "last_sync_at": "2026-11-26T17:40:47Z"
+      },
+      "events": [
+        {
+          "idEvent": "2620473",
+          "idLeague": "4501",
+          "strLeague": "Copa Libertadores",
+          "intRound": "200",
+          "dateEvent": "2026-11-28",
+          "strTime": "20:00:00",
+          "strTimestamp": "2026-11-28T20:00:00",
+          "strEvent": "Palmeiras vs Estudiantes de La Plata",
+          "idHomeTeam": "134465",
+          "strHomeTeam": "Palmeiras",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/vsqwqp1473538105.png",
+          "idAwayTeam": "135160",
+          "strAwayTeam": "Estudiantes de La Plata",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/pf08dq1760634366.png",
+          "strThumb": "https://r2.thesportsdb.com/images/media/event/thumb/v8n1n91795509907.jpg",
+          "strStatus": "NS",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-11-27T00:36:31Z",
+            "channel_path_scrape": {
+              "checked_at": "2026-11-27T00:36:31Z",
+              "event_url": "https://www.thesportsdb.com/event/2620473-palmeiras-vs-estudiantes-de-la-plata",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/7848-espn-2-netherlands-tv-schedule",
+                "/channel/2407-arena-sport-3-si-tv-schedule",
+                "/channel/271-bein-sports-1-australia-tv-schedule",
+                "/channel/8520-bein-sports-6-qatar-tv-schedule",
+                "/channel/5012-ert-2-gr-tv-schedule",
+                "/channel/3550-polsat-sport-2-tv-schedule",
+                "/channel/2289-sport-4-il-tv-schedule",
+                "/channel/4575-sport-tv-3-tv-schedule",
+                "/channel/3114-sportdigital-fussball-tv-schedule",
+                "/channel/2379-arena-sport-3-premium-rs-tv-schedule",
+                "/channel/2396-arena-sport-2-hr-tv-schedule",
+                "/channel/5522-bein-sports-canada-tv-schedule",
+                "/channel/5084-bein-sports-usa-tv-schedule",
+                "/channel/759-canais-globo-tv-schedule",
+                "/channel/4714-espn-brasil-tv-schedule",
+                "/channel/6704-espn-el-salvador-tv-schedule",
+                "/channel/6705-espn-guatemala-tv-schedule",
+                "/channel/6706-espn-honduras-tv-schedule",
+                "/channel/2248-max-sport-2-bg-tv-schedule",
+                "/channel/8634-movistar-vamos-tv-schedule"
+              ]
+            },
+            "channels": [
+              "ArenaSport3Premium.rs@SD"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "idLeague": "4328",
+      "idAPIfootballv3": "39",
+      "idCup": "0",
+      "strLeague": "English Premier League",
+      "strCurrentSeason": "2026-2027",
+      "strComplete": "yes",
+      "strBadge": "https://r2.thesportsdb.com/images/media/league/badge/gasy9d1737743125.png",
+      "strWebsite": "www.premierleague.com",
+      "leagueUrl": "https://www.thesportsdb.com/league/4328-english-premier-league",
+      "metadata": {
+        "leagueLogo": 47,
+        "last_sync_at": "2026-11-25T17:40:54Z"
+      },
+      "events": [
+        {
+          "idEvent": "2494116",
+          "idLeague": "4328",
+          "strLeague": "English Premier League",
+          "intRound": "12",
+          "dateEvent": "2026-11-28",
+          "strTime": "17:30:00",
+          "strTimestamp": "2026-11-28T17:30:00",
+          "strEvent": "Ipswich Town vs Aston Villa",
+          "idHomeTeam": "133622",
+          "strHomeTeam": "Ipswich Town",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/mdj1ey1634670785.png",
+          "intHomeScore": "0",
+          "idAwayTeam": "133601",
+          "strAwayTeam": "Aston Villa",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/uwzw561787679026.png",
+          "intAwayScore": "0",
+          "strThumb": "https://r2.thesportsdb.com/images/media/event/thumb/tjhatr1787740862.jpg",
+          "strStatus": "1H",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-11-28T17:45:45Z",
+            "channel_path_scrape": {
+              "checked_at": "2026-11-27T00:36:18Z",
+              "event_url": "https://www.thesportsdb.com/event/2494116-ipswich-town-vs-aston-villa",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/582-disney-hotstar-tv-schedule",
+                "/channel/7941-st%c3%b6%c3%b0-2-sport-is-tv-schedule",
+                "/channel/8647-sky-sports-premier-league-tv-schedule",
+                "/channel/3194-multisports-6-fr-tv-schedule",
+                "/channel/230-sky-sport-8-nz-tv-schedule",
+                "/channel/2395-arena-sport-1-hr-tv-schedule",
+                "/channel/2405-arena-sport-1-si-tv-schedule",
+                "/channel/2378-arena-sport-2-premium-rs-tv-schedule",
+                "/channel/2382-arena-sport-1-bih-tv-schedule",
+                "/channel/8515-bein-sports-1-qatar-tv-schedule",
+                "/channel/8668-dazn-1-portugal-tv-schedule",
+                "/channel/578-setanta-sports-ua-tv-schedule",
+                "/channel/2286-sport-1-il-tv-schedule",
+                "/channel/6969-telemundo-tv-schedule",
+                "/channel/5405-voyo-tv-schedule",
+                "/channel/4371-bein-sports-english-1-qatar-tv-schedule",
+                "/channel/3688-sky-sport-max-tv-schedule",
+                "/channel/8646-sky-sports-main-event-tv-schedule",
+                "/channel/8249-diema-sport-2-bg-tv-schedule",
+                "/channel/5023-fox-sports-1-br-tv-schedule",
+                "/channel/8795-play-sports-1-tv-schedule",
+                "/channel/5180-sp%c3%adler1-hu-tv-schedule",
+                "/channel/4854-tnt-mexico-tv-schedule",
+                "/channel/5938-usa-network-tv-schedule",
+                "/channel/8105-viaplay-2-urheilu-tv-schedule",
+                "/channel/8099-v-sport-premium-tv-schedule",
+                "/channel/4830-hbo-max-mexico-tv-schedule",
+                "/channel/6786-stan-sport-au-tv-schedule",
+                "/channel/5263-coupang-play-tv-schedule"
+              ]
+            },
+            "channels": [
+              "ArenaSport2Premium.rs@SD",
+              "SkySportsMainEvent.uk@HD",
+              "SkySportsPremierLeagueROI.uk@HD",
+              "Spiler1.hu@SD",
+              "USANetwork.us@HD",
+              "VSportPremium.fi@HD"
+            ],
+            "notifications_sent": [
+              "started"
+            ]
+          }
+        },
+        {
+          "idEvent": "2494113",
+          "idLeague": "4328",
+          "strLeague": "English Premier League",
+          "intRound": "12",
+          "dateEvent": "2026-11-29",
+          "strTime": "12:00:00",
+          "strTimestamp": "2026-11-29T12:00:00",
+          "strEvent": "Everton vs Liverpool",
+          "idHomeTeam": "133615",
+          "strHomeTeam": "Everton",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/eqayrf1523184794.png",
+          "idAwayTeam": "133602",
+          "strAwayTeam": "Liverpool",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/kfaher1737969724.png",
+          "strThumb": "https://r2.thesportsdb.com/images/media/event/thumb/7d4tmg1784549375.jpg",
+          "strStatus": "NS",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-11-28T00:36:11Z",
+            "channel_path_scrape": {
+              "checked_at": "2026-11-28T00:36:11Z",
+              "event_url": "https://www.thesportsdb.com/event/2494113-everton-vs-liverpool",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/582-disney-hotstar-tv-schedule",
+                "/channel/7941-st%c3%b6%c3%b0-2-sport-is-tv-schedule",
+                "/channel/8631-tnt-sports-ultimate-tv-schedule",
+                "/channel/230-sky-sport-8-nz-tv-schedule",
+                "/channel/2395-arena-sport-1-hr-tv-schedule",
+                "/channel/2405-arena-sport-1-si-tv-schedule",
+                "/channel/8515-bein-sports-1-qatar-tv-schedule",
+                "/channel/3182-multisports-1-fr-tv-schedule",
+                "/channel/2286-sport-1-il-tv-schedule",
+                "/channel/5405-voyo-tv-schedule",
+                "/channel/8668-dazn-1-portugal-tv-schedule",
+                "/channel/4714-espn-brasil-tv-schedule",
+                "/channel/78-sky-sport-arena-tv-schedule",
+                "/channel/4371-bein-sports-english-1-qatar-tv-schedule",
+                "/channel/8249-diema-sport-2-bg-tv-schedule",
+                "/channel/8795-play-sports-1-tv-schedule",
+                "/channel/5180-sp%c3%adler1-hu-tv-schedule",
+                "/channel/6518-tnt-sports-1-tv-schedule",
+                "/channel/5085-universo-tv-schedule",
+                "/channel/5938-usa-network-tv-schedule",
+                "/channel/8105-viaplay-2-urheilu-tv-schedule",
+                "/channel/2377-arena-sport-1-premium-rs-tv-schedule",
+                "/channel/5263-coupang-play-tv-schedule"
+              ]
+            },
+            "channels": [
+              "ArenaSport1Premium.rs@SD",
+              "Spiler1.hu@SD",
+              "TNTSports1.uk@HD",
+              "USANetwork.us@HD"
+            ]
+          }
+        },
+        {
+          "idEvent": "2494114",
+          "idLeague": "4328",
+          "strLeague": "English Premier League",
+          "intRound": "12",
+          "dateEvent": "2026-11-29",
+          "strTime": "14:05:00",
+          "strTimestamp": "2026-11-29T14:05:00",
+          "strEvent": "Brighton and Hove Albion vs Newcastle United",
+          "idHomeTeam": "133619",
+          "strHomeTeam": "Brighton and Hove Albion",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/ywypts1448810904.png",
+          "idAwayTeam": "134777",
+          "strAwayTeam": "Newcastle United",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/kwaz8w1793219401.png",
+          "strThumb": "https://r2.thesportsdb.com/images/media/event/thumb/4fq9az1793220260.jpg",
+          "strStatus": "NS",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-11-28T01:37:42Z",
+            "channel_path_scrape": {
+              "checked_at": "2026-11-28T01:37:42Z",
+              "event_url": "https://www.thesportsdb.com/event/2494114-brighton-and-hove-albion-vs-newcastle-united",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/582-disney-hotstar-tv-schedule",
+                "/channel/7942-st%c3%b6%c3%b0-2-sport-2-is-tv-schedule",
+                "/channel/8647-sky-sports-premier-league-tv-schedule",
+                "/channel/2397-arena-sport-3-hr-tv-schedule",
+                "/channel/8519-bein-sports-5-qatar-tv-schedule",
+                "/channel/3191-multisports-3-fr-tv-schedule",
+                "/channel/228-sky-sport-6-nz-tv-schedule",
+                "/channel/5405-voyo-tv-schedule",
+                "/channel/8731-dazn-spain-tv-schedule",
+                "/channel/2288-sport-3-il-tv-schedule",
+                "/channel/8249-diema-sport-2-bg-tv-schedule",
+                "/channel/8796-play-sports-2-tv-schedule",
+                "/channel/4854-tnt-mexico-tv-schedule",
+                "/channel/5085-universo-tv-schedule",
+                "/channel/5938-usa-network-tv-schedule",
+                "/channel/4830-hbo-max-mexico-tv-schedule",
+                "/channel/5263-coupang-play-tv-schedule"
+              ]
+            },
+            "channels": [
+              "SkySportsPremierLeagueROI.uk@HD",
+              "USANetwork.us@HD"
+            ]
+          }
+        },
+        {
+          "idEvent": "2494119",
+          "idLeague": "4328",
+          "strLeague": "English Premier League",
+          "intRound": "12",
+          "dateEvent": "2026-11-29",
+          "strTime": "14:05:00",
+          "strTimestamp": "2026-11-29T14:05:00",
+          "strEvent": "Sunderland vs Tottenham Hotspur",
+          "idHomeTeam": "133603",
+          "strHomeTeam": "Sunderland",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/tprtus1448813498.png",
+          "idAwayTeam": "133616",
+          "strAwayTeam": "Tottenham Hotspur",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/dfyfhl1604094109.png",
+          "strThumb": "https://r2.thesportsdb.com/images/media/event/thumb/qe4ajt1784549379.jpg",
+          "strStatus": "NS",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-11-28T01:37:44Z",
+            "channel_path_scrape": {
+              "checked_at": "2026-11-28T01:37:44Z",
+              "event_url": "https://www.thesportsdb.com/event/2494119-sunderland-vs-tottenham-hotspur",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/582-disney-hotstar-tv-schedule",
+                "/channel/7944-st%c3%b6%c3%b0-2-sport-4-is-tv-schedule",
+                "/channel/2399-arena-sport-5-hr-tv-schedule",
+                "/channel/8515-bein-sports-1-qatar-tv-schedule",
+                "/channel/3190-multisports-2-fr-tv-schedule",
+                "/channel/231-sky-sport-9-nz-tv-schedule",
+                "/channel/5405-voyo-tv-schedule",
+                "/channel/2373-arena-sport-2-rs-tv-schedule",
+                "/channel/8668-dazn-1-portugal-tv-schedule",
+                "/channel/4371-bein-sports-english-1-qatar-tv-schedule",
+                "/channel/4714-espn-brasil-tv-schedule",
+                "/channel/3484-novasports-prime-tv-schedule",
+                "/channel/8795-play-sports-1-tv-schedule",
+                "/channel/8646-sky-sports-main-event-tv-schedule",
+                "/channel/2287-sport-2-il-tv-schedule",
+                "/channel/8115-v-sport-football-tv-schedule",
+                "/channel/5263-coupang-play-tv-schedule"
+              ]
+            },
+            "channels": [
+              "SkySportsMainEvent.uk@HD",
+              "VSportFootball.fi@HD"
+            ]
+          }
+        },
+        {
+          "idEvent": "2494111",
+          "idLeague": "4328",
+          "strLeague": "English Premier League",
+          "intRound": "12",
+          "dateEvent": "2026-11-29",
+          "strTime": "14:05:00",
+          "strTimestamp": "2026-11-29T14:05:00",
+          "strEvent": "Fulham vs Bournemouth",
+          "idHomeTeam": "133600",
+          "strHomeTeam": "Fulham",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/xwwvyt1448811086.png",
+          "idAwayTeam": "134301",
+          "strAwayTeam": "Bournemouth",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/y08nak1534071116.png",
+          "strThumb": "https://r2.thesportsdb.com/images/media/event/thumb/axl4411784549373.jpg",
+          "strStatus": "NS",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-11-28T01:37:47Z",
+            "channel_path_scrape": {
+              "checked_at": "2026-11-28T01:37:47Z",
+              "event_url": "https://www.thesportsdb.com/event/2494111-fulham-vs-bournemouth",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/582-disney-hotstar-tv-schedule",
+                "/channel/2401-arena-sport-7-hr-tv-schedule",
+                "/channel/8520-bein-sports-6-qatar-tv-schedule",
+                "/channel/3192-multisports-4-fr-tv-schedule",
+                "/channel/229-sky-sport-7-nz-tv-schedule",
+                "/channel/5405-voyo-tv-schedule",
+                "/channel/2372-arena-sport-1-rs-tv-schedule",
+                "/channel/5023-fox-sports-1-br-tv-schedule",
+                "/channel/8005-sky-sports-tv-schedule",
+                "/channel/5180-sp%c3%adler1-hu-tv-schedule",
+                "/channel/4830-hbo-max-mexico-tv-schedule",
+                "/channel/5263-coupang-play-tv-schedule"
+              ]
+            },
+            "channels": [
+              "Spiler1.hu@SD"
+            ]
+          }
+        },
+        {
+          "idEvent": "2494112",
+          "idLeague": "4328",
+          "strLeague": "English Premier League",
+          "intRound": "12",
+          "dateEvent": "2026-11-29",
+          "strTime": "16:30:00",
+          "strTimestamp": "2026-11-29T16:30:00",
+          "strEvent": "Arsenal vs Manchester City",
+          "idHomeTeam": "133604",
+          "strHomeTeam": "Arsenal",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/uyhbfe1612467038.png",
+          "idAwayTeam": "133613",
+          "strAwayTeam": "Manchester City",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/vwpvry1467462651.png",
+          "strThumb": "https://r2.thesportsdb.com/images/media/event/thumb/jri03p1784549374.jpg",
+          "strStatus": "NS",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-11-28T00:36:12Z",
+            "channel_path_scrape": {
+              "checked_at": "2026-11-28T00:36:12Z",
+              "event_url": "https://www.thesportsdb.com/event/2494112-arsenal-vs-manchester-city",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/582-disney-hotstar-tv-schedule",
+                "/channel/7941-st%c3%b6%c3%b0-2-sport-is-tv-schedule",
+                "/channel/8647-sky-sports-premier-league-tv-schedule",
+                "/channel/8672-movistar-liga-de-campeones-1-tv-schedule",
+                "/channel/2395-arena-sport-1-hr-tv-schedule",
+                "/channel/2405-arena-sport-1-si-tv-schedule",
+                "/channel/3182-multisports-1-fr-tv-schedule",
+                "/channel/230-sky-sport-8-nz-tv-schedule",
+                "/channel/2286-sport-1-il-tv-schedule",
+                "/channel/5405-voyo-tv-schedule",
+                "/channel/8515-bein-sports-1-qatar-tv-schedule",
+                "/channel/8668-dazn-1-portugal-tv-schedule",
+                "/channel/4714-espn-brasil-tv-schedule",
+                "/channel/78-sky-sport-arena-tv-schedule",
+                "/channel/4371-bein-sports-english-1-qatar-tv-schedule",
+                "/channel/8249-diema-sport-2-bg-tv-schedule",
+                "/channel/8634-movistar-vamos-tv-schedule",
+                "/channel/8795-play-sports-1-tv-schedule",
+                "/channel/5180-sp%c3%adler1-hu-tv-schedule",
+                "/channel/6969-telemundo-tv-schedule",
+                "/channel/5938-usa-network-tv-schedule",
+                "/channel/8105-viaplay-2-urheilu-tv-schedule",
+                "/channel/8099-v-sport-premium-tv-schedule",
+                "/channel/2377-arena-sport-1-premium-rs-tv-schedule",
+                "/channel/8646-sky-sports-main-event-tv-schedule",
+                "/channel/4830-hbo-max-mexico-tv-schedule"
+              ]
+            },
+            "channels": [
+              "ArenaSport1Premium.rs@SD",
+              "SkySportsMainEvent.uk@HD",
+              "SkySportsPremierLeagueROI.uk@HD",
+              "Spiler1.hu@SD",
+              "USANetwork.us@HD",
+              "VSportPremium.fi@HD"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "idLeague": "4329",
+      "idAPIfootballv3": "40",
+      "idCup": "0",
+      "strLeague": "English League Championship",
+      "strCurrentSeason": "2026-2027",
+      "strComplete": "yes",
+      "strBadge": "https://r2.thesportsdb.com/images/media/league/badge/ty5a681688770169.png",
+      "strWebsite": "www.efl.com/competitions/efl-championship",
+      "leagueUrl": "https://www.thesportsdb.com/league/4329-english-league-championship",
+      "metadata": {
+        "leagueLogo": 48,
+        "last_sync_at": "2026-11-25T17:40:56Z"
+      },
+      "events": [
+        {
+          "idEvent": "2501462",
+          "idLeague": "4329",
+          "strLeague": "English League Championship",
+          "intRound": "18",
+          "dateEvent": "2026-11-29",
+          "strTime": "12:00:00",
+          "strTimestamp": "2026-11-29T12:00:00",
+          "strEvent": "Swansea City vs Cardiff City",
+          "idHomeTeam": "133614",
+          "strHomeTeam": "Swansea City",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/474rco1686920744.png",
+          "idAwayTeam": "133637",
+          "strAwayTeam": "Cardiff City",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/xtytpt1448808285.png",
+          "strThumb": "https://r2.thesportsdb.com/images/media/event/thumb/ornwgl1782468128.jpg",
+          "strStatus": "NS",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-11-28T00:37:08Z",
+            "channel_path_scrape": {
+              "checked_at": "2026-11-28T00:37:08Z",
+              "event_url": "https://www.thesportsdb.com/event/2501462-swansea-city-vs-cardiff-city",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/8648-sky-sports-football-tv-schedule",
+                "/channel/2406-arena-sport-2-si-tv-schedule",
+                "/channel/2397-arena-sport-3-hr-tv-schedule",
+                "/channel/8702-bein-sports-2-australia-tv-schedule",
+                "/channel/5941-magenta-sport-2-gr-tv-schedule",
+                "/channel/4575-sport-tv-3-tv-schedule",
+                "/channel/4075-viaplay-1-urheilu-tv-schedule",
+                "/channel/8561-v-sport-2-no-tv-schedule",
+                "/channel/8099-v-sport-premium-tv-schedule",
+                "/channel/3184-bein-sports-max-4-tv-schedule",
+                "/channel/8290-nova-sport-bg-tv-schedule",
+                "/channel/8646-sky-sports-main-event-tv-schedule",
+                "/channel/2287-sport-2-il-tv-schedule",
+                "/channel/4372-bein-sports-english-2-qatar-tv-schedule"
+              ]
+            },
+            "channels": [
+              "MagentaSport2.gr@HD",
+              "SkySportsFootball.uk@HD",
+              "SkySportsMainEvent.uk@HD",
+              "VSportPremium.fi@HD"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "idLeague": "4334",
+      "idAPIfootballv3": "61",
+      "idCup": "0",
+      "strLeague": "French Ligue 1",
+      "strCurrentSeason": "2026-2027",
+      "strComplete": "yes",
+      "strBadge": "https://r2.thesportsdb.com/images/media/league/badge/9f7z9d1742983155.png",
+      "strWebsite": "www.ligue1.com",
+      "leagueUrl": "https://www.thesportsdb.com/league/4334-french-ligue-1",
+      "metadata": {
+        "leagueLogo": null,
+        "last_sync_at": "2026-11-26T17:40:59Z"
+      },
+      "events": [
+        {
+          "idEvent": "2489569",
+          "idLeague": "4334",
+          "strLeague": "French Ligue 1",
+          "intRound": "12",
+          "dateEvent": "2026-11-28",
+          "strTime": "19:45:00",
+          "strTimestamp": "2026-11-28T19:45:00",
+          "strEvent": "Le Mans vs Lille",
+          "idHomeTeam": "133848",
+          "strHomeTeam": "Le Mans",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/wjhziv1700145026.png",
+          "idAwayTeam": "133711",
+          "strAwayTeam": "Lille",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/2giize1534005340.png",
+          "strThumb": "https://r2.thesportsdb.com/images/media/event/thumb/oh16rn1781249151.jpg",
+          "strStatus": "NS",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-11-27T01:37:42Z",
+            "channel_path_scrape": {
+              "checked_at": "2026-11-27T01:37:42Z",
+              "event_url": "https://www.thesportsdb.com/event/2489569-le-mans-vs-lille",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/8731-dazn-spain-tv-schedule",
+                "/channel/8924-ligue-1-4-fr-tv-schedule",
+                "/channel/2400-arena-sport-6-hr-tv-schedule",
+                "/channel/8519-bein-sports-5-qatar-tv-schedule",
+                "/channel/8863-nova-sport-5-cz-tv-schedule",
+                "/channel/5405-voyo-tv-schedule",
+                "/channel/2372-arena-sport-1-rs-tv-schedule",
+                "/channel/8115-v-sport-football-tv-schedule",
+                "/channel/8249-diema-sport-2-bg-tv-schedule"
+              ]
+            },
+            "channels": [
+              "VSportFootball.fi@HD"
+            ]
+          }
+        },
+        {
+          "idEvent": "2489562",
+          "idLeague": "4334",
+          "strLeague": "French Ligue 1",
+          "intRound": "12",
+          "dateEvent": "2026-11-29",
+          "strTime": "19:45:00",
+          "strTimestamp": "2026-11-29T19:45:00",
+          "strEvent": "Lyon vs Monaco",
+          "idHomeTeam": "133713",
+          "strHomeTeam": "Lyon",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/blk9771656932845.png",
+          "idAwayTeam": "133823",
+          "strAwayTeam": "Monaco",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/exjf5l1678808044.png",
+          "strThumb": "https://r2.thesportsdb.com/images/media/event/thumb/etykzb1754808805.jpg",
+          "strStatus": "NS",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-11-28T01:38:23Z",
+            "channel_path_scrape": {
+              "checked_at": "2026-11-28T01:38:23Z",
+              "event_url": "https://www.thesportsdb.com/event/2489562-lyon-vs-monaco",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/8731-dazn-spain-tv-schedule",
+                "/channel/8921-ligue-1-1-fr-tv-schedule",
+                "/channel/8922-ligue-1-2-fr-tv-schedule",
+                "/channel/2397-arena-sport-3-hr-tv-schedule",
+                "/channel/8518-bein-sports-4-qatar-tv-schedule",
+                "/channel/8863-nova-sport-5-cz-tv-schedule",
+                "/channel/2372-arena-sport-1-rs-tv-schedule",
+                "/channel/8105-viaplay-2-urheilu-tv-schedule",
+                "/channel/8099-v-sport-premium-tv-schedule",
+                "/channel/5522-bein-sports-canada-tv-schedule",
+                "/channel/5084-bein-sports-usa-tv-schedule",
+                "/channel/8249-diema-sport-2-bg-tv-schedule",
+                "/channel/8810-dazn-1-be-tv-schedule",
+                "/channel/5405-voyo-tv-schedule"
+              ]
+            },
+            "channels": [
+              "VSportPremium.fi@HD"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "idLeague": "4331",
+      "idAPIfootballv3": "78",
+      "idCup": "0",
+      "strLeague": "German Bundesliga",
+      "strCurrentSeason": "2026-2027",
+      "strComplete": "yes",
+      "strBadge": "https://r2.thesportsdb.com/images/media/league/badge/teqh1b1679952008.png",
+      "strWebsite": "www.bundesliga.com/en",
+      "leagueUrl": "https://www.thesportsdb.com/league/4331-german-bundesliga",
+      "metadata": {
+        "leagueLogo": 54,
+        "last_sync_at": "2026-11-25T17:41:06Z"
+      },
+      "events": [
+        {
+          "idEvent": "2508424",
+          "idLeague": "4331",
+          "strLeague": "German Bundesliga",
+          "intRound": "11",
+          "dateEvent": "2026-11-28",
+          "strTime": "17:30:00",
+          "strTimestamp": "2026-11-28T17:30:00",
+          "strEvent": "Stuttgart vs Eintracht Frankfurt",
+          "idHomeTeam": "133660",
+          "strHomeTeam": "Stuttgart",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/yppyux1473454085.png",
+          "intHomeScore": "0",
+          "idAwayTeam": "133814",
+          "strAwayTeam": "Eintracht Frankfurt",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/rurwpy1473453269.png",
+          "intAwayScore": "0",
+          "strThumb": "https://r2.thesportsdb.com/images/media/event/thumb/1jjz8r1754041368.jpg",
+          "strStatus": "1H",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-11-28T17:45:46Z",
+            "channel_path_scrape": {
+              "checked_at": "2026-11-27T01:37:04Z",
+              "event_url": "https://www.thesportsdb.com/event/2508424-stuttgart-vs-eintracht-frankfurt",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/8648-sky-sports-football-tv-schedule",
+                "/channel/5175-nova-sport-3-cz-tv-schedule",
+                "/channel/5411-onesoccer-ca-tv-schedule",
+                "/channel/8816-eleven-sports-3-poland-tv-schedule",
+                "/channel/8731-dazn-spain-tv-schedule",
+                "/channel/3484-novasports-prime-tv-schedule",
+                "/channel/610-%c5%a0tv-1-si-tv-schedule",
+                "/channel/2287-sport-2-il-tv-schedule",
+                "/channel/29-bein-sports-hd-1-france-tv-schedule",
+                "/channel/8290-nova-sport-bg-tv-schedule",
+                "/channel/8796-play-sports-2-tv-schedule",
+                "/channel/5085-universo-tv-schedule",
+                "/channel/8115-v-sport-football-tv-schedule",
+                "/channel/5007-s-sport-tv-schedule",
+                "/channel/1896-sky-sport-top-event-tv-schedule",
+                "/channel/3261-sport-klub-3-hr-tv-schedule",
+                "/channel/3253-sport-klub-3-rs-tv-schedule"
+              ]
+            },
+            "channels": [
+              "NovaSport3.cz@HD",
+              "SkySportsFootball.uk@HD",
+              "VSportFootball.fi@HD"
+            ],
+            "notifications_sent": [
+              "started"
+            ]
+          }
+        },
+        {
+          "idEvent": "2508821",
+          "idLeague": "4331",
+          "strLeague": "German Bundesliga",
+          "intRound": "11",
+          "dateEvent": "2026-11-29",
+          "strTime": "14:30:00",
+          "strTimestamp": "2026-11-29T14:30:00",
+          "strEvent": "Freiburg vs RB Leipzig",
+          "idHomeTeam": "133653",
+          "strHomeTeam": "Freiburg",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/urwtup1473453288.png",
+          "idAwayTeam": "134695",
+          "strAwayTeam": "RB Leipzig",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/zjgapo1594244951.png",
+          "strThumb": "https://r2.thesportsdb.com/images/media/event/thumb/2whgra1754042023.jpg",
+          "strStatus": "NS",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-11-28T00:37:29Z",
+            "channel_path_scrape": {
+              "checked_at": "2026-11-28T00:37:29Z",
+              "event_url": "https://www.thesportsdb.com/event/2508821-freiburg-vs-rb-leipzig",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/5411-onesoccer-ca-tv-schedule",
+                "/channel/5175-nova-sport-3-cz-tv-schedule",
+                "/channel/612-%c5%a0tv-3-si-tv-schedule",
+                "/channel/2375-arena-sport-4-rs-tv-schedule",
+                "/channel/29-bein-sports-hd-1-france-tv-schedule",
+                "/channel/6969-telemundo-tv-schedule"
+              ]
+            },
+            "channels": [
+              "NovaSport3.cz@HD"
+            ]
+          }
+        },
+        {
+          "idEvent": "2508824",
+          "idLeague": "4331",
+          "strLeague": "German Bundesliga",
+          "intRound": "11",
+          "dateEvent": "2026-11-29",
+          "strTime": "16:30:00",
+          "strTimestamp": "2026-11-29T16:30:00",
+          "strEvent": "Hoffenheim vs Augsburg",
+          "idHomeTeam": "133657",
+          "strHomeTeam": "Hoffenheim",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/9hwvb21621593919.png",
+          "idAwayTeam": "133652",
+          "strAwayTeam": "Augsburg",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/xqyyvq1473453233.png",
+          "strThumb": "https://r2.thesportsdb.com/images/media/event/thumb/gcleci1688630736.jpg",
+          "strStatus": "NS",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-11-28T00:37:31Z",
+            "channel_path_scrape": {
+              "checked_at": "2026-11-28T00:37:31Z",
+              "event_url": "https://www.thesportsdb.com/event/2508824-hoffenheim-vs-augsburg",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/5411-onesoccer-ca-tv-schedule",
+                "/channel/5175-nova-sport-3-cz-tv-schedule",
+                "/channel/612-%c5%a0tv-3-si-tv-schedule",
+                "/channel/8731-dazn-spain-tv-schedule",
+                "/channel/8561-v-sport-2-no-tv-schedule",
+                "/channel/3185-bein-sports-max-5-tv-schedule",
+                "/channel/3492-novasports-3-tv-schedule",
+                "/channel/2287-sport-2-il-tv-schedule",
+                "/channel/8115-v-sport-football-tv-schedule"
+              ]
+            },
+            "channels": [
+              "NovaSport3.cz@HD",
+              "VSportFootball.fi@HD"
+            ]
+          }
+        },
+        {
+          "idEvent": "2508423",
+          "idLeague": "4331",
+          "strLeague": "German Bundesliga",
+          "intRound": "11",
+          "dateEvent": "2026-11-29",
+          "strTime": "18:30:00",
+          "strTimestamp": "2026-11-29T18:30:00",
+          "strEvent": "Borussia Dortmund vs Bayer Leverkusen",
+          "idHomeTeam": "133650",
+          "strHomeTeam": "Borussia Dortmund",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/tqo8ge1716960353.png",
+          "idAwayTeam": "133666",
+          "strAwayTeam": "Bayer Leverkusen",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/3x9k851726760113.png",
+          "strThumb": "https://r2.thesportsdb.com/images/media/event/thumb/gv8ur01754041812.jpg",
+          "strStatus": "NS",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-11-28T00:37:32Z",
+            "channel_path_scrape": {
+              "checked_at": "2026-11-28T00:37:32Z",
+              "event_url": "https://www.thesportsdb.com/event/2508423-borussia-dortmund-vs-bayer-leverkusen",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/5411-onesoccer-ca-tv-schedule",
+                "/channel/8816-eleven-sports-3-poland-tv-schedule",
+                "/channel/5175-nova-sport-3-cz-tv-schedule",
+                "/channel/611-%c5%a0tv-2-si-tv-schedule",
+                "/channel/8731-dazn-spain-tv-schedule",
+                "/channel/78-sky-sport-arena-tv-schedule",
+                "/channel/30-bein-sports-hd-2-france-tv-schedule",
+                "/channel/4092-go3-sport-2-lv-tv-schedule",
+                "/channel/8634-movistar-vamos-tv-schedule",
+                "/channel/3484-novasports-prime-tv-schedule",
+                "/channel/8796-play-sports-2-tv-schedule",
+                "/channel/2287-sport-2-il-tv-schedule",
+                "/channel/8115-v-sport-football-tv-schedule",
+                "/channel/8248-diema-sport-3-bg-tv-schedule",
+                "/channel/4236-digi-sport-2-romania-tv-schedule"
+              ]
+            },
+            "channels": [
+              "NovaSport3.cz@HD",
+              "VSportFootball.fi@HD"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "idLeague": "4332",
+      "idAPIfootballv3": "135",
+      "idCup": "0",
+      "strLeague": "Italian Serie A",
+      "strCurrentSeason": "2026-2027",
+      "strComplete": "yes",
+      "strBadge": "https://r2.thesportsdb.com/images/media/league/badge/67q3q21679951383.png",
+      "strWebsite": "www.legaseriea.it/it",
+      "leagueUrl": "https://www.thesportsdb.com/league/4332-italian-serie-a",
+      "metadata": {
+        "leagueLogo": 55,
+        "last_sync_at": "2026-11-25T17:41:29Z"
+      },
+      "events": [
+        {
+          "idEvent": "2482262",
+          "idLeague": "4332",
+          "strLeague": "Italian Serie A",
+          "intRound": "13",
+          "dateEvent": "2026-11-28",
+          "strTime": "17:00:00",
+          "strTimestamp": "2026-11-28T17:00:00",
+          "strEvent": "Torino vs Lazio",
+          "idHomeTeam": "133687",
+          "strHomeTeam": "Torino",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/xxprty1448806802.png",
+          "intHomeScore": "1",
+          "idAwayTeam": "133668",
+          "strAwayTeam": "Lazio",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/rwqyvs1448806608.png",
+          "intAwayScore": "2",
+          "strThumb": "https://r2.thesportsdb.com/images/media/event/thumb/fd94171755934771.jpg",
+          "strStatus": "2H",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-11-28T19:01:00Z",
+            "channel_path_scrape": {
+              "checked_at": "2026-11-27T00:36:41Z",
+              "event_url": "https://www.thesportsdb.com/event/2482262-torino-vs-lazio",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/6001-paramount-us-tv-schedule",
+                "/channel/1167-supersport-football-tv-schedule",
+                "/channel/2936-sport-1-czechia-tv-schedule",
+                "/channel/7896-ziggo-sport-2-tv-schedule",
+                "/channel/2396-arena-sport-2-hr-tv-schedule",
+                "/channel/8703-bein-sports-3-australia-tv-schedule",
+                "/channel/5940-magenta-sport-1-gr-tv-schedule",
+                "/channel/2239-dazn-1-france-tv-schedule",
+                "/channel/5006-s-sport-2-tr-tv-schedule",
+                "/channel/2288-sport-3-il-tv-schedule",
+                "/channel/4573-sport-tv-2-tv-schedule",
+                "/channel/4092-go3-sport-2-lv-tv-schedule",
+                "/channel/4187-c-more-sport-1-fi-tv-schedule",
+                "/channel/8093-mtv-urheilu-1-tv-schedule",
+                "/channel/2249-max-sport-3-bg-tv-schedule",
+                "/channel/8856-true-premier-football-hd-3-tv-schedule",
+                "/channel/8846-tv-2-sport-x-tv-schedule",
+                "/channel/5007-s-sport-tv-schedule",
+                "/channel/5260-spotv-tv-schedule"
+              ]
+            },
+            "channels": [
+              "MagentaSport1.gr@HD",
+              "Sport1.cz@HD"
+            ],
+            "notifications_sent": [
+              "started"
+            ]
+          }
+        },
+        {
+          "idEvent": "2482263",
+          "idLeague": "4332",
+          "strLeague": "Italian Serie A",
+          "intRound": "13",
+          "dateEvent": "2026-11-28",
+          "strTime": "19:45:00",
+          "strTimestamp": "2026-11-28T19:45:00",
+          "strEvent": "Inter Milan vs Genoa",
+          "idHomeTeam": "133681",
+          "strHomeTeam": "Inter Milan",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/ryhu6d1617113103.png",
+          "idAwayTeam": "133675",
+          "strAwayTeam": "Genoa",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/52s8dn1655553600.png",
+          "strThumb": "https://r2.thesportsdb.com/images/media/event/thumb/s7rmre1755934753.jpg",
+          "strStatus": "NS",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-11-27T00:36:20Z",
+            "channel_path_scrape": {
+              "checked_at": "2026-11-27T00:36:20Z",
+              "event_url": "https://www.thesportsdb.com/event/2482263-inter-milan-vs-genoa",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/6001-paramount-us-tv-schedule",
+                "/channel/1167-supersport-football-tv-schedule",
+                "/channel/2936-sport-1-czechia-tv-schedule",
+                "/channel/2395-arena-sport-1-hr-tv-schedule",
+                "/channel/2405-arena-sport-1-si-tv-schedule",
+                "/channel/2378-arena-sport-2-premium-rs-tv-schedule",
+                "/channel/8703-bein-sports-3-australia-tv-schedule",
+                "/channel/5940-magenta-sport-1-gr-tv-schedule",
+                "/channel/2239-dazn-1-france-tv-schedule",
+                "/channel/5006-s-sport-2-tr-tv-schedule",
+                "/channel/6969-telemundo-tv-schedule",
+                "/channel/7896-ziggo-sport-2-tv-schedule",
+                "/channel/3640-sky-sport-calcio-tv-schedule",
+                "/channel/8695-sky-sport-uno-tv-schedule",
+                "/channel/4187-c-more-sport-1-fi-tv-schedule",
+                "/channel/8093-mtv-urheilu-1-tv-schedule",
+                "/channel/4216-digi-sport-3-romania-tv-schedule",
+                "/channel/6699-espn-3-guatemala-tv-schedule",
+                "/channel/6700-espn-3-honduras-tv-schedule",
+                "/channel/5023-fox-sports-1-br-tv-schedule",
+                "/channel/2249-max-sport-3-bg-tv-schedule",
+                "/channel/5768-tln-canada-tv-schedule",
+                "/channel/8856-true-premier-football-hd-3-tv-schedule",
+                "/channel/8846-tv-2-sport-x-tv-schedule",
+                "/channel/5007-s-sport-tv-schedule",
+                "/channel/5260-spotv-tv-schedule"
+              ]
+            },
+            "channels": [
+              "ArenaSport2Premium.rs@SD",
+              "MagentaSport1.gr@HD",
+              "Sport1.cz@HD"
+            ]
+          }
+        },
+        {
+          "idEvent": "2482260",
+          "idLeague": "4332",
+          "strLeague": "Italian Serie A",
+          "intRound": "13",
+          "dateEvent": "2026-11-29",
+          "strTime": "11:30:00",
+          "strTimestamp": "2026-11-29T11:30:00",
+          "strEvent": "Udinese vs Fiorentina",
+          "idHomeTeam": "133679",
+          "strHomeTeam": "Udinese",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/vwvstr1448806811.png",
+          "idAwayTeam": "133674",
+          "strAwayTeam": "Fiorentina",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/hc8nhu1656098030.png",
+          "strThumb": "https://r2.thesportsdb.com/images/media/event/thumb/c1m4f41755934775.jpg",
+          "strStatus": "NS",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-11-28T00:36:21Z",
+            "channel_path_scrape": {
+              "checked_at": "2026-11-28T00:36:21Z",
+              "event_url": "https://www.thesportsdb.com/event/2482260-udinese-vs-fiorentina",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/6001-paramount-us-tv-schedule",
+                "/channel/1167-supersport-football-tv-schedule",
+                "/channel/7900-ziggo-sport-5-tv-schedule",
+                "/channel/2396-arena-sport-2-hr-tv-schedule",
+                "/channel/8703-bein-sports-3-australia-tv-schedule",
+                "/channel/5940-magenta-sport-1-gr-tv-schedule",
+                "/channel/2239-dazn-1-france-tv-schedule",
+                "/channel/5006-s-sport-2-tr-tv-schedule",
+                "/channel/2936-sport-1-czechia-tv-schedule",
+                "/channel/2378-arena-sport-2-premium-rs-tv-schedule",
+                "/channel/4188-c-more-sport-2-fi-tv-schedule",
+                "/channel/4161-mtv-urheilu-2-tv-schedule",
+                "/channel/6692-espn-2-honduras-tv-schedule",
+                "/channel/2965-sportklub-fight-hr-tv-schedule",
+                "/channel/8856-true-premier-football-hd-3-tv-schedule",
+                "/channel/5990-cbs-sports-network-usa-tv-schedule",
+                "/channel/4573-sport-tv-2-tv-schedule",
+                "/channel/5260-spotv-tv-schedule"
+              ]
+            },
+            "channels": [
+              "ArenaSport2Premium.rs@SD",
+              "CBSSportsNetworkUSA.us@SD",
+              "MagentaSport1.gr@HD",
+              "Sport1.cz@HD"
+            ]
+          }
+        },
+        {
+          "idEvent": "2482258",
+          "idLeague": "4332",
+          "strLeague": "Italian Serie A",
+          "intRound": "13",
+          "dateEvent": "2026-11-29",
+          "strTime": "14:00:00",
+          "strTimestamp": "2026-11-29T14:00:00",
+          "strEvent": "Sassuolo vs Napoli",
+          "idHomeTeam": "133701",
+          "strHomeTeam": "Sassuolo",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/xystvp1448806138.png",
+          "idAwayTeam": "133670",
+          "strAwayTeam": "Napoli",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/l8qyxv1742982541.png",
+          "strThumb": "https://r2.thesportsdb.com/images/media/event/thumb/qavtf21755933716.jpg",
+          "strStatus": "NS",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-11-28T00:36:23Z",
+            "channel_path_scrape": {
+              "checked_at": "2026-11-28T00:36:23Z",
+              "event_url": "https://www.thesportsdb.com/event/2482258-sassuolo-vs-napoli",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/6001-paramount-us-tv-schedule",
+                "/channel/1167-supersport-football-tv-schedule",
+                "/channel/875-bbc-iplayer-tv-schedule",
+                "/channel/7900-ziggo-sport-5-tv-schedule",
+                "/channel/2406-arena-sport-2-si-tv-schedule",
+                "/channel/2398-arena-sport-4-hr-tv-schedule",
+                "/channel/8703-bein-sports-3-australia-tv-schedule",
+                "/channel/5940-magenta-sport-1-gr-tv-schedule",
+                "/channel/5006-s-sport-2-tr-tv-schedule",
+                "/channel/2936-sport-1-czechia-tv-schedule",
+                "/channel/2378-arena-sport-2-premium-rs-tv-schedule",
+                "/channel/4216-digi-sport-3-romania-tv-schedule",
+                "/channel/6692-espn-2-honduras-tv-schedule",
+                "/channel/8634-movistar-vamos-tv-schedule",
+                "/channel/8856-true-premier-football-hd-3-tv-schedule",
+                "/channel/5990-cbs-sports-network-usa-tv-schedule",
+                "/channel/2239-dazn-1-france-tv-schedule",
+                "/channel/5260-spotv-tv-schedule"
+              ]
+            },
+            "channels": [
+              "ArenaSport2Premium.rs@SD",
+              "CBSSportsNetworkUSA.us@SD",
+              "MagentaSport1.gr@HD",
+              "Sport1.cz@HD"
+            ]
+          }
+        },
+        {
+          "idEvent": "2482261",
+          "idLeague": "4332",
+          "strLeague": "Italian Serie A",
+          "intRound": "13",
+          "dateEvent": "2026-11-29",
+          "strTime": "17:00:00",
+          "strTimestamp": "2026-11-29T17:00:00",
+          "strEvent": "Roma vs Monza",
+          "idHomeTeam": "133682",
+          "strHomeTeam": "Roma",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/jwro2s1760820674.png",
+          "idAwayTeam": "134270",
+          "strAwayTeam": "Monza",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/bxearg1603170113.png",
+          "strThumb": "https://r2.thesportsdb.com/images/media/event/thumb/rm25161780900006.jpg",
+          "strStatus": "NS",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-11-28T00:37:03Z",
+            "channel_path_scrape": {
+              "checked_at": "2026-11-28T00:37:03Z",
+              "event_url": "https://www.thesportsdb.com/event/2482261-roma-vs-monza",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/6001-paramount-us-tv-schedule",
+                "/channel/1167-supersport-football-tv-schedule",
+                "/channel/7900-ziggo-sport-5-tv-schedule",
+                "/channel/2397-arena-sport-3-hr-tv-schedule",
+                "/channel/2407-arena-sport-3-si-tv-schedule",
+                "/channel/8703-bein-sports-3-australia-tv-schedule",
+                "/channel/5940-magenta-sport-1-gr-tv-schedule",
+                "/channel/2372-arena-sport-1-rs-tv-schedule",
+                "/channel/4139-go3-sport-open-ee-tv-schedule",
+                "/channel/3640-sky-sport-calcio-tv-schedule",
+                "/channel/4575-sport-tv-3-tv-schedule",
+                "/channel/4187-c-more-sport-1-fi-tv-schedule",
+                "/channel/8093-mtv-urheilu-1-tv-schedule",
+                "/channel/8811-dazn-2-be-tv-schedule",
+                "/channel/6704-espn-el-salvador-tv-schedule",
+                "/channel/6705-espn-guatemala-tv-schedule",
+                "/channel/6706-espn-honduras-tv-schedule",
+                "/channel/2936-sport-1-czechia-tv-schedule",
+                "/channel/2965-sportklub-fight-hr-tv-schedule",
+                "/channel/5768-tln-canada-tv-schedule",
+                "/channel/8856-true-premier-football-hd-3-tv-schedule",
+                "/channel/5085-universo-tv-schedule"
+              ]
+            },
+            "channels": [
+              "MagentaSport1.gr@HD",
+              "Sport1.cz@HD"
+            ]
+          }
+        },
+        {
+          "idEvent": "2482267",
+          "idLeague": "4332",
+          "strLeague": "Italian Serie A",
+          "intRound": "13",
+          "dateEvent": "2026-11-29",
+          "strTime": "19:45:00",
+          "strTimestamp": "2026-11-29T19:45:00",
+          "strEvent": "Como vs Juventus",
+          "idHomeTeam": "134243",
+          "strHomeTeam": "Como",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/02x81t1627405841.png",
+          "idAwayTeam": "133676",
+          "strAwayTeam": "Juventus",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/uxf0gr1742983727.png",
+          "strThumb": "https://r2.thesportsdb.com/images/media/event/thumb/y2o0pr1755933945.jpg",
+          "strStatus": "NS",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-11-28T00:36:40Z",
+            "channel_path_scrape": {
+              "checked_at": "2026-11-28T00:36:40Z",
+              "event_url": "https://www.thesportsdb.com/event/2482267-como-vs-juventus",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/6001-paramount-us-tv-schedule",
+                "/channel/1167-supersport-football-tv-schedule",
+                "/channel/7900-ziggo-sport-5-tv-schedule",
+                "/channel/2405-arena-sport-1-si-tv-schedule",
+                "/channel/8703-bein-sports-3-australia-tv-schedule",
+                "/channel/5940-magenta-sport-1-gr-tv-schedule",
+                "/channel/5006-s-sport-2-tr-tv-schedule",
+                "/channel/2936-sport-1-czechia-tv-schedule",
+                "/channel/2395-arena-sport-1-hr-tv-schedule",
+                "/channel/2379-arena-sport-3-premium-rs-tv-schedule",
+                "/channel/4091-go3-sport-1-lv-tv-schedule",
+                "/channel/4575-sport-tv-3-tv-schedule",
+                "/channel/4187-c-more-sport-1-fi-tv-schedule",
+                "/channel/8093-mtv-urheilu-1-tv-schedule",
+                "/channel/8811-dazn-2-be-tv-schedule",
+                "/channel/5371-espn-2-brazil-tv-schedule",
+                "/channel/6704-espn-el-salvador-tv-schedule",
+                "/channel/6705-espn-guatemala-tv-schedule",
+                "/channel/6706-espn-honduras-tv-schedule",
+                "/channel/6969-telemundo-tv-schedule",
+                "/channel/5768-tln-canada-tv-schedule",
+                "/channel/8856-true-premier-football-hd-3-tv-schedule",
+                "/channel/8846-tv-2-sport-x-tv-schedule",
+                "/channel/4216-digi-sport-3-romania-tv-schedule",
+                "/channel/6518-tnt-sports-1-tv-schedule"
+              ]
+            },
+            "channels": [
+              "ArenaSport3Premium.rs@SD",
+              "MagentaSport1.gr@HD",
+              "Sport1.cz@HD",
+              "TNTSports1.uk@HD"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "idLeague": "4335",
+      "idAPIfootballv3": "140",
+      "idCup": "0",
+      "strLeague": "Spanish La Liga",
+      "strCurrentSeason": "2026-2027",
+      "strComplete": "yes",
+      "strBadge": "https://r2.thesportsdb.com/images/media/league/badge/ja4it51687628717.png",
+      "strWebsite": "www.laliga.com",
+      "leagueUrl": "https://www.thesportsdb.com/league/4335-spanish-la-liga",
+      "metadata": {
+        "leagueLogo": 87,
+        "last_sync_at": "2026-11-26T17:43:15Z"
+      },
+      "events": [
+        {
+          "idEvent": "2506308",
+          "idLeague": "4335",
+          "strLeague": "Spanish La Liga",
+          "intRound": "14",
+          "dateEvent": "2026-11-28",
+          "strTime": "17:30:00",
+          "strTimestamp": "2026-11-28T17:30:00",
+          "strEvent": "Elche vs Atl\u00e9tico Madrid",
+          "idHomeTeam": "134384",
+          "strHomeTeam": "Elche",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/e4vaw51655594332.png",
+          "intHomeScore": "0",
+          "idAwayTeam": "133729",
+          "strAwayTeam": "Atl\u00e9tico Madrid",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/0ulh3q1719984315.png",
+          "intAwayScore": "2",
+          "strThumb": "https://r2.thesportsdb.com/images/media/event/thumb/l1fxm51784904606.jpg",
+          "strStatus": "1H",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-11-28T17:45:48Z",
+            "channel_path_scrape": {
+              "checked_at": "2026-11-27T00:36:29Z",
+              "event_url": "https://www.thesportsdb.com/event/2506308-elche-vs-atl%c3%a9tico-madrid",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/21-premier-sports-2-ie-tv-schedule",
+                "/channel/5176-nova-sport-4-cz-tv-schedule",
+                "/channel/2379-arena-sport-3-premium-rs-tv-schedule",
+                "/channel/8702-bein-sports-2-australia-tv-schedule",
+                "/channel/8519-bein-sports-5-qatar-tv-schedule",
+                "/channel/2239-dazn-1-france-tv-schedule",
+                "/channel/8731-dazn-spain-tv-schedule",
+                "/channel/6679-laliga-tv-bar-tv-schedule",
+                "/channel/5181-sp%c3%adler2-hu-tv-schedule",
+                "/channel/4091-go3-sport-1-lv-tv-schedule",
+                "/channel/8810-dazn-1-be-tv-schedule",
+                "/channel/5348-espn-deportes-tv-schedule",
+                "/channel/2250-max-sport-4-bg-tv-schedule",
+                "/channel/4236-digi-sport-2-romania-tv-schedule",
+                "/channel/1648-belarus-5-tv-schedule",
+                "/channel/3257-sport-klub-1-hr-tv-schedule",
+                "/channel/3330-sport-klub-2-si-tv-schedule",
+                "/channel/4029-tv-2-play-tv-schedule",
+                "/channel/7852-ziggo-sport-1-tv-schedule",
+                "/channel/7899-ziggo-sport-3-tv-schedule"
+              ]
+            },
+            "channels": [
+              "ArenaSport3Premium.rs@SD",
+              "Belarus5.by@SD",
+              "NovaSport4.cz@HD",
+              "Spiler2.hu@SD"
+            ],
+            "notifications_sent": [
+              "started"
+            ]
+          }
+        },
+        {
+          "idEvent": "2506304",
+          "idLeague": "4335",
+          "strLeague": "Spanish La Liga",
+          "intRound": "14",
+          "dateEvent": "2026-11-28",
+          "strTime": "20:00:00",
+          "strTimestamp": "2026-11-28T20:00:00",
+          "strEvent": "Real Madrid vs Deportivo Alav\u00e9s",
+          "idHomeTeam": "133738",
+          "strHomeTeam": "Real Madrid",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/vwvwrw1473502969.png",
+          "idAwayTeam": "134221",
+          "strAwayTeam": "Deportivo Alav\u00e9s",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/mfn99h1734673842.png",
+          "strThumb": "https://r2.thesportsdb.com/images/media/event/thumb/l1qkeq1784904600.jpg",
+          "strStatus": "NS",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-11-27T00:36:10Z",
+            "channel_path_scrape": {
+              "checked_at": "2026-11-27T00:36:10Z",
+              "event_url": "https://www.thesportsdb.com/event/2506304-real-madrid-vs-deportivo-alav%c3%a9s",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/5175-nova-sport-3-cz-tv-schedule",
+                "/channel/8515-bein-sports-1-qatar-tv-schedule",
+                "/channel/8702-bein-sports-2-australia-tv-schedule",
+                "/channel/2239-dazn-1-france-tv-schedule",
+                "/channel/8668-dazn-1-portugal-tv-schedule",
+                "/channel/6679-laliga-tv-bar-tv-schedule",
+                "/channel/5004-s-sport-tr-tv-schedule",
+                "/channel/5181-sp%c3%adler2-hu-tv-schedule",
+                "/channel/4371-bein-sports-english-1-qatar-tv-schedule",
+                "/channel/4091-go3-sport-1-lv-tv-schedule",
+                "/channel/2377-arena-sport-1-premium-rs-tv-schedule",
+                "/channel/8810-dazn-1-be-tv-schedule",
+                "/channel/5348-espn-deportes-tv-schedule",
+                "/channel/2250-max-sport-4-bg-tv-schedule",
+                "/channel/5715-tsn-1-tv-schedule",
+                "/channel/1648-belarus-5-tv-schedule",
+                "/channel/4236-digi-sport-2-romania-tv-schedule",
+                "/channel/5007-s-sport-tv-schedule",
+                "/channel/3257-sport-klub-1-hr-tv-schedule",
+                "/channel/3330-sport-klub-2-si-tv-schedule",
+                "/channel/4029-tv-2-play-tv-schedule",
+                "/channel/7852-ziggo-sport-1-tv-schedule"
+              ]
+            },
+            "channels": [
+              "ArenaSport1Premium.rs@SD",
+              "Belarus5.by@SD",
+              "NovaSport3.cz@HD",
+              "Spiler2.hu@SD",
+              "TSN1.ca@HD"
+            ]
+          }
+        },
+        {
+          "idEvent": "2506299",
+          "idLeague": "4335",
+          "strLeague": "Spanish La Liga",
+          "intRound": "14",
+          "dateEvent": "2026-11-29",
+          "strTime": "13:00:00",
+          "strTimestamp": "2026-11-29T13:00:00",
+          "strEvent": "Valencia vs Osasuna",
+          "idHomeTeam": "133725",
+          "strHomeTeam": "Valencia",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/dm8l6o1655594864.png",
+          "idAwayTeam": "133730",
+          "strAwayTeam": "Osasuna",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/rvspvt1473502960.png",
+          "strThumb": "https://r2.thesportsdb.com/images/media/event/thumb/jiqxic1784904593.jpg",
+          "strStatus": "NS",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-11-28T00:36:35Z",
+            "channel_path_scrape": {
+              "checked_at": "2026-11-28T00:36:35Z",
+              "event_url": "https://www.thesportsdb.com/event/2506299-valencia-vs-osasuna",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/2874-premier-sports-1-ie-tv-schedule",
+                "/channel/8517-bein-sports-3-qatar-tv-schedule",
+                "/channel/3778-canal-sport-polska-tv-schedule",
+                "/channel/5176-nova-sport-4-cz-tv-schedule",
+                "/channel/5181-sp%c3%adler2-hu-tv-schedule",
+                "/channel/7896-ziggo-sport-2-tv-schedule",
+                "/channel/2379-arena-sport-3-premium-rs-tv-schedule",
+                "/channel/2239-dazn-1-france-tv-schedule",
+                "/channel/8731-dazn-spain-tv-schedule",
+                "/channel/6679-laliga-tv-bar-tv-schedule",
+                "/channel/5004-s-sport-tr-tv-schedule",
+                "/channel/5348-espn-deportes-tv-schedule",
+                "/channel/2250-max-sport-4-bg-tv-schedule",
+                "/channel/1648-belarus-5-tv-schedule",
+                "/channel/3330-sport-klub-2-si-tv-schedule",
+                "/channel/3264-sport-klub-6-hr-tv-schedule",
+                "/channel/3259-sport-klub-6-rs-tv-schedule",
+                "/channel/4029-tv-2-play-tv-schedule"
+              ]
+            },
+            "channels": [
+              "ArenaSport3Premium.rs@SD",
+              "Belarus5.by@SD",
+              "NovaSport4.cz@HD",
+              "Spiler2.hu@SD"
+            ]
+          }
+        },
+        {
+          "idEvent": "2506306",
+          "idLeague": "4335",
+          "strLeague": "Spanish La Liga",
+          "intRound": "14",
+          "dateEvent": "2026-11-29",
+          "strTime": "15:15:00",
+          "strTimestamp": "2026-11-29T15:15:00",
+          "strEvent": "Deportivo de A Coru\u00f1a vs Barcelona",
+          "idHomeTeam": "133816",
+          "strHomeTeam": "Deportivo de A Coru\u00f1a",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/62bvwv1783013156.png",
+          "idAwayTeam": "133739",
+          "strAwayTeam": "Barcelona",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/wq9sir1639406443.png",
+          "strThumb": "https://r2.thesportsdb.com/images/media/event/thumb/e0ocno1784904603.jpg",
+          "strStatus": "NS",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-11-28T00:36:37Z",
+            "channel_path_scrape": {
+              "checked_at": "2026-11-28T00:36:37Z",
+              "event_url": "https://www.thesportsdb.com/event/2506306-deportivo-de-a-coru%c3%b1a-vs-barcelona",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/2874-premier-sports-1-ie-tv-schedule",
+                "/channel/3778-canal-sport-polska-tv-schedule",
+                "/channel/499-dazn-laliga-tv-schedule",
+                "/channel/5176-nova-sport-4-cz-tv-schedule",
+                "/channel/5181-sp%c3%adler2-hu-tv-schedule",
+                "/channel/7896-ziggo-sport-2-tv-schedule",
+                "/channel/2379-arena-sport-3-premium-rs-tv-schedule",
+                "/channel/8828-bein-sports-2-qatar-tv-schedule",
+                "/channel/8731-dazn-spain-tv-schedule",
+                "/channel/4092-go3-sport-2-lv-tv-schedule",
+                "/channel/6679-laliga-tv-bar-tv-schedule",
+                "/channel/8810-dazn-1-be-tv-schedule",
+                "/channel/5348-espn-deportes-tv-schedule",
+                "/channel/2250-max-sport-4-bg-tv-schedule",
+                "/channel/2239-dazn-1-france-tv-schedule",
+                "/channel/4229-digi-sport-1-romania-tv-schedule"
+              ]
+            },
+            "channels": [
+              "ArenaSport3Premium.rs@SD",
+              "DigiSport1.ro@HD",
+              "NovaSport4.cz@HD",
+              "Spiler2.hu@SD"
+            ]
+          }
+        },
+        {
+          "idEvent": "2506301",
+          "idLeague": "4335",
+          "strLeague": "Spanish La Liga",
+          "intRound": "14",
+          "dateEvent": "2026-11-29",
+          "strTime": "17:30:00",
+          "strTimestamp": "2026-11-29T17:30:00",
+          "strEvent": "Celta Vigo vs Villarreal",
+          "idHomeTeam": "133937",
+          "strHomeTeam": "Celta Vigo",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/xfjtku1690436219.png",
+          "idAwayTeam": "133740",
+          "strAwayTeam": "Villarreal",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/vrypqy1473503073.png",
+          "strThumb": "https://r2.thesportsdb.com/images/media/event/thumb/t9pdij1784904596.jpg",
+          "strStatus": "NS",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-11-28T00:36:39Z",
+            "channel_path_scrape": {
+              "checked_at": "2026-11-28T00:36:39Z",
+              "event_url": "https://www.thesportsdb.com/event/2506301-celta-vigo-vs-villarreal",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/2874-premier-sports-1-ie-tv-schedule",
+                "/channel/8702-bein-sports-2-australia-tv-schedule",
+                "/channel/8520-bein-sports-6-qatar-tv-schedule",
+                "/channel/3778-canal-sport-polska-tv-schedule",
+                "/channel/5176-nova-sport-4-cz-tv-schedule",
+                "/channel/5181-sp%c3%adler2-hu-tv-schedule",
+                "/channel/7896-ziggo-sport-2-tv-schedule",
+                "/channel/2379-arena-sport-3-premium-rs-tv-schedule",
+                "/channel/8731-dazn-spain-tv-schedule",
+                "/channel/6679-laliga-tv-bar-tv-schedule",
+                "/channel/5348-espn-deportes-tv-schedule",
+                "/channel/2250-max-sport-4-bg-tv-schedule",
+                "/channel/1648-belarus-5-tv-schedule"
+              ]
+            },
+            "channels": [
+              "ArenaSport3Premium.rs@SD",
+              "Belarus5.by@SD",
+              "NovaSport4.cz@HD",
+              "Spiler2.hu@SD"
+            ]
+          }
+        },
+        {
+          "idEvent": "2506307",
+          "idLeague": "4335",
+          "strLeague": "Spanish La Liga",
+          "intRound": "14",
+          "dateEvent": "2026-11-29",
+          "strTime": "20:00:00",
+          "strTimestamp": "2026-11-29T20:00:00",
+          "strEvent": "Real Sociedad vs Sevilla",
+          "idHomeTeam": "133724",
+          "strHomeTeam": "Real Sociedad",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/vptvpr1473502986.png",
+          "idAwayTeam": "133735",
+          "strAwayTeam": "Sevilla",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/vpsqqx1473502977.png",
+          "strThumb": "https://r2.thesportsdb.com/images/media/event/thumb/lw837i1784904604.jpg",
+          "strStatus": "NS",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-11-28T00:36:14Z",
+            "channel_path_scrape": {
+              "checked_at": "2026-11-28T00:36:14Z",
+              "event_url": "https://www.thesportsdb.com/event/2506307-real-sociedad-vs-sevilla",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/2874-premier-sports-1-ie-tv-schedule",
+                "/channel/8702-bein-sports-2-australia-tv-schedule",
+                "/channel/8520-bein-sports-6-qatar-tv-schedule",
+                "/channel/499-dazn-laliga-tv-schedule",
+                "/channel/5176-nova-sport-4-cz-tv-schedule",
+                "/channel/5181-sp%c3%adler2-hu-tv-schedule",
+                "/channel/7896-ziggo-sport-2-tv-schedule",
+                "/channel/8731-dazn-spain-tv-schedule",
+                "/channel/6679-laliga-tv-bar-tv-schedule",
+                "/channel/4371-bein-sports-english-1-qatar-tv-schedule",
+                "/channel/5348-espn-deportes-tv-schedule",
+                "/channel/6709-espn-paraguay-tv-schedule",
+                "/channel/2250-max-sport-4-bg-tv-schedule",
+                "/channel/2377-arena-sport-1-premium-rs-tv-schedule",
+                "/channel/1648-belarus-5-tv-schedule"
+              ]
+            },
+            "channels": [
+              "ArenaSport1Premium.rs@SD",
+              "Belarus5.by@SD",
+              "NovaSport4.cz@HD",
+              "Spiler2.hu@SD"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "idLeague": "4330",
+      "idAPIfootballv3": "179",
+      "idCup": "0",
+      "strLeague": "Scottish Premier League",
+      "strCurrentSeason": "2026-2027",
+      "strComplete": "yes",
+      "strBadge": "https://r2.thesportsdb.com/images/media/league/badge/72d3zc1688333496.png",
+      "strWebsite": "www.spfl.co.uk",
+      "leagueUrl": "https://www.thesportsdb.com/league/4330-scottish-premier-league",
+      "metadata": {
+        "leagueLogo": 64,
+        "last_sync_at": "2026-11-26T17:43:17Z"
+      },
+      "events": [
+        {
+          "idEvent": "2494497",
+          "idLeague": "4330",
+          "strLeague": "Scottish Premier League",
+          "intRound": "15",
+          "dateEvent": "2026-11-28",
+          "strTime": "17:45:00",
+          "strTimestamp": "2026-11-28T17:45:00",
+          "strEvent": "Motherwell vs Hibernian",
+          "idHomeTeam": "133640",
+          "strHomeTeam": "Motherwell",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/3e1dtj1785820999.png",
+          "intHomeScore": "0",
+          "idAwayTeam": "133646",
+          "strAwayTeam": "Hibernian",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/qjys3z1684928969.png",
+          "intAwayScore": "0",
+          "strThumb": "https://r2.thesportsdb.com/images/media/event/thumb/evvp8g1782193348.jpg",
+          "strStatus": "1H",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-11-28T18:01:00Z",
+            "channel_path_scrape": {
+              "checked_at": "2026-11-27T00:36:46Z",
+              "event_url": "https://www.thesportsdb.com/event/2494497-motherwell-vs-hibernian",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/2874-premier-sports-1-ie-tv-schedule",
+                "/channel/5406-telekanal-futbol-ru-tv-schedule",
+                "/channel/2374-arena-sport-3-rs-tv-schedule",
+                "/channel/5941-magenta-sport-2-gr-tv-schedule",
+                "/channel/3112-sportdigital-fussball-2-tv-schedule",
+                "/channel/612-%c5%a0tv-3-si-tv-schedule",
+                "/channel/2375-arena-sport-4-rs-tv-schedule",
+                "/channel/6001-paramount-us-tv-schedule",
+                "/channel/3332-sport-klub-4-si-tv-schedule",
+                "/channel/5260-spotv-tv-schedule"
+              ]
+            },
+            "channels": [
+              "MagentaSport2.gr@HD"
+            ],
+            "notifications_sent": [
+              "started"
+            ]
+          }
+        },
+        {
+          "idEvent": "2494496",
+          "idLeague": "4330",
+          "strLeague": "Scottish Premier League",
+          "intRound": "15",
+          "dateEvent": "2026-11-29",
+          "strTime": "15:00:00",
+          "strTimestamp": "2026-11-29T15:00:00",
+          "strEvent": "Heart of Midlothian vs Celtic",
+          "idHomeTeam": "133643",
+          "strHomeTeam": "Heart of Midlothian",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/twqvyt1447597939.png",
+          "idAwayTeam": "133647",
+          "strAwayTeam": "Celtic",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/3uv1641758780002.png",
+          "strThumb": "https://r2.thesportsdb.com/images/media/event/thumb/5yjqp91782193347.jpg",
+          "strStatus": "NS",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-11-28T00:37:10Z",
+            "channel_path_scrape": {
+              "checked_at": "2026-11-28T00:37:10Z",
+              "event_url": "https://www.thesportsdb.com/event/2494496-heart-of-midlothian-vs-celtic",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/8755-celtic-tv-tv-schedule",
+                "/channel/8648-sky-sports-football-tv-schedule",
+                "/channel/5406-telekanal-futbol-ru-tv-schedule",
+                "/channel/8702-bein-sports-2-australia-tv-schedule",
+                "/channel/5941-magenta-sport-2-gr-tv-schedule",
+                "/channel/3114-sportdigital-fussball-tv-schedule",
+                "/channel/3112-sportdigital-fussball-2-tv-schedule",
+                "/channel/2386-arena-sport-6-rs-tv-schedule",
+                "/channel/4576-sport-tv-1-tv-schedule",
+                "/channel/5260-spotv-tv-schedule"
+              ]
+            },
+            "channels": [
+              "MagentaSport2.gr@HD",
+              "SkySportsFootball.uk@HD"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "idLeague": "4399",
+      "strLeague": "German 2. Bundesliga",
+      "leagueUrl": "https://www.thesportsdb.com/league/4399-german-2.-bundesliga",
+      "metadata": {
+        "last_sync_at": "2026-11-26T00:36:20Z"
+      },
+      "events": [
+        {
+          "idEvent": "2511848",
+          "idLeague": "4399",
+          "strLeague": "German 2. Bundesliga",
+          "intRound": "13",
+          "dateEvent": "2026-11-29",
+          "strTime": "12:30:00",
+          "strTimestamp": "2026-11-29T12:30:00",
+          "strEvent": "Magdeburg vs Energie Cottbus",
+          "idHomeTeam": "136194",
+          "strHomeTeam": "Magdeburg",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/f2fuxs1532856216.png",
+          "idAwayTeam": "133853",
+          "strAwayTeam": "Energie Cottbus",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/8ks84j1750352338.png",
+          "strThumb": "https://r2.thesportsdb.com/images/media/event/thumb/d8udg71783076894.jpg",
+          "strStatus": "NS",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-11-28T00:37:27Z",
+            "channel_path_scrape": {
+              "checked_at": "2026-11-28T00:37:27Z",
+              "event_url": "https://www.thesportsdb.com/event/2511848-magdeburg-vs-energie-cottbus",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/5175-nova-sport-3-cz-tv-schedule",
+                "/channel/612-%c5%a0tv-3-si-tv-schedule",
+                "/channel/2386-arena-sport-6-rs-tv-schedule",
+                "/channel/405-onefootball-tv-schedule",
+                "/channel/3261-sport-klub-3-hr-tv-schedule",
+                "/channel/3253-sport-klub-3-rs-tv-schedule"
+              ]
+            },
+            "channels": [
+              "NovaSport3.cz@HD"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "idLeague": "4621",
+      "strLeague": "Austrian Bundesliga",
+      "leagueUrl": "https://www.thesportsdb.com/league/4621-austrian-bundesliga",
+      "metadata": {
+        "last_sync_at": "2026-11-26T00:36:28Z"
+      },
+      "events": [
+        {
+          "idEvent": "2499785",
+          "idLeague": "4621",
+          "strLeague": "Austrian Bundesliga",
+          "intRound": "14",
+          "dateEvent": "2026-11-28",
+          "strTime": "18:30:00",
+          "strTimestamp": "2026-11-28T18:30:00",
+          "strEvent": "Austria Lustenau vs Rapid Vienna",
+          "idHomeTeam": "139425",
+          "strHomeTeam": "Austria Lustenau",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/v1cf6v1583516534.png",
+          "intHomeScore": "0",
+          "idAwayTeam": "134021",
+          "strAwayTeam": "Rapid Vienna",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/87y8id1779342351.png",
+          "intAwayScore": "0",
+          "strThumb": "https://r2.thesportsdb.com/images/media/event/thumb/xwgabp1680271548.jpg",
+          "strStatus": "1H",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-11-28T18:45:41Z",
+            "channel_path_scrape": {
+              "checked_at": "2026-11-27T00:36:37Z",
+              "event_url": "https://www.thesportsdb.com/event/2499785-austria-lustenau-vs-rapid-vienna",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/5179-arena-sport-2-sk-tv-schedule",
+                "/channel/2389-arena-sport-8-rs-tv-schedule",
+                "/channel/2387-arena-sport-7-rs-tv-schedule"
+              ]
+            },
+            "channels": [
+              "ArenaSport2.sk@HD"
+            ],
+            "notifications_sent": [
+              "started"
+            ]
+          }
+        },
+        {
+          "idEvent": "2499783",
+          "idLeague": "4621",
+          "strLeague": "Austrian Bundesliga",
+          "intRound": "14",
+          "dateEvent": "2026-11-29",
+          "strTime": "13:30:00",
+          "strTimestamp": "2026-11-29T13:30:00",
+          "strEvent": "Sturm Graz vs WSG Tirol",
+          "idHomeTeam": "137743",
+          "strHomeTeam": "Sturm Graz",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/ppg0j71578585847.png",
+          "idAwayTeam": "137807",
+          "strAwayTeam": "WSG Tirol",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/9dmxk01685123856.png",
+          "strThumb": "https://r2.thesportsdb.com/images/media/event/thumb/nw30zi1755325814.jpg",
+          "strStatus": "NS",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-11-28T00:36:51Z",
+            "channel_path_scrape": {
+              "checked_at": "2026-11-28T00:36:51Z",
+              "event_url": "https://www.thesportsdb.com/event/2499783-sturm-graz-vs-wsg-tirol",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/5179-arena-sport-2-sk-tv-schedule"
+              ]
+            },
+            "channels": [
+              "ArenaSport2.sk@HD"
+            ]
+          }
+        },
+        {
+          "idEvent": "2499781",
+          "idLeague": "4621",
+          "strLeague": "Austrian Bundesliga",
+          "intRound": "14",
+          "dateEvent": "2026-11-29",
+          "strTime": "16:00:00",
+          "strTimestamp": "2026-11-29T16:00:00",
+          "strEvent": "Red Bull Salzburg vs LASK",
+          "idHomeTeam": "133970",
+          "strHomeTeam": "Red Bull Salzburg",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/nc2cua1781541639.png",
+          "idAwayTeam": "137261",
+          "strAwayTeam": "LASK",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/oox26l1683556395.png",
+          "strThumb": "https://r2.thesportsdb.com/images/media/event/thumb/x9taq61755325810.jpg",
+          "strStatus": "NS",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-11-28T00:36:52Z",
+            "channel_path_scrape": {
+              "checked_at": "2026-11-28T00:36:52Z",
+              "event_url": "https://www.thesportsdb.com/event/2499781-red-bull-salzburg-vs-lask",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/5179-arena-sport-2-sk-tv-schedule",
+                "/channel/3105-sky-sport-austria-1-tv-schedule"
+              ]
+            },
+            "channels": [
+              "ArenaSport2.sk@HD"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "idLeague": "4337",
+      "strLeague": "Dutch Eredivisie",
+      "leagueUrl": "https://www.thesportsdb.com/league/4337-dutch-eredivisie",
+      "metadata": {
+        "last_sync_at": "2026-11-27T00:36:34Z"
+      },
+      "events": [
+        {
+          "idEvent": "2489185",
+          "idLeague": "4337",
+          "strLeague": "Dutch Eredivisie",
+          "intRound": "14",
+          "dateEvent": "2026-11-28",
+          "strTime": "17:45:00",
+          "strTimestamp": "2026-11-28T17:45:00",
+          "strEvent": "PSV Eindhoven vs Go Ahead Eagles",
+          "idHomeTeam": "133768",
+          "strHomeTeam": "PSV Eindhoven",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/xfsz6i1721297428.png",
+          "intHomeScore": "0",
+          "idAwayTeam": "134304",
+          "strAwayTeam": "Go Ahead Eagles",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/3hq2cy1685597026.png",
+          "intAwayScore": "0",
+          "strThumb": "https://r2.thesportsdb.com/images/media/event/thumb/z4zk1v1782210049.jpg",
+          "strStatus": "1H",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-11-28T18:15:46Z",
+            "channel_path_scrape": {
+              "checked_at": "2026-11-27T00:36:34Z",
+              "event_url": "https://www.thesportsdb.com/event/2489185-psv-eindhoven-vs-go-ahead-eagles",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/7846-espn-1-netherlands-tv-schedule",
+                "/channel/7850-espn-extra-netherlands-tv-schedule",
+                "/channel/5178-arena-sport-1-sk-tv-schedule",
+                "/channel/2389-arena-sport-8-rs-tv-schedule",
+                "/channel/5007-s-sport-tv-schedule"
+              ]
+            },
+            "channels": [
+              "ArenaSport1.sk@HD"
+            ],
+            "notifications_sent": [
+              "started"
+            ]
+          }
+        },
+        {
+          "idEvent": "2489189",
+          "idLeague": "4337",
+          "strLeague": "Dutch Eredivisie",
+          "intRound": "14",
+          "dateEvent": "2026-11-29",
+          "strTime": "13:30:00",
+          "strTimestamp": "2026-11-29T13:30:00",
+          "strEvent": "Feyenoord vs Ajax",
+          "idHomeTeam": "133758",
+          "strHomeTeam": "Feyenoord",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/uturtx1473534803.png",
+          "idAwayTeam": "133772",
+          "strAwayTeam": "Ajax",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/zg9tii1755495289.png",
+          "strThumb": "https://r2.thesportsdb.com/images/media/event/thumb/tuebnk1782210052.jpg",
+          "strStatus": "NS",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-11-28T00:36:44Z",
+            "channel_path_scrape": {
+              "checked_at": "2026-11-28T00:36:44Z",
+              "event_url": "https://www.thesportsdb.com/event/2489189-feyenoord-vs-ajax",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/7846-espn-1-netherlands-tv-schedule",
+                "/channel/7850-espn-extra-netherlands-tv-schedule",
+                "/channel/5178-arena-sport-1-sk-tv-schedule",
+                "/channel/6710-espn-south-africa-tv-schedule",
+                "/channel/2289-sport-4-il-tv-schedule",
+                "/channel/3114-sportdigital-fussball-tv-schedule",
+                "/channel/610-%c5%a0tv-1-si-tv-schedule",
+                "/channel/6704-espn-el-salvador-tv-schedule",
+                "/channel/6705-espn-guatemala-tv-schedule",
+                "/channel/6706-espn-honduras-tv-schedule",
+                "/channel/3494-novasports-2-tv-schedule",
+                "/channel/8798-play-sports-4-tv-schedule",
+                "/channel/5408-sportsnet-world-tv-schedule"
+              ]
+            },
+            "channels": [
+              "ArenaSport1.sk@HD"
+            ]
+          }
+        },
+        {
+          "idEvent": "2489183",
+          "idLeague": "4337",
+          "strLeague": "Dutch Eredivisie",
+          "intRound": "14",
+          "dateEvent": "2026-11-29",
+          "strTime": "15:45:00",
+          "strTimestamp": "2026-11-29T15:45:00",
+          "strEvent": "PEC Zwolle vs AZ Alkmaar",
+          "idHomeTeam": "133936",
+          "strHomeTeam": "PEC Zwolle",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/qpvqwy1473534822.png",
+          "idAwayTeam": "133767",
+          "strAwayTeam": "AZ Alkmaar",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/wtqwvv1473534757.png",
+          "strThumb": "https://r2.thesportsdb.com/images/media/event/thumb/smwddk1782210047.jpg",
+          "strStatus": "NS",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-11-28T00:36:45Z",
+            "channel_path_scrape": {
+              "checked_at": "2026-11-28T00:36:45Z",
+              "event_url": "https://www.thesportsdb.com/event/2489183-pec-zwolle-vs-az-alkmaar",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/7848-espn-2-netherlands-tv-schedule",
+                "/channel/7850-espn-extra-netherlands-tv-schedule",
+                "/channel/5178-arena-sport-1-sk-tv-schedule",
+                "/channel/6699-espn-3-guatemala-tv-schedule",
+                "/channel/6700-espn-3-honduras-tv-schedule",
+                "/channel/6710-espn-south-africa-tv-schedule",
+                "/channel/3494-novasports-2-tv-schedule",
+                "/channel/5408-sportsnet-world-tv-schedule"
+              ]
+            },
+            "channels": [
+              "ArenaSport1.sk@HD"
+            ]
+          }
+        },
+        {
+          "idEvent": "2489190",
+          "idLeague": "4337",
+          "strLeague": "Dutch Eredivisie",
+          "intRound": "14",
+          "dateEvent": "2026-11-29",
+          "strTime": "19:00:00",
+          "strTimestamp": "2026-11-29T19:00:00",
+          "strEvent": "NEC Nijmegen vs Twente",
+          "idHomeTeam": "133760",
+          "strHomeTeam": "NEC Nijmegen",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/t5qjle1701019868.png",
+          "idAwayTeam": "133774",
+          "strAwayTeam": "Twente",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/rsrxrt1473534783.png",
+          "strThumb": "https://r2.thesportsdb.com/images/media/event/thumb/19j7h41782210053.jpg",
+          "strStatus": "NS",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-11-28T00:36:54Z",
+            "channel_path_scrape": {
+              "checked_at": "2026-11-28T00:36:54Z",
+              "event_url": "https://www.thesportsdb.com/event/2489190-nec-nijmegen-vs-twente",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/7850-espn-extra-netherlands-tv-schedule",
+                "/channel/5179-arena-sport-2-sk-tv-schedule",
+                "/channel/7846-espn-1-netherlands-tv-schedule",
+                "/channel/610-%c5%a0tv-1-si-tv-schedule",
+                "/channel/5408-sportsnet-world-tv-schedule"
+              ]
+            },
+            "channels": [
+              "ArenaSport2.sk@HD"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "idLeague": "5841",
+      "strLeague": "Womens World Cup Qualifying CONCACAF",
+      "leagueUrl": "https://www.thesportsdb.com/league/5841-womens-world-cup-qualifying-concacaf",
+      "metadata": {
+        "last_sync_at": "2026-11-27T01:37:32Z"
+      },
+      "events": [
+        {
+          "idEvent": "2483358",
+          "idLeague": "5841",
+          "strLeague": "Womens World Cup Qualifying CONCACAF",
+          "dateEvent": "2026-11-28",
+          "strTime": "18:00:00",
+          "strTimestamp": "2026-11-28T18:00:00",
+          "strEvent": "Canada Women vs Panama Women",
+          "idHomeTeam": "136815",
+          "strHomeTeam": "Canada Women",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/xdeyxh1560081111.png",
+          "intHomeScore": "1",
+          "idAwayTeam": "147294",
+          "strAwayTeam": "Panama Women",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/5aqdr91774762072.png",
+          "intAwayScore": "0",
+          "strStatus": "1H",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-11-28T18:15:48Z",
+            "channel_path_scrape": {
+              "checked_at": "2026-11-27T01:37:32Z",
+              "event_url": "https://www.thesportsdb.com/event/2483358-canada-women-vs-panama-women",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/6692-espn-2-honduras-tv-schedule",
+                "/channel/5715-tsn-1-tv-schedule",
+                "/channel/5519-tsn-4-tv-schedule",
+                "/channel/5066-tudn-usa-tv-schedule",
+                "/channel/6001-paramount-us-tv-schedule"
+              ]
+            },
+            "channels": [
+              "TSN1.ca@HD",
+              "TSN4.ca@HD"
+            ],
+            "notifications_sent": [
+              "started"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "idLeague": "4630",
+      "strLeague": "Cypriot First Division",
+      "leagueUrl": "https://www.thesportsdb.com/league/4630-cypriot-first-division",
+      "metadata": {
+        "last_sync_at": "2026-11-28T00:37:12Z"
+      },
+      "events": [
+        {
+          "idEvent": "2548742",
+          "idLeague": "4630",
+          "strLeague": "Cypriot First Division",
+          "intRound": "11",
+          "dateEvent": "2026-11-29",
+          "strTime": "17:00:00",
+          "strTimestamp": "2026-11-29T17:00:00",
+          "strEvent": "Pafos vs Aris Limassol",
+          "idHomeTeam": "137928",
+          "strHomeTeam": "Pafos",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/xom9xf1579036010.png",
+          "idAwayTeam": "141094",
+          "strAwayTeam": "Aris Limassol",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/14iqnt1615835212.png",
+          "strThumb": "https://r2.thesportsdb.com/images/media/event/thumb/wb7hfa1760684163.jpg",
+          "strStatus": "NS",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-11-28T00:37:12Z",
+            "channel_path_scrape": {
+              "checked_at": "2026-11-28T00:37:12Z",
+              "event_url": "https://www.thesportsdb.com/event/2548742-pafos-vs-aris-limassol",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/5942-magenta-sport-3-gr-tv-schedule"
+              ]
+            },
+            "channels": [
+              "MagentaSport3.gr@HD"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "channels": [
+    {
+      "title": "Arena Sport 1",
+      "url": "http://88.212.15.50/live/test_arenasport/playlist.m3u8",
+      "tvg": {
+        "id": "ArenaSport1.sk@HD"
+      },
+      "loadControl": {
+        "minBufferMs": 24000,
+        "maxBufferMs": 48000,
+        "bufferForPlaybackMs": 9000,
+        "bufferForPlaybackAfterRebufferMs": 18000
+      },
+      "quality": {
+        "label": "1080P"
+      }
+    },
+    {
+      "title": "Arena Sport 1 Premium",
+      "url": "http://tpjgkqnu.vexiumis.top/iptv/ZFMBTT94BTSVQMFVDASEV6XS/31599/index.m3u8",
+      "tvg": {
+        "id": "ArenaSport1Premium.rs@SD"
+      },
+      "loadControl": {
+        "minBufferMs": 40000,
+        "maxBufferMs": 80000,
+        "bufferForPlaybackMs": 10000,
+        "bufferForPlaybackAfterRebufferMs": 20000
+      },
+      "quality": {
+        "label": "1080P"
+      }
+    },
+    {
+      "title": "Arena Sport 2",
+      "url": "http://88.212.15.50/live/test_arenasport_dva/playlist.m3u8",
+      "tvg": {
+        "id": "ArenaSport2.sk@HD"
+      },
+      "loadControl": {
+        "minBufferMs": 24000,
+        "maxBufferMs": 48000,
+        "bufferForPlaybackMs": 9000,
+        "bufferForPlaybackAfterRebufferMs": 18000
+      },
+      "quality": {
+        "label": "1080P"
+      }
+    },
+    {
+      "title": "Arena Sport 2 Premium",
+      "url": "http://tpjgkqnu.vexiumis.top/iptv/ZFMBTT94BTSVQMFVDASEV6XS/31600/index.m3u8",
+      "tvg": {
+        "id": "ArenaSport2Premium.rs@SD"
+      },
+      "loadControl": {
+        "minBufferMs": 40000,
+        "maxBufferMs": 90000,
+        "bufferForPlaybackMs": 10000,
+        "bufferForPlaybackAfterRebufferMs": 30000
+      },
+      "quality": {
+        "label": "1080P"
+      }
+    },
+    {
+      "title": "Arena Sport 3 Premium",
+      "url": "http://tpjgkqnu.vexiumis.top/iptv/ZFMBTT94BTSVQMFVDASEV6XS/31601/index.m3u8",
+      "tvg": {
+        "id": "ArenaSport3Premium.rs@SD"
+      },
+      "loadControl": {
+        "minBufferMs": 40000,
+        "maxBufferMs": 80000,
+        "bufferForPlaybackMs": 10000,
+        "bufferForPlaybackAfterRebufferMs": 20000
+      },
+      "quality": {
+        "label": "1080P"
+      }
+    },
+    {
+      "title": "Belarus 5",
+      "url": "http://stream.mcquack.net/33/index.m3u8",
+      "tvg": {
+        "id": "Belarus5.by@SD"
+      },
+      "loadControl": {
+        "minBufferMs": 30000,
+        "maxBufferMs": 60000,
+        "bufferForPlaybackMs": 10000,
+        "bufferForPlaybackAfterRebufferMs": 20000
+      },
+      "quality": {
+        "label": "1080P"
+      }
+    },
+    {
+      "title": "Belarus 5 Alt",
+      "url": "https://streaming.thestream.cyou/live/7001.m3u8",
+      "tvg": {
+        "id": "Belarus5.by@SD"
+      },
+      "loadControl": {
+        "minBufferMs": 30000,
+        "maxBufferMs": 60000,
+        "bufferForPlaybackMs": 10000,
+        "bufferForPlaybackAfterRebufferMs": 20000
+      },
+      "quality": {
+        "label": "SD"
+      }
+    },
+    {
+      "title": "CBS Sports Network USA",
+      "url": "http://kstv.us:8080/jimmyrhale/JE1974aa$$/15944",
+      "tvg": {
+        "id": "CBSSportsNetworkUSA.us@SD"
+      },
+      "quality": {
+        "label": "720P"
+      }
+    },
+    {
+      "title": "Digi Sport 1",
+      "url": "http://tpjgkqnu.vexiumis.top/iptv/ZFMBTT94BTSVQMFVDASEV6XS/2523/index.m3u8",
+      "tvg": {
+        "id": "DigiSport1.ro@HD"
+      },
+      "loadControl": {
+        "minBufferMs": 40000,
+        "maxBufferMs": 90000,
+        "bufferForPlaybackMs": 10000,
+        "bufferForPlaybackAfterRebufferMs": 30000
+      },
+      "quality": {
+        "label": "1080P"
+      }
+    },
+    {
+      "title": "Magenta Sport 1",
+      "url": "http://tpjgkqnu.vexiumis.top/iptv/ZFMBTT94BTSVQMFVDASEV6XS/31578/index.m3u8",
+      "tvg": {
+        "id": "MagentaSport1.gr@HD"
+      },
+      "loadControl": {
+        "minBufferMs": 40000,
+        "maxBufferMs": 80000,
+        "bufferForPlaybackMs": 10000,
+        "bufferForPlaybackAfterRebufferMs": 20000
+      },
+      "quality": {
+        "label": "1080P"
+      }
+    },
+    {
+      "title": "Magenta Sport 2",
+      "url": "http://tpjgkqnu.vexiumis.top/iptv/ZFMBTT94BTSVQMFVDASEV6XS/31579/index.m3u8",
+      "tvg": {
+        "id": "MagentaSport2.gr@HD"
+      },
+      "loadControl": {
+        "minBufferMs": 40000,
+        "maxBufferMs": 80000,
+        "bufferForPlaybackMs": 10000,
+        "bufferForPlaybackAfterRebufferMs": 20000
+      },
+      "quality": {
+        "label": "720P"
+      }
+    },
+    {
+      "title": "Magenta Sport 3",
+      "url": "http://tpjgkqnu.vexiumis.top/iptv/ZFMBTT94BTSVQMFVDASEV6XS/31581/index.m3u8",
+      "tvg": {
+        "id": "MagentaSport3.gr@HD"
+      },
+      "loadControl": {
+        "minBufferMs": 40000,
+        "maxBufferMs": 80000,
+        "bufferForPlaybackMs": 10000,
+        "bufferForPlaybackAfterRebufferMs": 20000
+      },
+      "quality": {
+        "label": "1080P"
+      }
+    },
+    {
+      "title": "Nova Sport 3",
+      "url": "http://tpjgkqnu.vexiumis.top/iptv/ZFMBTT94BTSVQMFVDASEV6XS/31570/index.m3u8",
+      "tvg": {
+        "id": "NovaSport3.cz@HD"
+      },
+      "loadControl": {
+        "minBufferMs": 44000,
+        "maxBufferMs": 88000,
+        "bufferForPlaybackMs": 11000,
+        "bufferForPlaybackAfterRebufferMs": 22000
+      },
+      "quality": {
+        "label": "1080P"
+      }
+    },
+    {
+      "title": "Nova Sport 4",
+      "url": "http://tpjgkqnu.vexiumis.top/iptv/ZFMBTT94BTSVQMFVDASEV6XS/31571/index.m3u8",
+      "tvg": {
+        "id": "NovaSport4.cz@HD"
+      },
+      "loadControl": {
+        "minBufferMs": 48000,
+        "maxBufferMs": 96000,
+        "bufferForPlaybackMs": 12000,
+        "bufferForPlaybackAfterRebufferMs": 24000
+      },
+      "quality": {
+        "label": "1080P"
+      }
+    },
+    {
+      "title": "Sky Sports Football",
+      "url": "http://kstv.us:8080/jimmyrhale/JE1974aa$$/47866",
+      "tvg": {
+        "id": "SkySportsFootball.uk@HD"
+      },
+      "quality": {
+        "label": "1080P"
+      }
+    },
+    {
+      "title": "Sky Sports Main Event",
+      "url": "http://moilist.ottolok.net/iptv/FX8YANKAXDBBEM/9308/index.m3u8",
+      "tvg": {
+        "id": "SkySportsMainEvent.uk@HD"
+      },
+      "quality": {
+        "label": "1080P"
+      }
+    },
+    {
+      "title": "Sky Sports Main Event",
+      "url": "http://kstv.us:8080/jimmyrhale/JE1974aa$$/47868",
+      "tvg": {
+        "id": "SkySportsMainEvent.uk@HD"
+      },
+      "quality": {
+        "label": "1080P"
+      }
+    },
+    {
+      "title": "Sky Sports Main Event",
+      "url": "http://kstv.us:8080/live/Kh2fHxR0c8/3333726709/47868.ts",
+      "tvg": {
+        "id": "SkySportsMainEvent.uk@HD"
+      },
+      "quality": {
+        "label": "1080P"
+      }
+    },
+    {
+      "title": "Sky Sports Main Event 4K",
+      "url": "http://ysift55.xyz:80/live/WJ74AC4SRKQQYR7/pahruAQRs8/1281430.m3u8",
+      "tvg": {
+        "id": "SkySportsMainEvent.uk@HD"
+      },
+      "quality": {
+        "label": "4K"
+      }
+    },
+    {
+      "title": "Sky Sports Premier League",
+      "url": "http://moilist.ottolok.net/iptv/FX8YANKAXDBBEM/9334/index.m3u8",
+      "tvg": {
+        "id": "SkySportsPremierLeagueROI.uk@HD"
+      },
+      "quality": {
+        "label": "1080P"
+      }
+    },
+    {
+      "title": "Sky Sports Premier League",
+      "url": "http://kstv.us:8080/jimmyrhale/JE1974aa$$/47871",
+      "tvg": {
+        "id": "SkySportsPremierLeagueROI.uk@HD"
+      },
+      "quality": {
+        "label": "1080P"
+      }
+    },
+    {
+      "title": "Spiler 1",
+      "url": "http://88.212.15.19/live/spiler1/index.m3u8",
+      "tvg": {
+        "id": "Spiler1.hu@SD"
+      },
+      "loadControl": {
+        "minBufferMs": 24000,
+        "maxBufferMs": 48000,
+        "bufferForPlaybackMs": 9000,
+        "bufferForPlaybackAfterRebufferMs": 18000
+      },
+      "quality": {
+        "label": "1080P"
+      }
+    },
+    {
+      "title": "Spiler 2",
+      "url": "http://88.212.15.19/live/spiler2/index.m3u8",
+      "tvg": {
+        "id": "Spiler2.hu@SD"
+      },
+      "loadControl": {
+        "minBufferMs": 18000,
+        "maxBufferMs": 60000,
+        "bufferForPlaybackMs": 6000,
+        "bufferForPlaybackAfterRebufferMs": 6000
+      },
+      "quality": {
+        "label": "1080P"
+      }
+    },
+    {
+      "title": "Sport 1 (CZ)",
+      "url": "http://88.212.15.50/live/test_sport1_25p/playlist.m3u8",
+      "tvg": {
+        "id": "Sport1.cz@HD"
+      },
+      "loadControl": {
+        "minBufferMs": 24000,
+        "maxBufferMs": 48000,
+        "bufferForPlaybackMs": 9000,
+        "bufferForPlaybackAfterRebufferMs": 18000
+      },
+      "quality": {
+        "label": "1080P"
+      }
+    },
+    {
+      "title": "TNT Sports 1",
+      "url": "http://kstv.us:8080/jimmyrhale/JE1974aa$$/47850",
+      "tvg": {
+        "id": "TNTSports1.uk@HD"
+      },
+      "quality": {
+        "label": "720P"
+      }
+    },
+    {
+      "title": "TNT Sports 1",
+      "url": "http://line.watchtivo-8k.com:80/play/live.php?mac=00:1A:79:3F:0C:96&stream=894977&extension=ts&play_token=W2HvDO5iES",
+      "tvg": {
+        "id": "TNTSports1.uk@HD"
+      },
+      "quality": {
+        "label": "1080P"
+      }
+    },
+    {
+      "title": "TSN 1",
+      "url": "http://85.237.89.160:9590/usa-s/TSN-HD-1/index.m3u8",
+      "tvg": {
+        "id": "TSN1.ca@HD"
+      },
+      "quality": {
+        "label": "1080P"
+      }
+    },
+    {
+      "title": "TSN 1",
+      "url": "http://kstv.us:8080/live/Kh2fHxR0c8/3333726709/15929.ts",
+      "tvg": {
+        "id": "TSN1.ca@HD"
+      },
+      "quality": {
+        "label": "720P"
+      }
+    },
+    {
+      "title": "TSN 4",
+      "url": "http://kstv.us:8080/live/Kh2fHxR0c8/3333726709/15926.ts",
+      "tvg": {
+        "id": "TSN4.ca@HD"
+      },
+      "quality": {
+        "label": "720P"
+      }
+    },
+    {
+      "title": "USA Network",
+      "url": "http://kstv.us:8080/jimmyrhale/JE1974aa$$/15905",
+      "tvg": {
+        "id": "USANetwork.us@HD"
+      },
+      "quality": {
+        "label": "720P"
+      }
+    },
+    {
+      "title": "V Sport Football",
+      "url": "http://moilist.ottolok.net/iptv/FX8YANKAXDBBEM/12076/index.m3u8",
+      "tvg": {
+        "id": "VSportFootball.fi@HD"
+      },
+      "quality": {
+        "label": "720P"
+      }
+    },
+    {
+      "title": "V Sport Premium",
+      "url": "http://moilist.ottolok.net/iptv/FX8YANKAXDBBEM/12079/index.m3u8",
+      "tvg": {
+        "id": "VSportPremium.fi@HD"
+      },
+      "quality": {
+        "label": "720P"
+      }
+    }
+  ]
+}
