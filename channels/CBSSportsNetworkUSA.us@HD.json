@@ -1,0 +1,27 @@
+{
+  "duration": -1,
+  "displayName": "CBS Sports Network USA",
+  "urls": [
+    {
+      "url": "https://7nyaler.streamhostingcdn.top/stream/58/index.m3u8",
+      "provider": "playlist-sync",
+      "priority": 0,
+      "format": "hls",
+      "metadata": {
+        "source": "playlist-sync",
+        "last_sync_at": "2026-09-04T01:35:57Z"
+      },
+      "quality": "HD",
+      "httpUserAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36"
+    }
+  ],
+  "attributes": {
+    "tvg-id": "CBSSportsNetworkUSA.us@HD",
+    "tvg-logo": "https://r2.thesportsdb.com/images/media/channel/logo/77gqjl1624103918.png",
+    "group-title": "Sports",
+    "channel-id": "5990"
+  },
+  "metadata": {
+    "last_sync_at": "2026-09-04T01:35:57Z"
+  }
+}
