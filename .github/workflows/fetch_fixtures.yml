@@ -57,12 +57,13 @@ jobs:
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           
-          git add fixtures.json
+          # Added task_queue.json to the staging area
+          git add fixtures.json task_queue.json
           
           if ! git diff --staged --quiet; then
             TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
             git commit --amend -m "Automated data: Fixtures synced at $TIMESTAMP"
             git push --force origin data
           else
-            echo "No changes in fixtures for this date range. Skipping commit."
+            echo "No changes in fixtures or task queue for this date range. Skipping commit."
           fi
