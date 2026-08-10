@@ -4,7 +4,7 @@ import os
 import sys
 import re
 import time
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 import requests
 from bs4 import BeautifulSoup
 from logger import Log
@@ -24,7 +24,7 @@ EVENT_KEYS = [
 ACTIVE_STATUSES = {"TBD", "NS", "1H", "HT", "2H", "ET", "P", "BT", ""}
 
 HEADERS = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+    'User-Agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Mobile Safari/537.36'
 }
 
 def load_supported_leagues():
@@ -76,7 +76,7 @@ def filter_and_process_event(raw_event, source="api"):
 def fetch_api_events(league_id, date_str):
     """Requests events for a specific league and date from API."""
     api_url = f"https://www.thesportsdb.com/api/v1/json/123/eventsday.php?d={date_str}&l={league_id}"
-    Log.api(f"Fetching API Events for League ID {league_id}...")
+    Log.api(f"Fetching API Events for League ID {league_id} on {date_str}...")
     
     try:
         response = requests.get(api_url, timeout=10)
@@ -84,12 +84,12 @@ def fetch_api_events(league_id, date_str):
         data = response.json()
         return data.get("events") or []
     except requests.exceptions.RequestException as e:
-        Log.error(f"Failed API request for league ID {league_id}: {e}")
+        Log.error(f"Failed API request for league ID {league_id} on {date_str}: {e}")
         return []
 
 def scrape_fallback_events(league_url, target_date, existing_event_ids):
     """Scrapes the league page for event IDs matching target_date."""
-    Log.http(f"Scraper Fallback: {league_url}")
+    Log.http(f"Scraper Fallback: {league_url} for date {target_date}")
     try:
         response = requests.get(league_url, headers=HEADERS, timeout=15)
         response.raise_for_status()
@@ -161,16 +161,22 @@ def main():
         '--date', 
         type=str, 
         default=datetime.now(timezone.utc).strftime('%Y-%m-%d'),
-        help="Target Date (YYYY-MM-DD)."
+        help="Target Start Date (YYYY-MM-DD)."
     )
     args = parser.parse_args()
-    target_date = args.date
+    
+    # Calculate 2-day window
+    base_date = datetime.strptime(args.date, '%Y-%m-%d')
+    target_dates = [
+        base_date.strftime('%Y-%m-%d'),
+        (base_date + timedelta(days=1)).strftime('%Y-%m-%d')
+    ]
 
-    Log.start(f"Unified Fixture Sync for target date: {target_date}")
+    Log.start(f"Unified Fixture Sync spanning: {target_dates[0]} to {target_dates[1]}")
 
     leagues_config = load_supported_leagues()
     final_fixtures_data = {
-        "date": target_date,
+        "dates": target_dates,
         "leagues": []
     }
 
@@ -186,34 +192,38 @@ def main():
 
         Log.section_in(f"Processing {str_league} (ID: {league_id})")
         
-        # 1. API Primary Fetch
-        raw_api_events = fetch_api_events(league_id, target_date)
         valid_events = {}
 
-        for raw_event in raw_api_events:
-            processed = filter_and_process_event(raw_event, source="api_scheduled")
-            if processed:
-                ev_id = processed["idEvent"]
-                valid_events[ev_id] = processed
-                Log.match(f"Added via API: {processed['strHomeTeam']} vs {processed['strAwayTeam']}")
-
-        # 2. Scraper Fallback Fetch
-        if league_url:
-            existing_ids = set(valid_events.keys())
-            scraped_ids = scrape_fallback_events(league_url, target_date, existing_ids)
+        # Loop through both dates for the current league
+        for current_date in target_dates:
+            Log.info(f"--- Fetching for {current_date} ---")
             
-            if scraped_ids:
-                Log.fetch(f"Found {len(scraped_ids)} missing events via Scraper. Looking up...")
-                for ev_id in scraped_ids:
-                    time.sleep(0.5) # Rate limiting respect
-                    raw_lookup = fetch_event_lookup(ev_id)
-                    if raw_lookup:
-                        processed = filter_and_process_event(raw_lookup, source="scraped_lookup")
-                        if processed:
-                            valid_events[ev_id] = processed
-                            Log.match(f"Added via Scraper: {processed['strHomeTeam']} vs {processed['strAwayTeam']}")
-            else:
-                Log.info("No missing events found via Scraper.")
+            # 1. API Primary Fetch
+            raw_api_events = fetch_api_events(league_id, current_date)
+            for raw_event in raw_api_events:
+                processed = filter_and_process_event(raw_event, source="api_scheduled")
+                if processed:
+                    ev_id = processed["idEvent"]
+                    valid_events[ev_id] = processed
+                    Log.match(f"Added via API: {processed['strHomeTeam']} vs {processed['strAwayTeam']}")
+
+            # 2. Scraper Fallback Fetch
+            if league_url:
+                existing_ids = set(valid_events.keys())
+                scraped_ids = scrape_fallback_events(league_url, current_date, existing_ids)
+                
+                if scraped_ids:
+                    Log.fetch(f"Found {len(scraped_ids)} missing events via Scraper. Looking up...")
+                    for ev_id in scraped_ids:
+                        time.sleep(0.5) # Rate limiting respect
+                        raw_lookup = fetch_event_lookup(ev_id)
+                        if raw_lookup:
+                            processed = filter_and_process_event(raw_lookup, source="scraped_lookup")
+                            if processed:
+                                valid_events[ev_id] = processed
+                                Log.match(f"Added via Scraper: {processed['strHomeTeam']} vs {processed['strAwayTeam']}")
+                else:
+                    Log.info("No missing events found via Scraper for this date.")
         
         # 3. Assemble League Object
         if valid_events:
@@ -222,11 +232,11 @@ def main():
                 "strLeague": str_league,
                 "strLeagueBadge": league.get("strBadge", ""),
                 "leagueUrl": league_url,
-                "events": list(valid_events.values())
+                "events": list(valid_events.values()) # Dict values maintain insertion order
             }
             final_fixtures_data["leagues"].append(league_obj)
             total_added += len(valid_events)
-            Log.ok(f"Saved {len(valid_events)} active matches for {str_league}.")
+            Log.ok(f"Saved {len(valid_events)} active matches across 2 days for {str_league}.")
         else:
             Log.skip(f"No active events for {str_league}. Omitting league from JSON.")
             
