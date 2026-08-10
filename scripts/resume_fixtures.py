@@ -223,34 +223,41 @@ def main():
                 processed = filter_and_process_event(raw_event, source="api_resumed")
                 if processed:
                     fetched_events[processed["idEvent"]] = processed
+                    Log.match(f"Added via API: {processed['strHomeTeam']} vs {processed['strAwayTeam']}")
 
             # Scraper Fallback
             if league_url:
                 existing_ids = set(fetched_events.keys())
                 scraped_ids = scrape_fallback_events(league_url, current_date, existing_ids)
                 
-                for ev_id in scraped_ids:
-                    if not api_exhausted:
-                        time.sleep(0.5)
-                        try:
-                            raw_lookup = fetch_event_lookup(ev_id)
-                            if raw_lookup:
-                                processed = filter_and_process_event(raw_lookup, source="scraped_lookup_resumed")
-                                if processed:
-                                    fetched_events[ev_id] = processed
-                        except RateLimitException:
-                            Log.warn("API 429 Limit hit during scraper lookup! Queueing remaining lookups.")
-                            api_exhausted = True
+                if scraped_ids:
+                    Log.fetch(f"Found {len(scraped_ids)} missing events via Scraper. Looking up...")
+                    for ev_id in scraped_ids:
+                        if not api_exhausted:
+                            time.sleep(0.5)
+                            try:
+                                raw_lookup = fetch_event_lookup(ev_id)
+                                if raw_lookup:
+                                    processed = filter_and_process_event(raw_lookup, source="scraped_lookup_resumed")
+                                    if processed:
+                                        fetched_events[ev_id] = processed
+                                        # Add this line:
+                                        Log.match(f"Added via Scraper: {processed['strHomeTeam']} vs {processed['strAwayTeam']}")
+                            except RateLimitException:
+                                Log.warn("API 429 Limit hit during scraper lookup! Queueing remaining lookups.")
+                                api_exhausted = True
 
-                    if api_exhausted:
-                        remaining_lookups.append({
-                            "event_id": ev_id,
-                            "league_id": league_id,
-                            "strLeague": str_league,
-                            "date": current_date,
-                            "league_url": league_url,
-                            "strBadge": str_badge
-                        })
+                        if api_exhausted:
+                            remaining_lookups.append({
+                                "event_id": ev_id,
+                                "league_id": league_id,
+                                "strLeague": str_league,
+                                "date": current_date,
+                                "league_url": league_url,
+                                "strBadge": str_badge
+                            })
+                else:
+                    Log.info("No missing events found via Scraper for this date.")
 
             merge_events_into_fixtures(
                 fixtures_data, league_id, str_league, str_badge, league_url, list(fetched_events.values())
@@ -281,6 +288,7 @@ def main():
             if raw_lookup:
                 processed = filter_and_process_event(raw_lookup, source="scraped_lookup_resumed")
                 if processed:
+                    Log.match(f"Added via Scraper (Pending Queue): {processed['strHomeTeam']} vs {processed['strAwayTeam']}")
                     merge_events_into_fixtures(
                         fixtures_data, league_id, str_league, str_badge, league_url, [processed]
                     )
