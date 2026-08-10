@@ -1,0 +1,857 @@
+{
+  "leagues": [
+    {
+      "idLeague": "4490",
+      "idAPIfootballv3": "5",
+      "idCup": "1",
+      "strLeague": "UEFA Nations League",
+      "strCurrentSeason": "2026-2027",
+      "strComplete": "No",
+      "strBadge": "https://r2.thesportsdb.com/images/media/league/badge/cwsp321698386224.png",
+      "strWebsite": "www.uefa.com/uefanationsleague",
+      "metadata": {
+        "last_sync_at": "2026-09-30T11:16:31Z"
+      },
+      "events": [
+        {
+          "idEvent": "2442797",
+          "idAPIfootball": "1528933",
+          "idLeague": "4490",
+          "strLeague": "UEFA Nations League",
+          "strLeagueBadge": "https://r2.thesportsdb.com/images/media/league/badge/cwsp321698386224.png",
+          "strGroup": "",
+          "intRound": "3",
+          "dateEvent": "2026-10-03",
+          "strTime": "16:00",
+          "strTimestamp": "2026-10-03T16:00:00",
+          "strEvent": "Croatia vs England",
+          "idHomeTeam": "133912",
+          "strHomeTeam": "Croatia",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/84cfeg1789271106.png",
+          "intHomeScore": "0",
+          "idAwayTeam": "133914",
+          "strAwayTeam": "England",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/vf5ttc1726166739.png",
+          "intAwayScore": "1",
+          "strThumb": "https://r2.thesportsdb.com/images/media/event/thumb/e68p931786994379.jpg",
+          "strStatus": "1H",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-10-03T16:15:28Z",
+            "channels": [
+              "ArenaSport2Premium.rs@SD",
+              "CBCSport.az@SD",
+              "DigiSport1.ro@HD",
+              "Spiler1.hu@SD",
+              "Sport1.cz@HD",
+              "SuperSport1.al@SD"
+            ],
+            "channel_path_scrape": {
+              "checked_at": "2026-10-01T23:45:33Z",
+              "event_url": "https://www.thesportsdb.com/event/2442797-croatia-vs-england",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/8260-nova-tv-hr-tv-schedule",
+                "/channel/6330-itv-tv-schedule",
+                "/channel/6339-itvx-tv-schedule",
+                "/channel/1840-stv-tv-schedule",
+                "/channel/3310-utv-ni-tv-schedule",
+                "/channel/2936-sport-1-czechia-tv-schedule",
+                "/channel/8515-bein-sports-1-qatar-tv-schedule",
+                "/channel/4371-bein-sports-english-1-qatar-tv-schedule",
+                "/channel/13-super-sport-1-hd-%28albania%29-tv-schedule",
+                "/channel/8703-bein-sports-3-australia-tv-schedule",
+                "/channel/4188-c-more-sport-2-fi-tv-schedule",
+                "/channel/4161-mtv-urheilu-2-tv-schedule",
+                "/channel/4563-cbc-sport-aze-tv-schedule",
+                "/channel/8248-diema-sport-3-bg-tv-schedule",
+                "/channel/4229-digi-sport-1-romania-tv-schedule",
+                "/channel/4714-espn-brasil-tv-schedule",
+                "/channel/3484-novasports-prime-tv-schedule",
+                "/channel/8695-sky-sport-uno-tv-schedule",
+                "/channel/5180-sp%c3%adler1-hu-tv-schedule",
+                "/channel/2287-sport-2-il-tv-schedule",
+                "/channel/8846-tv-2-sport-x-tv-schedule",
+                "/channel/3549-polsat-sport-tv-schedule",
+                "/channel/4576-sport-tv-1-tv-schedule"
+              ]
+            },
+            "notifications_sent": [
+              "started"
+            ]
+          }
+        },
+        {
+          "idEvent": "2442799",
+          "idAPIfootball": "1528935",
+          "idLeague": "4490",
+          "strLeague": "UEFA Nations League",
+          "strLeagueBadge": "https://r2.thesportsdb.com/images/media/league/badge/cwsp321698386224.png",
+          "intRound": "3",
+          "dateEvent": "2026-10-03",
+          "strTime": "16:00",
+          "strTimestamp": "2026-10-03T16:00:00",
+          "strEvent": "Iceland vs Bulgaria",
+          "idHomeTeam": "135988",
+          "strHomeTeam": "Iceland",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/xc6kuy1742982312.png",
+          "intHomeScore": "0",
+          "idAwayTeam": "136461",
+          "strAwayTeam": "Bulgaria",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/0bee7p1552858893.png",
+          "intAwayScore": "0",
+          "strThumb": "https://r2.thesportsdb.com/images/media/event/thumb/dnfajj1786994381.jpg",
+          "strStatus": "1H",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-10-03T16:15:30Z",
+            "channels": [
+              "ArenaSport1Premium.rs@SD",
+              "Spiler2.hu@SD"
+            ],
+            "channel_path_scrape": {
+              "checked_at": "2026-10-02T00:45:29Z",
+              "event_url": "https://www.thesportsdb.com/event/2442799-iceland-vs-bulgaria",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/7941-st%c3%b6%c3%b0-2-sport-is-tv-schedule",
+                "/channel/8702-bein-sports-2-australia-tv-schedule",
+                "/channel/5181-sp%c3%adler2-hu-tv-schedule",
+                "/channel/2288-sport-3-il-tv-schedule",
+                "/channel/5007-s-sport-tv-schedule",
+                "/channel/4573-sport-tv-2-tv-schedule"
+              ]
+            },
+            "notifications_sent": [
+              "started"
+            ]
+          }
+        },
+        {
+          "idEvent": "2442800",
+          "idAPIfootball": "1528936",
+          "idLeague": "4490",
+          "strLeague": "UEFA Nations League",
+          "strLeagueBadge": "https://r2.thesportsdb.com/images/media/league/badge/cwsp321698386224.png",
+          "strGroup": "",
+          "intRound": "3",
+          "dateEvent": "2026-10-03",
+          "strTime": "18:45:00",
+          "strTimestamp": "2026-10-03T18:45:00",
+          "strEvent": "Spain vs Czech Republic",
+          "idHomeTeam": "133909",
+          "strHomeTeam": "Spain",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/ncgqyr1726166942.png",
+          "idAwayTeam": "133904",
+          "strAwayTeam": "Czech Republic",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/1o0cx31654205806.png",
+          "strThumb": "https://r2.thesportsdb.com/images/media/event/thumb/k7tyep1786994385.jpg",
+          "strStatus": "NS",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-10-01T23:35:58Z",
+            "channels": [
+              "ArenaSport1Premium.rs@SD",
+              "CBCSport.az@SD",
+              "CTSport.cz@SD",
+              "DigiSport1.ro@HD",
+              "Spiler2.hu@SD"
+            ],
+            "channel_path_scrape": {
+              "checked_at": "2026-10-01T23:45:33Z",
+              "event_url": "https://www.thesportsdb.com/event/2442800-spain-vs-czech-republic",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/8135-la-1-tv-schedule",
+                "/channel/4028-tv-2-sport-1-tv-schedule",
+                "/channel/2907-ct-sport-tv-schedule",
+                "/channel/7896-ziggo-sport-2-tv-schedule",
+                "/channel/8515-bein-sports-1-qatar-tv-schedule",
+                "/channel/4371-bein-sports-english-1-qatar-tv-schedule",
+                "/channel/14-super-sport-2-hd-%28albania%29-tv-schedule",
+                "/channel/3531-tvp-sport-tv-schedule",
+                "/channel/8703-bein-sports-3-australia-tv-schedule",
+                "/channel/4187-c-more-sport-1-fi-tv-schedule",
+                "/channel/8093-mtv-urheilu-1-tv-schedule",
+                "/channel/8248-diema-sport-3-bg-tv-schedule",
+                "/channel/3480-novasports-1-tv-schedule",
+                "/channel/8695-sky-sport-uno-tv-schedule",
+                "/channel/5181-sp%c3%adler2-hu-tv-schedule",
+                "/channel/2287-sport-2-il-tv-schedule",
+                "/channel/8846-tv-2-sport-x-tv-schedule",
+                "/channel/7423-tv8-tv-schedule",
+                "/channel/4563-cbc-sport-aze-tv-schedule",
+                "/channel/4229-digi-sport-1-romania-tv-schedule",
+                "/channel/3549-polsat-sport-tv-schedule",
+                "/channel/4576-sport-tv-1-tv-schedule"
+              ]
+            }
+          }
+        },
+        {
+          "idEvent": "2475298",
+          "idAPIfootball": "1545653",
+          "idLeague": "4490",
+          "strLeague": "UEFA Nations League",
+          "strLeagueBadge": "https://r2.thesportsdb.com/images/media/league/badge/cwsp321698386224.png",
+          "strGroup": "",
+          "intRound": "3",
+          "dateEvent": "2026-10-03",
+          "strTime": "18:45:00",
+          "strTimestamp": "2026-10-03T18:45:00",
+          "strEvent": "Switzerland vs Slovenia",
+          "idHomeTeam": "134506",
+          "strHomeTeam": "Switzerland",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/mb7yqe1717365808.png",
+          "idAwayTeam": "136456",
+          "strAwayTeam": "Slovenia",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/s7k1x51552909864.png",
+          "strThumb": "https://r2.thesportsdb.com/images/media/event/thumb/hw7znc1786994386.jpg",
+          "strStatus": "NS",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-10-02T00:36:11Z",
+            "channels": [
+              "Spiler1.hu@SD",
+              "Sport1.cz@HD"
+            ],
+            "channel_path_scrape": {
+              "checked_at": "2026-10-02T00:45:29Z",
+              "event_url": "https://www.thesportsdb.com/event/2475298-switzerland-vs-slovenia",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/2936-sport-1-czechia-tv-schedule",
+                "/channel/7845-ziggo-sport-4-tv-schedule",
+                "/channel/271-bein-sports-1-australia-tv-schedule",
+                "/channel/5023-fox-sports-1-br-tv-schedule",
+                "/channel/3494-novasports-2-tv-schedule",
+                "/channel/3593-rts-deux-ch-tv-schedule",
+                "/channel/5180-sp%c3%adler1-hu-tv-schedule",
+                "/channel/2288-sport-3-il-tv-schedule",
+                "/channel/4575-sport-tv-3-tv-schedule",
+                "/channel/8346-mtv-urheilu-3-tv-schedule",
+                "/channel/8249-diema-sport-2-bg-tv-schedule",
+                "/channel/4236-digi-sport-2-romania-tv-schedule",
+                "/channel/3550-polsat-sport-2-tv-schedule",
+                "/channel/3329-sport-klub-1-si-tv-schedule"
+              ]
+            }
+          }
+        },
+        {
+          "idEvent": "2475299",
+          "idAPIfootball": "1545660",
+          "idLeague": "4490",
+          "strLeague": "UEFA Nations League",
+          "strLeagueBadge": "https://r2.thesportsdb.com/images/media/league/badge/cwsp321698386224.png",
+          "intRound": "3",
+          "dateEvent": "2026-10-03",
+          "strTime": "18:45:00",
+          "strTimestamp": "2026-10-03T18:45:00",
+          "strEvent": "North Macedonia vs Scotland",
+          "idHomeTeam": "136457",
+          "strHomeTeam": "North Macedonia",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/v6xfhn1552943846.png",
+          "idAwayTeam": "136450",
+          "strAwayTeam": "Scotland",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/3691i11552945146.png",
+          "strThumb": "https://r2.thesportsdb.com/images/media/event/thumb/qucbs91786994388.jpg",
+          "strStatus": "NS",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-10-03T07:36:04Z",
+            "channels": [
+              "ArenaSport2Premium.rs@SD"
+            ],
+            "channel_path_scrape": {
+              "checked_at": "2026-10-03T07:45:31Z",
+              "event_url": "https://www.thesportsdb.com/event/2475299-north-macedonia-vs-scotland",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/8702-bein-sports-2-australia-tv-schedule",
+                "/channel/3588-polsat-sport-3-tv-schedule",
+                "/channel/2289-sport-4-il-tv-schedule",
+                "/channel/2310-diema-sport-bg-tv-schedule",
+                "/channel/4573-sport-tv-2-tv-schedule",
+                "/channel/4751-dazn-2-germany-tv-schedule",
+                "/channel/1334-sony-six-tv-schedule",
+                "/channel/3331-sport-klub-3-si-tv-schedule",
+                "/channel/8517-bein-sports-3-qatar-tv-schedule",
+                "/channel/2378-arena-sport-2-premium-rs-tv-schedule"
+              ]
+            }
+          }
+        },
+        {
+          "idEvent": "2442801",
+          "idAPIfootball": "1528937",
+          "idLeague": "4490",
+          "strLeague": "UEFA Nations League",
+          "strLeagueBadge": "https://r2.thesportsdb.com/images/media/league/badge/cwsp321698386224.png",
+          "intRound": "4",
+          "dateEvent": "2026-10-04",
+          "strTime": "13:00:00",
+          "strTimestamp": "2026-10-04T13:00:00",
+          "strEvent": "Azerbaijan vs Lithuania",
+          "idHomeTeam": "136455",
+          "strHomeTeam": "Azerbaijan",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/kr6lkz1552856315.png",
+          "idAwayTeam": "136459",
+          "strAwayTeam": "Lithuania",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/ukapsd1689197167.png",
+          "strThumb": "https://r2.thesportsdb.com/images/media/event/thumb/7zorky1786994389.jpg",
+          "strStatus": "NS",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-10-02T23:36:09Z",
+            "channels": [
+              "ArenaSport1Premium.rs@SD",
+              "CBCSport.az@SD"
+            ],
+            "channel_path_scrape": {
+              "checked_at": "2026-10-02T23:45:31Z",
+              "event_url": "https://www.thesportsdb.com/event/2442801-azerbaijan-vs-lithuania",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/4563-cbc-sport-aze-tv-schedule",
+                "/channel/8248-diema-sport-3-bg-tv-schedule",
+                "/channel/2286-sport-1-il-tv-schedule",
+                "/channel/8346-mtv-urheilu-3-tv-schedule",
+                "/channel/4371-bein-sports-english-1-qatar-tv-schedule",
+                "/channel/3480-novasports-1-tv-schedule"
+              ]
+            }
+          }
+        },
+        {
+          "idEvent": "2442802",
+          "idAPIfootball": "1528938",
+          "idLeague": "4490",
+          "strLeague": "UEFA Nations League",
+          "strLeagueBadge": "https://r2.thesportsdb.com/images/media/league/badge/cwsp321698386224.png",
+          "intRound": "4",
+          "dateEvent": "2026-10-04",
+          "strTime": "16:00:00",
+          "strTimestamp": "2026-10-04T16:00:00",
+          "strEvent": "Kosovo vs Austria",
+          "idHomeTeam": "136518",
+          "strHomeTeam": "Kosovo",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/i3wq751730304457.png",
+          "idAwayTeam": "135986",
+          "strAwayTeam": "Austria",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/874p631628721400.png",
+          "strThumb": "https://r2.thesportsdb.com/images/media/event/thumb/1gqlwb1786994391.jpg",
+          "strStatus": "NS",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-10-02T23:36:11Z",
+            "channels": [
+              "CBCSport.az@SD",
+              "DigiSport1.ro@HD",
+              "Spiler2.hu@SD",
+              "Sport1.cz@HD"
+            ],
+            "channel_path_scrape": {
+              "checked_at": "2026-10-02T23:45:31Z",
+              "event_url": "https://www.thesportsdb.com/event/2442802-kosovo-vs-austria",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/8703-bein-sports-3-australia-tv-schedule",
+                "/channel/4563-cbc-sport-aze-tv-schedule",
+                "/channel/8248-diema-sport-3-bg-tv-schedule",
+                "/channel/4229-digi-sport-1-romania-tv-schedule",
+                "/channel/4714-espn-brasil-tv-schedule",
+                "/channel/5181-sp%c3%adler2-hu-tv-schedule",
+                "/channel/2936-sport-1-czechia-tv-schedule",
+                "/channel/2286-sport-1-il-tv-schedule",
+                "/channel/4371-bein-sports-english-1-qatar-tv-schedule"
+              ]
+            }
+          }
+        },
+        {
+          "idEvent": "2442805",
+          "idAPIfootball": "1528941",
+          "idLeague": "4490",
+          "strLeague": "UEFA Nations League",
+          "strLeagueBadge": "https://r2.thesportsdb.com/images/media/league/badge/cwsp321698386224.png",
+          "strGroup": "",
+          "intRound": "4",
+          "dateEvent": "2026-10-04",
+          "strTime": "18:45:00",
+          "strTimestamp": "2026-10-04T18:45:00",
+          "strEvent": "Portugal vs Norway",
+          "idHomeTeam": "133908",
+          "strHomeTeam": "Portugal",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/swqvpy1455466083.png",
+          "idAwayTeam": "136516",
+          "strAwayTeam": "Norway",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/gyfn811591973155.png",
+          "strThumb": "https://r2.thesportsdb.com/images/media/event/thumb/fbm23v1786994398.jpg",
+          "strStatus": "NS",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-10-02T23:36:14Z",
+            "channels": [
+              "ArenaSport3Premium.rs@SD",
+              "CBCSport.az@SD",
+              "DigiSport1.ro@HD",
+              "Spiler2.hu@SD",
+              "Sport1.cz@HD",
+              "SuperSport1.al@SD"
+            ],
+            "channel_path_scrape": {
+              "checked_at": "2026-10-02T23:45:31Z",
+              "event_url": "https://www.thesportsdb.com/event/2442805-portugal-vs-norway",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/8846-tv-2-sport-x-tv-schedule",
+                "/channel/3531-tvp-sport-tv-schedule",
+                "/channel/8515-bein-sports-1-qatar-tv-schedule",
+                "/channel/4371-bein-sports-english-1-qatar-tv-schedule",
+                "/channel/3588-polsat-sport-3-tv-schedule",
+                "/channel/2936-sport-1-czechia-tv-schedule",
+                "/channel/13-super-sport-1-hd-%28albania%29-tv-schedule",
+                "/channel/8703-bein-sports-3-australia-tv-schedule",
+                "/channel/4187-c-more-sport-1-fi-tv-schedule",
+                "/channel/8093-mtv-urheilu-1-tv-schedule",
+                "/channel/4563-cbc-sport-aze-tv-schedule",
+                "/channel/8135-la-1-tv-schedule",
+                "/channel/4564-rtp-1-tv-schedule",
+                "/channel/3593-rts-deux-ch-tv-schedule",
+                "/channel/78-sky-sport-arena-tv-schedule",
+                "/channel/5181-sp%c3%adler2-hu-tv-schedule",
+                "/channel/3596-srf-zwei-tv-schedule",
+                "/channel/7423-tv8-tv-schedule",
+                "/channel/8249-diema-sport-2-bg-tv-schedule",
+                "/channel/4229-digi-sport-1-romania-tv-schedule",
+                "/channel/3484-novasports-prime-tv-schedule",
+                "/channel/3594-rsi-la-2-tv-schedule"
+              ]
+            }
+          }
+        },
+        {
+          "idEvent": "2442803",
+          "idAPIfootball": "1528939",
+          "idLeague": "4490",
+          "strLeague": "UEFA Nations League",
+          "strLeagueBadge": "https://r2.thesportsdb.com/images/media/league/badge/cwsp321698386224.png",
+          "strGroup": "",
+          "intRound": "4",
+          "dateEvent": "2026-10-04",
+          "strTime": "18:45:00",
+          "strTimestamp": "2026-10-04T18:45:00",
+          "strEvent": "Greece vs Germany",
+          "idHomeTeam": "133902",
+          "strHomeTeam": "Greece",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/xtxtts1455465601.png",
+          "idAwayTeam": "133907",
+          "strAwayTeam": "Germany",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/1xysi51726167152.png",
+          "strThumb": "https://r2.thesportsdb.com/images/media/event/thumb/vtzrvi1786994394.jpg",
+          "strStatus": "NS",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-10-02T23:37:03Z",
+            "channels": [
+              "ArenaSport2Premium.rs@SD",
+              "Spiler1.hu@SD"
+            ],
+            "channel_path_scrape": {
+              "checked_at": "2026-10-02T23:45:31Z",
+              "event_url": "https://www.thesportsdb.com/event/2442803-greece-vs-germany",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/8517-bein-sports-3-qatar-tv-schedule",
+                "/channel/14-super-sport-2-hd-%28albania%29-tv-schedule",
+                "/channel/271-bein-sports-1-australia-tv-schedule",
+                "/channel/4188-c-more-sport-2-fi-tv-schedule",
+                "/channel/4161-mtv-urheilu-2-tv-schedule",
+                "/channel/8248-diema-sport-3-bg-tv-schedule",
+                "/channel/6709-espn-paraguay-tv-schedule",
+                "/channel/7556-rtl-tv-schedule",
+                "/channel/3688-sky-sport-max-tv-schedule",
+                "/channel/5180-sp%c3%adler1-hu-tv-schedule",
+                "/channel/2287-sport-2-il-tv-schedule",
+                "/channel/79-rtl-germany-tv-schedule",
+                "/channel/4236-digi-sport-2-romania-tv-schedule"
+              ]
+            }
+          }
+        },
+        {
+          "idEvent": "2442804",
+          "idAPIfootball": "1528940",
+          "idLeague": "4490",
+          "strLeague": "UEFA Nations League",
+          "strLeagueBadge": "https://r2.thesportsdb.com/images/media/league/badge/cwsp321698386224.png",
+          "strGroup": "",
+          "intRound": "4",
+          "dateEvent": "2026-10-04",
+          "strTime": "18:45:00",
+          "strTimestamp": "2026-10-04T18:45:00",
+          "strEvent": "Netherlands vs Serbia",
+          "idHomeTeam": "133905",
+          "strHomeTeam": "Netherlands",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/1p0hr41593787110.png",
+          "idAwayTeam": "136140",
+          "strAwayTeam": "Serbia",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/oxvynb1689195538.png",
+          "strThumb": "https://r2.thesportsdb.com/images/media/event/thumb/qhojsh1786994396.jpg",
+          "strStatus": "NS",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-10-03T07:36:00Z",
+            "channels": [
+              "ArenaSport1Premium.rs@SD"
+            ],
+            "channel_path_scrape": {
+              "checked_at": "2026-10-03T07:45:31Z",
+              "event_url": "https://www.thesportsdb.com/event/2442804-netherlands-vs-serbia",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/8518-bein-sports-4-qatar-tv-schedule",
+                "/channel/15-super-sport-3-hd-%28albania%29-tv-schedule",
+                "/channel/8702-bein-sports-2-australia-tv-schedule",
+                "/channel/4714-espn-brasil-tv-schedule",
+                "/channel/5108-fox-soccer-plus-tv-schedule",
+                "/channel/2288-sport-3-il-tv-schedule",
+                "/channel/2310-diema-sport-bg-tv-schedule",
+                "/channel/3492-novasports-3-tv-schedule",
+                "/channel/3124-npo-1-tv-schedule",
+                "/channel/2370-rts-1-rs-tv-schedule",
+                "/channel/2377-arena-sport-1-premium-rs-tv-schedule",
+                "/channel/3549-polsat-sport-tv-schedule",
+                "/channel/3329-sport-klub-1-si-tv-schedule",
+                "/channel/4571-sport-tv-4-tv-schedule",
+                "/channel/3261-sport-klub-3-hr-tv-schedule",
+                "/channel/3253-sport-klub-3-rs-tv-schedule"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "idLeague": "4562",
+      "idAPIfootballv3": "10",
+      "idCup": "1",
+      "strLeague": "International Friendlies",
+      "strCurrentSeason": "2026",
+      "strComplete": "No",
+      "strBadge": "https://r2.thesportsdb.com/images/media/league/badge/pdnktx1648659448.png",
+      "strWebsite": "",
+      "metadata": {
+        "last_sync_at": "2026-10-02T00:37:25Z"
+      },
+      "events": [
+        {
+          "idEvent": "2558127",
+          "idAPIfootball": "1610879",
+          "idLeague": "4562",
+          "strLeague": "International Friendlies",
+          "strLeagueBadge": "https://r2.thesportsdb.com/images/media/league/badge/pdnktx1648659448.png",
+          "strGroup": "",
+          "intRound": "0",
+          "dateEvent": "2026-10-03",
+          "strTime": "18:00:00",
+          "strTimestamp": "2026-10-03T18:00:00",
+          "strEvent": "Canada vs Peru",
+          "idHomeTeam": "140073",
+          "strHomeTeam": "Canada",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/2t631f1595154867.png",
+          "idAwayTeam": "136162",
+          "strAwayTeam": "Peru",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/unszat1529144812.png",
+          "strThumb": "https://r2.thesportsdb.com/images/media/event/thumb/oq03dx1786989730.jpg",
+          "strStatus": "NS",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-10-02T00:37:23Z",
+            "channels": [
+              "TSN4.ca@HD",
+              "TSN5.ca@HD"
+            ],
+            "channel_path_scrape": {
+              "checked_at": "2026-10-02T00:45:29Z",
+              "event_url": "https://www.thesportsdb.com/event/2558127-canada-vs-peru",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/5653-tsn-5-tv-schedule",
+                "/channel/5744-rds-tv-schedule",
+                "/channel/5519-tsn-4-tv-schedule"
+              ]
+            }
+          }
+        },
+        {
+          "idEvent": "2606656",
+          "idAPIfootball": "1640514",
+          "idLeague": "4562",
+          "strLeague": "International Friendlies",
+          "strLeagueBadge": "https://r2.thesportsdb.com/images/media/league/badge/pdnktx1648659448.png",
+          "intRound": "0",
+          "dateEvent": "2026-10-04",
+          "strTime": "00:00:00",
+          "strTimestamp": "2026-10-04T00:00:00",
+          "strEvent": "Argentina vs Burkina Faso",
+          "idHomeTeam": "134509",
+          "strHomeTeam": "Argentina",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/3zplhu1726167477.png",
+          "idAwayTeam": "136474",
+          "strAwayTeam": "Burkina Faso",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/y38bkz1742102697.png",
+          "strThumb": "https://www.thesportsdb.com/images/media/event/thumb/e1ktwp1791021029.jpg",
+          "strStatus": "NS",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-10-03T07:36:37Z",
+            "channels": [
+              "DigiSport1.ro@HD"
+            ],
+            "channel_path_scrape": {
+              "checked_at": "2026-10-03T07:45:31Z",
+              "event_url": "https://www.thesportsdb.com/event/2606656-argentina-vs-burkina-faso",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/8657-movistar-liga-de-campeones-tv-schedule",
+                "/channel/62-sportbox.ru-tv-schedule",
+                "/channel/4229-digi-sport-1-romania-tv-schedule",
+                "/channel/21-premier-sports-2-ie-tv-schedule",
+                "/channel/8597-viaplay-sports-2-uk-tv-schedule"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "idLeague": "4521",
+      "idAPIfootballv3": "254",
+      "idCup": "0",
+      "strLeague": "American NWSL",
+      "strCurrentSeason": "2026",
+      "strComplete": "yes",
+      "strBadge": "https://r2.thesportsdb.com/images/media/league/badge/ucoihf1770674182.png",
+      "strWebsite": "nwslsoccer.com",
+      "metadata": {
+        "last_sync_at": "2026-10-02T23:37:31Z"
+      },
+      "events": [
+        {
+          "idEvent": "2419944",
+          "idAPIfootball": "1508571",
+          "idLeague": "4521",
+          "strLeague": "American NWSL",
+          "strLeagueBadge": "https://r2.thesportsdb.com/images/media/league/badge/ucoihf1770674182.png",
+          "intRound": "0",
+          "dateEvent": "2026-10-04",
+          "strTime": "23:00:00",
+          "strTimestamp": "2026-10-04T23:00:00",
+          "strEvent": "Houston Dash vs Washington Spirit",
+          "idHomeTeam": "136436",
+          "strHomeTeam": "Houston Dash",
+          "strHomeTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/192hte1625386917.png",
+          "idAwayTeam": "136423",
+          "strAwayTeam": "Washington Spirit",
+          "strAwayTeamBadge": "https://r2.thesportsdb.com/images/media/team/badge/mbldcf1703410479.png",
+          "strThumb": "https://r2.thesportsdb.com/images/media/event/thumb/yag5sr1784809315.jpg",
+          "strStatus": "NS",
+          "metadata": {
+            "source": "channel_schedule",
+            "last_sync_at": "2026-10-02T23:37:29Z",
+            "channels": [
+              "TNTSports3.uk@HD"
+            ],
+            "channel_path_scrape": {
+              "checked_at": "2026-10-02T23:45:31Z",
+              "event_url": "https://www.thesportsdb.com/event/2419944-houston-dash-vs-washington-spirit",
+              "http_status": 200,
+              "channel_paths_found": [
+                "/channel/8654-tnt-sports-3-tv-schedule"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "channels": [
+    {
+      "title": "Arena Sport 1 Premium",
+      "url": "http://tpjgkqnu.vexiumis.top/iptv/ZFMBTT94BTSVQMFVDASEV6XS/31599/index.m3u8",
+      "tvg": {
+        "id": "ArenaSport1Premium.rs@SD"
+      },
+      "loadControl": {
+        "minBufferMs": 40000,
+        "maxBufferMs": 80000,
+        "bufferForPlaybackMs": 10000,
+        "bufferForPlaybackAfterRebufferMs": 20000
+      },
+      "quality": {
+        "label": "1080P"
+      }
+    },
+    {
+      "title": "Arena Sport 2 Premium",
+      "url": "http://tpjgkqnu.vexiumis.top/iptv/ZFMBTT94BTSVQMFVDASEV6XS/31600/index.m3u8",
+      "tvg": {
+        "id": "ArenaSport2Premium.rs@SD"
+      },
+      "loadControl": {
+        "minBufferMs": 40000,
+        "maxBufferMs": 90000,
+        "bufferForPlaybackMs": 10000,
+        "bufferForPlaybackAfterRebufferMs": 30000
+      },
+      "quality": {
+        "label": "1080P"
+      }
+    },
+    {
+      "title": "Arena Sport 3 Premium",
+      "url": "http://tpjgkqnu.vexiumis.top/iptv/ZFMBTT94BTSVQMFVDASEV6XS/31601/index.m3u8",
+      "tvg": {
+        "id": "ArenaSport3Premium.rs@SD"
+      },
+      "loadControl": {
+        "minBufferMs": 40000,
+        "maxBufferMs": 80000,
+        "bufferForPlaybackMs": 10000,
+        "bufferForPlaybackAfterRebufferMs": 20000
+      },
+      "quality": {
+        "label": "1080P"
+      }
+    },
+    {
+      "title": "CBC Sport",
+      "url": "https://andro.2385437.xyz/checklist/androstreamlivecbcs.m3u8",
+      "tvg": {
+        "id": "CBCSport.az@SD"
+      },
+      "quality": {
+        "label": "720P"
+      }
+    },
+    {
+      "title": "CT Sport",
+      "url": "http://88.212.7.11/live/test_ctsport_25p/playlist.m3u8",
+      "tvg": {
+        "id": "CTSport.cz@SD"
+      },
+      "loadControl": {
+        "minBufferMs": 24000,
+        "maxBufferMs": 48000,
+        "bufferForPlaybackMs": 9000,
+        "bufferForPlaybackAfterRebufferMs": 18000
+      },
+      "quality": {
+        "label": "720P"
+      }
+    },
+    {
+      "title": "Digi Sport 1",
+      "url": "http://tpjgkqnu.vexiumis.top/iptv/ZFMBTT94BTSVQMFVDASEV6XS/2523/index.m3u8",
+      "tvg": {
+        "id": "DigiSport1.ro@HD"
+      },
+      "loadControl": {
+        "minBufferMs": 40000,
+        "maxBufferMs": 90000,
+        "bufferForPlaybackMs": 10000,
+        "bufferForPlaybackAfterRebufferMs": 30000
+      },
+      "quality": {
+        "label": "1080P"
+      }
+    },
+    {
+      "title": "Spiler 1",
+      "url": "http://88.212.15.19/live/spiler1/index.m3u8",
+      "tvg": {
+        "id": "Spiler1.hu@SD"
+      },
+      "loadControl": {
+        "minBufferMs": 24000,
+        "maxBufferMs": 48000,
+        "bufferForPlaybackMs": 9000,
+        "bufferForPlaybackAfterRebufferMs": 18000
+      },
+      "quality": {
+        "label": "1080P"
+      }
+    },
+    {
+      "title": "Spiler 2",
+      "url": "http://88.212.15.19/live/spiler2/index.m3u8",
+      "tvg": {
+        "id": "Spiler2.hu@SD"
+      },
+      "loadControl": {
+        "minBufferMs": 18000,
+        "maxBufferMs": 60000,
+        "bufferForPlaybackMs": 6000,
+        "bufferForPlaybackAfterRebufferMs": 6000
+      },
+      "quality": {
+        "label": "1080P"
+      }
+    },
+    {
+      "title": "Sport 1 (CZ)",
+      "url": "http://88.212.15.50/live/test_sport1_25p/playlist.m3u8",
+      "tvg": {
+        "id": "Sport1.cz@HD"
+      },
+      "loadControl": {
+        "minBufferMs": 24000,
+        "maxBufferMs": 48000,
+        "bufferForPlaybackMs": 9000,
+        "bufferForPlaybackAfterRebufferMs": 18000
+      },
+      "quality": {
+        "label": "1080P"
+      }
+    },
+    {
+      "title": "Super Sport 1",
+      "url": "http://line01.serveuser.com:80/QIWQ3GPOEZ/GCOULCY30Q/1562258",
+      "tvg": {
+        "id": "SuperSport1.al@SD"
+      }
+    },
+    {
+      "title": "TNT Sports 3",
+      "url": "http://kstv.us:8080/jimmyrhale/JE1974aa$$/47852",
+      "tvg": {
+        "id": "TNTSports3.uk@HD"
+      },
+      "quality": {
+        "label": "720P"
+      }
+    },
+    {
+      "title": "TSN 4",
+      "url": "http://kstv.us:8080/live/Kh2fHxR0c8/3333726709/15926.ts",
+      "tvg": {
+        "id": "TSN4.ca@HD"
+      },
+      "quality": {
+        "label": "720P"
+      }
+    },
+    {
+      "title": "TSN 5",
+      "url": "http://kstv.us:8080/live/Kh2fHxR0c8/3333726709/15925.ts",
+      "tvg": {
+        "id": "TSN5.ca@HD"
+      },
+      "quality": {
+        "label": "720P"
+      }
+    }
+  ]
+}
