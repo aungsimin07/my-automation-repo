@@ -1,0 +1,64 @@
+name: Add Supported League
+
+on:
+  workflow_dispatch:
+    inputs:
+      leagueUrl:
+        description: 'URL of the league (e.g., https://www.thesportsdb.com/league/4328...)'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  add-league-data:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. Checkout the main branch (contains scripts/ and requirements.txt)
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # 2. Checkout the data branch directly into the 'data/' folder.
+      # The python script will read/write to 'data/supported_leagues.json' seamlessly.
+      - name: Checkout Data Branch
+        uses: actions/checkout@v4
+        with:
+          ref: data
+          path: data
+          fetch-depth: 0 # Required to use --amend on the commit history
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run Add League Script
+        run: python scripts/add_league.py --leagueUrl "${{ inputs.leagueUrl }}"
+
+      - name: Commit and Force-Push to Data Branch
+        run: |
+          # Change directory into the isolated data branch repository
+          cd data
+          
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          
+          git add supported_leagues.json
+          
+          # Check if the script actually changed the file
+          if ! git diff --staged --quiet; then
+            TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
+            
+            # Use --amend to fuse this update into the previous commit (keeps 1 commit total)
+            git commit --amend -m "Automated data: Updated at $TIMESTAMP"
+            
+            # Force push safely because we are isolated on the 'data' branch
+            git push --force origin data
+          else
+            echo "No changes detected. Skipping commit."
+          fi
