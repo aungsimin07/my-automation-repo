@@ -1,0 +1,26 @@
+{
+  "duration": -1,
+  "displayName": "Fox Sports 2 (720p)",
+  "urls": [
+    {
+      "url": "https://tvsen7.aynascope.net/foxsports2/index.m3u8",
+      "provider": "playlist-sync",
+      "priority": 0,
+      "format": "hls",
+      "metadata": {
+        "source": "playlist-sync",
+        "last_sync_at": "2026-09-04T01:35:57Z"
+      },
+      "quality": "720P",
+      "httpUserAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36"
+    }
+  ],
+  "attributes": {
+    "tvg-id": "FoxSports2.us@HD",
+    "tvg-logo": "https://i.imgur.com/LHtxKI8.png",
+    "group-title": "Sports"
+  },
+  "metadata": {
+    "last_sync_at": "2026-09-04T01:35:57Z"
+  }
+}
