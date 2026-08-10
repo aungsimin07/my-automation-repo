@@ -1,0 +1,26 @@
+{
+  "duration": -1,
+  "displayName": "Sport TV2",
+  "urls": [
+    {
+      "url": "https://7nyaler.streamhostingcdn.top/stream/87/index.m3u8",
+      "provider": "playlist-sync",
+      "priority": 0,
+      "format": "hls",
+      "metadata": {
+        "source": "playlist-sync",
+        "last_sync_at": "2026-09-04T01:35:57Z"
+      },
+      "httpUserAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36"
+    }
+  ],
+  "attributes": {
+    "tvg-id": "SportTV2.pt@SD",
+    "tvg-logo": "https://i.imgur.com/0jSR6yG.png",
+    "group-title": "Sports",
+    "channel-id": "4573"
+  },
+  "metadata": {
+    "last_sync_at": "2026-09-04T01:35:57Z"
+  }
+}

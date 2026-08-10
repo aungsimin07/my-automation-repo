@@ -1,0 +1,26 @@
+{
+  "duration": -1,
+  "displayName": "Fox Deportes (720p)",
+  "urls": [
+    {
+      "url": "http://23.237.104.106:8080/USA_FOX_DEPORTES/index.m3u8",
+      "provider": "playlist-sync",
+      "priority": 0,
+      "format": "hls",
+      "metadata": {
+        "source": "playlist-sync",
+        "last_sync_at": "2026-09-04T01:35:57Z"
+      },
+      "quality": "720P",
+      "httpUserAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36"
+    }
+  ],
+  "attributes": {
+    "tvg-id": "FoxDeportes.us@SD",
+    "tvg-logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/FOX_Deportes_logo.png/960px-FOX_Deportes_logo.png",
+    "group-title": "Sports"
+  },
+  "metadata": {
+    "last_sync_at": "2026-09-04T01:35:57Z"
+  }
+}
