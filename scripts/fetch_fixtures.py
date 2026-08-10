@@ -11,6 +11,7 @@ from logger import Log
 
 SUPPORTED_LEAGUES_FILE = "data/supported_leagues.json"
 FIXTURES_FILE = "data/fixtures.json"
+TASK_QUEUE_FILE = "data/task_queue.json"
 
 EVENT_KEYS = [
     "idEvent", "idAPIfootball", "idLeague", "strLeague", "strLeagueBadge",
@@ -20,15 +21,17 @@ EVENT_KEYS = [
     "intAwayScore", "strStatus"
 ]
 
-# Statuses that are considered "Upcoming" or "Live"
 ACTIVE_STATUSES = {"TBD", "NS", "1H", "HT", "2H", "ET", "P", "BT", ""}
 
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Mobile Safari/537.36'
 }
 
+class RateLimitException(Exception):
+    """Custom exception raised when the API returns a 429 status code."""
+    pass
+
 def load_supported_leagues():
-    """Loads league data from supported_leagues.json."""
     if not os.path.exists(SUPPORTED_LEAGUES_FILE):
         Log.error(f"{SUPPORTED_LEAGUES_FILE} not found.")
         sys.exit(1)
@@ -41,7 +44,6 @@ def load_supported_leagues():
             sys.exit(1)
 
 def extract_date(date_text):
-    """Converts scraped text like '22 Jul 26' into 'YYYY-MM-DD'."""
     clean_text = " ".join(date_text.split())
     match = re.search(r'(\d{1,2})\s*([A-Za-z]{3})\s*(\d{2,4})', clean_text)
     
@@ -59,12 +61,10 @@ def extract_date(date_text):
     return None
 
 def filter_and_process_event(raw_event, source="api"):
-    """Filters by strStatus and formats the final event dictionary."""
     status = str(raw_event.get("strStatus", "")).strip().upper()
     home = raw_event.get("strHomeTeam", "Unknown")
     away = raw_event.get("strAwayTeam", "Unknown")
 
-    # Reject finished, postponed, cancelled, etc.
     if status not in ACTIVE_STATUSES:
         Log.skip(f"[{status}] {home} vs {away} - Event ended or not played.")
         return None
@@ -74,7 +74,6 @@ def filter_and_process_event(raw_event, source="api"):
     return parsed
 
 def fetch_api_events(league_id, date_str):
-    """Requests events for a specific league and date from API."""
     api_url = f"https://www.thesportsdb.com/api/v1/json/123/eventsday.php?d={date_str}&l={league_id}"
     Log.api(f"Fetching API Events for League ID {league_id} on {date_str}...")
     
@@ -83,12 +82,16 @@ def fetch_api_events(league_id, date_str):
         response.raise_for_status()
         data = response.json()
         return data.get("events") or []
+    except requests.exceptions.HTTPError as e:
+        if e.response.status_code == 429:
+            raise RateLimitException("429 Too Many Requests")
+        Log.error(f"Failed API request for league ID {league_id} on {date_str}: {e}")
+        return []
     except requests.exceptions.RequestException as e:
         Log.error(f"Failed API request for league ID {league_id} on {date_str}: {e}")
         return []
 
 def scrape_fallback_events(league_url, target_date, existing_event_ids):
-    """Scrapes the league page for event IDs matching target_date."""
     Log.http(f"Scraper Fallback: {league_url} for date {target_date}")
     try:
         response = requests.get(league_url, headers=HEADERS, timeout=15)
@@ -118,7 +121,7 @@ def scrape_fallback_events(league_url, target_date, existing_event_ids):
                 continue
                 
             if 'results' in row_text.lower() and is_upcoming:
-                break # Reached the end of the upcoming section
+                break 
 
             if is_upcoming:
                 tds = tr.find_all('td')
@@ -142,7 +145,6 @@ def scrape_fallback_events(league_url, target_date, existing_event_ids):
     return scraped_event_ids
 
 def fetch_event_lookup(event_id):
-    """Fetches single event JSON from API via scraper lookup."""
     api_url = f"https://www.thesportsdb.com/api/v1/json/123/lookupevent.php?id={event_id}"
     Log.api(f"Requesting lookup for Event ID: {event_id}")
     try:
@@ -151,6 +153,10 @@ def fetch_event_lookup(event_id):
         data = response.json()
         if data.get("events") and len(data["events"]) > 0:
             return data["events"][0]
+    except requests.exceptions.HTTPError as e:
+        if e.response.status_code == 429:
+            raise RateLimitException("429 Too Many Requests")
+        Log.error(f"Failed lookup for event {event_id}: {e}")
     except requests.exceptions.RequestException as e:
         Log.error(f"Failed lookup for event {event_id}: {e}")
     return None
@@ -165,7 +171,6 @@ def main():
     )
     args = parser.parse_args()
     
-    # Calculate 2-day window
     base_date = datetime.strptime(args.date, '%Y-%m-%d')
     target_dates = [
         base_date.strftime('%Y-%m-%d'),
@@ -179,7 +184,15 @@ def main():
         "dates": target_dates,
         "leagues": []
     }
-
+    
+    # Initialize the state machine queue
+    task_queue = {
+        "target_dates": target_dates,
+        "status": "completed",
+        "pending_api_fetches": [],
+        "pending_lookups": []
+    }
+    api_exhausted = False
     total_added = 0
 
     for league in leagues_config:
@@ -191,21 +204,37 @@ def main():
             continue
 
         Log.section_in(f"Processing {str_league} (ID: {league_id})")
-        
         valid_events = {}
 
-        # Loop through both dates for the current league
         for current_date in target_dates:
             Log.info(f"--- Fetching for {current_date} ---")
             
             # 1. API Primary Fetch
-            raw_api_events = fetch_api_events(league_id, current_date)
-            for raw_event in raw_api_events:
-                processed = filter_and_process_event(raw_event, source="api_scheduled")
-                if processed:
-                    ev_id = processed["idEvent"]
-                    valid_events[ev_id] = processed
-                    Log.match(f"Added via API: {processed['strHomeTeam']} vs {processed['strAwayTeam']}")
+            if not api_exhausted:
+                try:
+                    raw_api_events = fetch_api_events(league_id, current_date)
+                    for raw_event in raw_api_events:
+                        processed = filter_and_process_event(raw_event, source="api_scheduled")
+                        if processed:
+                            ev_id = processed["idEvent"]
+                            valid_events[ev_id] = processed
+                            Log.match(f"Added via API: {processed['strHomeTeam']} vs {processed['strAwayTeam']}")
+                except RateLimitException:
+                    Log.warn("API 429 Rate Limit hit! Suspending API calls for the remainder of this run.")
+                    api_exhausted = True
+
+            # Handle Exhaustion for Base API Fetch
+            if api_exhausted:
+                Log.skip(f"Queueing base fetch for {str_league} on {current_date}")
+                task_queue["pending_api_fetches"].append({
+                    "league_id": league_id,
+                    "strLeague": str_league,
+                    "date": current_date,
+                    "league_url": league_url,
+                    "strBadge": league.get("strBadge", "")
+                })
+                # We skip the scraper for this date because resume_fixtures will handle the entire flow
+                continue
 
             # 2. Scraper Fallback Fetch
             if league_url:
@@ -215,39 +244,64 @@ def main():
                 if scraped_ids:
                     Log.fetch(f"Found {len(scraped_ids)} missing events via Scraper. Looking up...")
                     for ev_id in scraped_ids:
-                        time.sleep(0.5) # Rate limiting respect
-                        raw_lookup = fetch_event_lookup(ev_id)
-                        if raw_lookup:
-                            processed = filter_and_process_event(raw_lookup, source="scraped_lookup")
-                            if processed:
-                                valid_events[ev_id] = processed
-                                Log.match(f"Added via Scraper: {processed['strHomeTeam']} vs {processed['strAwayTeam']}")
+                        if not api_exhausted:
+                            time.sleep(0.5)
+                            try:
+                                raw_lookup = fetch_event_lookup(ev_id)
+                                if raw_lookup:
+                                    processed = filter_and_process_event(raw_lookup, source="scraped_lookup")
+                                    if processed:
+                                        valid_events[ev_id] = processed
+                                        Log.match(f"Added via Scraper: {processed['strHomeTeam']} vs {processed['strAwayTeam']}")
+                            except RateLimitException:
+                                Log.warn("API 429 Rate Limit hit during lookup! Suspending API calls.")
+                                api_exhausted = True
+                        
+                        # Handle Exhaustion for Lookup Fetch
+                        if api_exhausted:
+                            Log.skip(f"Queueing lookup for event {ev_id}")
+                            task_queue["pending_lookups"].append({
+                                "event_id": ev_id,
+                                "league_id": league_id,
+                                "strLeague": str_league,
+                                "date": current_date,
+                                "league_url": league_url,
+                                "strBadge": league.get("strBadge", "")
+                            })
                 else:
                     Log.info("No missing events found via Scraper for this date.")
         
-        # 3. Assemble League Object
+        # 3. Assemble League Object for successful fetches
         if valid_events:
             league_obj = {
                 "idLeague": league_id,
                 "strLeague": str_league,
                 "strLeagueBadge": league.get("strBadge", ""),
                 "leagueUrl": league_url,
-                "events": list(valid_events.values()) # Dict values maintain insertion order
+                "events": list(valid_events.values()) 
             }
             final_fixtures_data["leagues"].append(league_obj)
             total_added += len(valid_events)
             Log.ok(f"Saved {len(valid_events)} active matches across 2 days for {str_league}.")
         else:
-            Log.skip(f"No active events for {str_league}. Omitting league from JSON.")
+            Log.skip(f"No active events fetched for {str_league}. Omitting league from JSON.")
             
         Log.section_out(f"Completed {str_league}")
 
-    # 4. Save Final Output
+    # 4. Save Final Outputs (Fixtures and Task Queue)
     os.makedirs(os.path.dirname(FIXTURES_FILE), exist_ok=True)
     with open(FIXTURES_FILE, 'w', encoding='utf-8') as f:
         json.dump(final_fixtures_data, f, indent=2, ensure_ascii=False)
+        
+    if task_queue["pending_api_fetches"] or task_queue["pending_lookups"]:
+        task_queue["status"] = "incomplete"
+        
+    with open(TASK_QUEUE_FILE, 'w', encoding='utf-8') as f:
+        json.dump(task_queue, f, indent=2, ensure_ascii=False)
     
-    Log.success(f"Sync Complete! {total_added} total active matches saved to {FIXTURES_FILE}.")
+    Log.success(f"Sync Complete! {total_added} total active matches saved.")
+    if task_queue["status"] == "incomplete":
+        Log.warn(f"Task queue generated with {len(task_queue['pending_api_fetches'])} pending fetches and {len(task_queue['pending_lookups'])} pending lookups.")
 
 if __name__ == "__main__":
     main()
