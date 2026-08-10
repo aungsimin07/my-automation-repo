@@ -17,19 +17,19 @@ jobs:
     steps:
       # 1. Checkout the main branch (contains scripts/ and requirements.txt)
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       # 2. Checkout the data branch directly into the 'data/' folder.
       # The python script will read/write to 'data/supported_leagues.json' seamlessly.
       - name: Checkout Data Branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: data
           path: data
           fetch-depth: 0 # Required to use --amend on the commit history
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: '3.10'
 
