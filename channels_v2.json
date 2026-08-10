@@ -1,0 +1,386 @@
+[
+  {
+    "duration": -1,
+    "title": "Belarus-5",
+    "tvg": {
+      "id": "Belarus5.by@SD",
+      "logo": "https://i.imgur.com/NJsRFud.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/1648-belarus-5-tv-schedule",
+    "url": "http://stream.mcquack.net/33/index.m3u8",
+    "options": {
+      "vlc": {
+        "httpUserAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36"
+      }
+    }
+  },
+  {
+    "duration": -1,
+    "title": "Belarus-5",
+    "tvg": {
+      "id": "Belarus5.by@SD",
+      "logo": "https://i.imgur.com/NJsRFud.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/1648-belarus-5-tv-schedule",
+    "url": "https://streaming.thestream.cyou/live/7001.m3u8",
+    "options": {
+      "vlc": {
+        "httpUserAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36"
+      }
+    }
+  },
+  {
+    "duration": -1,
+    "title": "Digi Sport 1",
+    "tvg": {
+      "id": "DigiSport1.ro@HD",
+      "logo": "https://i.imgur.com/5zMxDYq.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/4229-digi-sport-1-romania-tv-schedule",
+    "url": "http://tpjgkqnu.vexiumis.top/iptv/ZFMBTT94BTSVQMFVDASEV6XS/2523/index.m3u8",
+    "options": {
+      "vlc": {
+        "httpUserAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36"
+      }
+    }
+  },
+  {
+    "duration": -1,
+    "title": "Nova Sport 4",
+    "tvg": {
+      "id": "NovaSport4.cz@HD",
+      "logo": "https://imgur.com/R14S6El.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/5176-nova-sport-4-cz-tv-schedule",
+    "url": "http://tpjgkqnu.vexiumis.top/iptv/ZFMBTT94BTSVQMFVDASEV6XS/31571/index.m3u8",
+    "options": {
+      "vlc": {
+        "httpUserAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36"
+      }
+    }
+  },
+  {
+    "duration": -1,
+    "title": "Polsat Sport 1",
+    "tvg": {
+      "id": "PolsatSport1.pl@HD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/padw0k1655540397.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/3549-polsat-sport-tv-schedule",
+    "url": "http://line.watchtivo-8k.com:80/play/live.php?mac=00:1A:79:3F:0C:96&stream=1729162&extension=ts&play_token=9JXfYd9pyq",
+    "options": {
+      "vlc": {
+        "httpUserAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36"
+      }
+    }
+  },
+  {
+    "duration": -1,
+    "title": "Polsat Sport 2",
+    "tvg": {
+      "id": "PolsatSport2.pl@HD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/x2hsgr1771005739.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/3550-polsat-sport-2-tv-schedule",
+    "url": "http://line.watchtivo-8k.com:80/play/live.php?mac=00:1A:79:3F:0C:96&stream=1729164&extension=ts&play_token=vFbihF9Rmr",
+    "options": {
+      "vlc": {
+        "httpUserAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36"
+      }
+    }
+  },
+  {
+    "duration": -1,
+    "title": "Polsat Sport 3",
+    "tvg": {
+      "id": "PolsatSport3.pl@HD",
+      "logo": "https://r2.thesportsdb.com/images/media/channel/logo/d7rdcx1771005909.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/3588-polsat-sport-3-tv-schedule",
+    "url": "http://line.watchtivo-8k.com:80/play/live.php?mac=00:1A:79:3F:0C:96&stream=1729168&extension=ts&play_token=ThvjYQPppG",
+    "options": {
+      "vlc": {
+        "httpUserAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36"
+      }
+    }
+  },
+  {
+    "duration": -1,
+    "title": "Premier Sports 1",
+    "tvg": {
+      "id": "PremierSports1.ie@HD",
+      "logo": "https://imgur.com/eOybZMU.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/2874-premier-sports-1-ie-tv-schedule",
+    "url": "http://kstv.us:8080/live/jimmyrhale/JE1974aa$$/47858.m3u8",
+    "options": {
+      "vlc": {
+        "httpUserAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36"
+      }
+    }
+  },
+  {
+    "duration": -1,
+    "title": "Premier Sports 2",
+    "tvg": {
+      "id": "PremierSports2.ie@HD",
+      "logo": "https://imgur.com/Fx1n84p.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/21-premier-sports-2-ie-tv-schedule",
+    "url": "http://kstv.us:8080/live/jimmyrhale/JE1974aa$$/47859.m3u8",
+    "options": {
+      "vlc": {
+        "httpUserAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36"
+      }
+    }
+  },
+  {
+    "duration": -1,
+    "title": "Sky Sports Premier League",
+    "tvg": {
+      "id": "SkySportsPremierLeagueROI.uk@HD",
+      "logo": "https://imgur.com/FzzpF1f.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/8647-sky-sports-premier-league-tv-schedule",
+    "url": "http://kstv.us:8080/jimmyrhale/JE1974aa$$/47871",
+    "options": {
+      "vlc": {
+        "httpUserAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36"
+      }
+    }
+  },
+  {
+    "duration": -1,
+    "title": "Sky Sports Main Event",
+    "tvg": {
+      "id": "SkySportsMainEvent.uk@HD",
+      "logo": "https://d2n0069hmnqmmx.cloudfront.net/epgdata/1.0/newchanlogos/512/512/skychb1301.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/8646-sky-sports-main-event-tv-schedule",
+    "url": "http://kstv.us:8080/jimmyrhale/JE1974aa$$/47868",
+    "options": {
+      "vlc": {
+        "httpUserAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36"
+      }
+    }
+  },
+  {
+    "duration": -1,
+    "title": "Sky Sports Main Event",
+    "tvg": {
+      "id": "SkySportsMainEvent.uk@HD",
+      "logo": "https://d2n0069hmnqmmx.cloudfront.net/epgdata/1.0/newchanlogos/512/512/skychb1301.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/8646-sky-sports-main-event-tv-schedule",
+    "url": "http://kstv.us:8080/live/Kh2fHxR0c8/3333726709/47868.ts",
+    "options": {
+      "vlc": {
+        "httpUserAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36"
+      }
+    }
+  },
+  {
+    "duration": -1,
+    "title": "Sky Sports Main Event 4K",
+    "tvg": {
+      "id": "SkySportsMainEvent.uk@HD",
+      "logo": "https://d2n0069hmnqmmx.cloudfront.net/epgdata/1.0/newchanlogos/512/512/skychb1301.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/8646-sky-sports-main-event-tv-schedule",
+    "url": "http://ysift55.xyz:80/live/WJ74AC4SRKQQYR7/pahruAQRs8/1281430.m3u8",
+    "options": {
+      "vlc": {
+        "httpUserAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36"
+      }
+    }
+  },
+  {
+    "duration": -1,
+    "title": "Sky Sports Mix",
+    "tvg": {
+      "id": "SkySportsMix.uk@HD",
+      "logo": "https://d2n0069hmnqmmx.cloudfront.net/epgdata/1.0/newchanlogos/512/512/skychb4091.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/8698-sky-sports-mix-tv-schedule",
+    "url": "http://kstv.us:8080/live/jimmyrhale/JE1974aa$$/47869.m3u8",
+    "options": {
+      "vlc": {
+        "httpUserAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36"
+      }
+    }
+  },
+  {
+    "duration": -1,
+    "title": "Sky Sports Football",
+    "tvg": {
+      "id": "SkySportsFootball.uk@HD",
+      "logo": "https://d2n0069hmnqmmx.cloudfront.net/epgdata/1.0/newchanlogos/512/512/skychb3838.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/8648-sky-sports-football-tv-schedule",
+    "url": "http://kstv.us:8080/jimmyrhale/JE1974aa$$/47866",
+    "options": {
+      "vlc": {
+        "httpUserAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36"
+      }
+    }
+  },
+  {
+    "duration": -1,
+    "title": "Spiler 1",
+    "tvg": {
+      "id": "Spiler1.hu@SD",
+      "logo": "https://i.imgur.com/pbk8c4x.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/5180-sp\u00edler1-hu-tv-schedule",
+    "url": "http://88.212.15.19/live/spiler1/index.m3u8",
+    "options": {
+      "vlc": {
+        "httpUserAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36"
+      }
+    }
+  },
+  {
+    "duration": -1,
+    "title": "Spiler 2",
+    "tvg": {
+      "id": "Spiler2.hu@SD",
+      "logo": "https://i.imgur.com/1e0VsVH.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/5181-sp\u00edler2-hu-tv-schedule",
+    "url": "http://88.212.15.19/live/spiler2/index.m3u8",
+    "options": {
+      "vlc": {
+        "httpUserAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36"
+      }
+    }
+  },
+  {
+    "duration": -1,
+    "title": "TNT Sports 1",
+    "tvg": {
+      "id": "TNTSports1.uk@HD",
+      "logo": "https://raw.githubusercontent.com/tv-logo/tv-logos/refs/heads/main/countries/united-kingdom/tnt-sports-1-uk.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/6518-tnt-sports-1-tv-schedule",
+    "url": "http://kstv.us:8080/jimmyrhale/JE1974aa$$/47850",
+    "options": {
+      "vlc": {
+        "httpUserAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36"
+      }
+    }
+  },
+  {
+    "duration": -1,
+    "title": "TNT Sports 1",
+    "tvg": {
+      "id": "TNTSports1.uk@HD",
+      "logo": "https://raw.githubusercontent.com/tv-logo/tv-logos/refs/heads/main/countries/united-kingdom/tnt-sports-1-uk.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/6518-tnt-sports-1-tv-schedule",
+    "url": "http://line.watchtivo-8k.com:80/play/live.php?mac=00:1A:79:3F:0C:96&stream=894977&extension=ts&play_token=W2HvDO5iES",
+    "options": {
+      "vlc": {
+        "httpUserAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36"
+      }
+    }
+  },
+  {
+    "duration": -1,
+    "title": "TNT Sports 2",
+    "tvg": {
+      "id": "TNTSports2.uk@HD",
+      "logo": "https://raw.githubusercontent.com/tv-logo/tv-logos/refs/heads/main/countries/united-kingdom/tnt-sports-2-uk.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/6519-tnt-sports-2-tv-schedule",
+    "url": "http://kstv.us:8080/jimmyrhale/JE1974aa$$/47851",
+    "options": {
+      "vlc": {
+        "httpUserAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36"
+      }
+    }
+  },
+  {
+    "duration": -1,
+    "title": "TNT Sports 3",
+    "tvg": {
+      "id": "TNTSports3.uk@HD",
+      "logo": "https://raw.githubusercontent.com/tv-logo/tv-logos/refs/heads/main/countries/united-kingdom/tnt-sports-3-uk.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/8654-tnt-sports-3-tv-schedule",
+    "url": "http://kstv.us:8080/jimmyrhale/JE1974aa$$/47852",
+    "options": {
+      "vlc": {
+        "httpUserAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36"
+      }
+    }
+  },
+  {
+    "duration": -1,
+    "title": "TNT Sports 4",
+    "tvg": {
+      "id": "TNTSports4.uk@HD",
+      "logo": "https://raw.githubusercontent.com/tv-logo/tv-logos/refs/heads/main/countries/united-kingdom/tnt-sports-3-uk.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/8163-tnt-sports-4-tv-schedule",
+    "url": "http://kstv.us:8080/jimmyrhale/JE1974aa$$/47853",
+    "options": {
+      "vlc": {
+        "httpUserAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36"
+      }
+    }
+  },
+  {
+    "duration": -1,
+    "title": "TNT Sports Ultimate 4K",
+    "tvg": {
+      "id": "TNTSportsUltimate.uk@HD",
+      "logo": "https://i.imgur.com/fAyvqdH.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/8631-tnt-sports-ultimate-tv-schedule",
+    "url": "http://ysift55.xyz:80/live/WJ74AC4SRKQQYR7/pahruAQRs8/1281083.m3u8",
+    "options": {
+      "vlc": {
+        "httpUserAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36"
+      }
+    }
+  },
+  {
+    "duration": -1,
+    "title": "TyC Sports",
+    "tvg": {
+      "id": "TyCSports.ar@HD",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/TyC_Sports_logo.svg/960px-TyC_Sports_logo.svg.png"
+    },
+    "groupTitle": "Sports",
+    "channelPath": "/5001-tyc-sports-arg-tv-schedule",
+    "url": "http://line.ciao-ott.net:80/play/live.php?mac=00:1A:79:C8:7B:30&stream=1090606&extension=ts&play_token=UU20nTSWow",
+    "options": {
+      "vlc": {
+        "httpUserAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Mobile Safari/537.36"
+      }
+    }
+  }
+]
