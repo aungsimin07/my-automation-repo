@@ -8,10 +8,10 @@ import requests
 # Define the path to the JSON file (relative to the repository root)
 DATA_FILE = "data/supported_leagues.json"
 
-# The specific fields we expect every league object to have
+# The specific fields we expect every league object to have (intDivision removed)
 REQUIRED_KEYS = [
     "idLeague", "idAPIfootball", "idAPIfootballv3", 
-    "strLeague", "intDivision", "strBadge", "leagueUrl"
+    "strLeague", "strBadge", "leagueUrl"
 ]
 
 def extract_league_id(url):
@@ -21,12 +21,12 @@ def extract_league_id(url):
         return match.group(1)
     return None
 
-def get_division_sort_key(league):
-    """Helper function to convert intDivision string to integer for numerical sorting."""
+def get_sort_key(league):
+    """Helper function to convert idAPIfootballv3 string to integer for numerical sorting."""
     try:
-        return int(league.get("intDivision"))
+        return int(league.get("idAPIfootballv3"))
     except (ValueError, TypeError):
-        return 999  # Safe fallback for missing or non-numeric division values
+        return 999999  # Safe fallback for missing or non-numeric values
 
 def fetch_league_data(league_id):
     """Fetches league data from the API by ID."""
@@ -82,7 +82,6 @@ def main():
                     "idAPIfootball": fresh_data.get("idAPIfootball"),
                     "idAPIfootballv3": fresh_data.get("idAPIfootballv3"),
                     "strLeague": fresh_data.get("strLeague"),
-                    "intDivision": fresh_data.get("intDivision"),
                     "strBadge": fresh_data.get("strBadge"),
                     "leagueUrl": league.get("leagueUrl") # Preserve local URL
                 }
@@ -109,22 +108,21 @@ def main():
             "idAPIfootball": new_league_data.get("idAPIfootball"),
             "idAPIfootballv3": new_league_data.get("idAPIfootballv3"),
             "strLeague": new_league_data.get("strLeague"),
-            "intDivision": new_league_data.get("intDivision"),
             "strBadge": new_league_data.get("strBadge"),
             "leagueUrl": new_league_url
         }
         
         supported_leagues.append(new_league)
-        print(f"Success: Added '{new_league['strLeague']}' (Division: {new_league.get('intDivision')}).")
+        print(f"Success: Added '{new_league['strLeague']}' (API v3 ID: {new_league.get('idAPIfootballv3')}).")
 
-    # 7. Sort leagues by intDivision numerically (0, 1, 2, 3...)
-    supported_leagues.sort(key=get_division_sort_key)
+    # 7. Sort leagues by idAPIfootballv3 numerically
+    supported_leagues.sort(key=get_sort_key)
 
     # 8. Save back to the JSON file
     with open(DATA_FILE, 'w', encoding='utf-8') as file:
         json.dump(supported_leagues, file, indent=2)
 
-    print(f"Success: Operations complete. Validated data sorted and saved to {DATA_FILE}.")
+    print(f"Success: Operations complete. Validated data sorted by API v3 ID and saved to {DATA_FILE}.")
 
 if __name__ == "__main__":
     main()
