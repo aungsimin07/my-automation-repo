@@ -73,6 +73,46 @@ def filter_and_process_event(raw_event, source="api"):
     parsed["source"] = source
     return parsed
 
+def get_sort_key(event):
+    """Extracts timestamp or constructs a fallback datetime string for sorting."""
+    ts = event.get("strTimestamp")
+    if ts and ts.strip():
+        return ts.strip()
+    date_val = event.get("dateEvent") or "9999-12-31"
+    time_val = event.get("strTime") or "23:59:59"
+    return f"{date_val}T{time_val}"
+
+def merge_events_into_fixtures(fixtures_data, league_id, str_league, str_badge, league_url, new_events):
+    if not new_events:
+        return 0
+
+    leagues_list = fixtures_data.setdefault("leagues", [])
+    target_league = next((l for l in leagues_list if str(l.get("idLeague")) == str(league_id)), None)
+
+    if not target_league:
+        target_league = {
+            "idLeague": str(league_id),
+            "strLeague": str_league,
+            "strLeagueBadge": str_badge,
+            "leagueUrl": league_url,
+            "events": []
+        }
+        leagues_list.append(target_league)
+
+    existing_event_ids = {e["idEvent"] for e in target_league.get("events", [])}
+    added_count = 0
+
+    for ev in new_events:
+        if ev["idEvent"] not in existing_event_ids:
+            target_league["events"].append(ev)
+            existing_event_ids.add(ev["idEvent"])
+            added_count += 1
+
+    # Sort events so the nearest upcoming match is at the top
+    target_league["events"].sort(key=get_sort_key)
+
+    return added_count
+
 def fetch_api_events(league_id, date_str):
     api_url = f"https://www.thesportsdb.com/api/v1/json/123/eventsday.php?d={date_str}&l={league_id}"
     Log.api(f"Fetching API Events for League ID {league_id} on {date_str}...")
@@ -180,18 +220,37 @@ def main():
     Log.start(f"Unified Fixture Sync spanning: {target_dates[0]} to {target_dates[1]}")
 
     leagues_config = load_supported_leagues()
-    final_fixtures_data = {
-        "dates": target_dates,
-        "leagues": []
-    }
     
-    # Initialize the state machine queue
-    task_queue = {
-        "target_dates": target_dates,
-        "status": "completed",
-        "pending_api_fetches": [],
-        "pending_lookups": []
-    }
+    # 1. Load Existing Fixtures & Task Queue states to avoid redundant fetches
+    fixtures_data = None
+    if os.path.exists(FIXTURES_FILE):
+        with open(FIXTURES_FILE, 'r', encoding='utf-8') as f:
+            try:
+                fixtures_data = json.load(f)
+            except json.JSONDecodeError:
+                pass
+                
+    if not fixtures_data or fixtures_data.get("dates") != target_dates:
+        fixtures_data = {"dates": target_dates, "leagues": []}
+
+    task_queue = None
+    if os.path.exists(TASK_QUEUE_FILE):
+        with open(TASK_QUEUE_FILE, 'r', encoding='utf-8') as f:
+            try:
+                task_queue = json.load(f)
+            except json.JSONDecodeError:
+                pass
+                
+    if not task_queue or task_queue.get("target_dates") != target_dates:
+        task_queue = {
+            "target_dates": target_dates,
+            "status": "completed",
+            "completed_leagues": [],
+            "pending_api_fetches": [],
+            "pending_lookups": []
+        }
+
+    completed_leagues = set(task_queue.get("completed_leagues", []))
     api_exhausted = False
     total_added = 0
 
@@ -199,12 +258,18 @@ def main():
         league_id = str(league.get("idLeague", ""))
         league_url = league.get("leagueUrl", "")
         str_league = league.get("strLeague", "Unknown League")
+        str_badge = league.get("strBadge", "")
 
         if not league_id:
             continue
 
+        if league_id in completed_leagues:
+            Log.info(f"[{str_league}] Already fully processed for these dates. Skipping...")
+            continue
+
         Log.section_in(f"Processing {str_league} (ID: {league_id})")
         valid_events = {}
+        league_hit_rate_limit = False
 
         for current_date in target_dates:
             Log.info(f"--- Fetching for {current_date} ---")
@@ -222,6 +287,7 @@ def main():
                 except RateLimitException:
                     Log.warn("API 429 Rate Limit hit! Suspending API calls for the remainder of this run.")
                     api_exhausted = True
+                    league_hit_rate_limit = True
 
             # Handle Exhaustion for Base API Fetch
             if api_exhausted:
@@ -231,9 +297,8 @@ def main():
                     "strLeague": str_league,
                     "date": current_date,
                     "league_url": league_url,
-                    "strBadge": league.get("strBadge", "")
+                    "strBadge": str_badge
                 })
-                # We skip the scraper for this date because resume_fixtures will handle the entire flow
                 continue
 
             # 2. Scraper Fallback Fetch
@@ -256,6 +321,7 @@ def main():
                             except RateLimitException:
                                 Log.warn("API 429 Rate Limit hit during lookup! Suspending API calls.")
                                 api_exhausted = True
+                                league_hit_rate_limit = True
                         
                         # Handle Exhaustion for Lookup Fetch
                         if api_exhausted:
@@ -266,42 +332,42 @@ def main():
                                 "strLeague": str_league,
                                 "date": current_date,
                                 "league_url": league_url,
-                                "strBadge": league.get("strBadge", "")
+                                "strBadge": str_badge
                             })
                 else:
                     Log.info("No missing events found via Scraper for this date.")
         
-        # 3. Assemble League Object for successful fetches
+        # 3. Assemble & Merge League Object
         if valid_events:
-            league_obj = {
-                "idLeague": league_id,
-                "strLeague": str_league,
-                "strLeagueBadge": league.get("strBadge", ""),
-                "leagueUrl": league_url,
-                "events": list(valid_events.values()) 
-            }
-            final_fixtures_data["leagues"].append(league_obj)
-            total_added += len(valid_events)
-            Log.ok(f"Saved {len(valid_events)} active matches across 2 days for {str_league}.")
+            added = merge_events_into_fixtures(
+                fixtures_data, league_id, str_league, str_badge, league_url, list(valid_events.values())
+            )
+            total_added += added
+            Log.ok(f"Saved {added} active matches across 2 days for {str_league}.")
         else:
-            Log.skip(f"No active events fetched for {str_league}. Omitting league from JSON.")
+            Log.skip(f"No active events fetched for {str_league}.")
+
+        # If league successfully finished without hitting limits, mark complete
+        if not league_hit_rate_limit:
+            completed_leagues.add(league_id)
             
         Log.section_out(f"Completed {str_league}")
 
-    # 4. Save Final Outputs (Fixtures and Task Queue)
+    # 4. Save Final Outputs
     os.makedirs(os.path.dirname(FIXTURES_FILE), exist_ok=True)
     with open(FIXTURES_FILE, 'w', encoding='utf-8') as f:
-        json.dump(final_fixtures_data, f, indent=2, ensure_ascii=False)
+        json.dump(fixtures_data, f, indent=2, ensure_ascii=False)
         
+    task_queue["completed_leagues"] = list(completed_leagues)
     if task_queue["pending_api_fetches"] or task_queue["pending_lookups"]:
         task_queue["status"] = "incomplete"
         
     with open(TASK_QUEUE_FILE, 'w', encoding='utf-8') as f:
         json.dump(task_queue, f, indent=2, ensure_ascii=False)
     
-    Log.success(f"Sync Complete! {total_added} total active matches saved.")
+    Log.success(f"Sync Complete! {total_added} new active matches retrieved.")
     if task_queue["status"] == "incomplete":
-        Log.warn(f"Task queue generated with {len(task_queue['pending_api_fetches'])} pending fetches and {len(task_queue['pending_lookups'])} pending lookups.")
+        Log.warn(f"Task queue updated with {len(task_queue['pending_api_fetches'])} pending fetches and {len(task_queue['pending_lookups'])} pending lookups.")
 
 if __name__ == "__main__":
     main()

@@ -66,6 +66,15 @@ def filter_and_process_event(raw_event, source="api"):
     parsed["source"] = source
     return parsed
 
+def get_sort_key(event):
+    """Extracts timestamp or constructs a fallback datetime string for sorting."""
+    ts = event.get("strTimestamp")
+    if ts and ts.strip():
+        return ts.strip()
+    date_val = event.get("dateEvent") or "9999-12-31"
+    time_val = event.get("strTime") or "23:59:59"
+    return f"{date_val}T{time_val}"
+
 def fetch_api_events(league_id, date_str):
     api_url = f"https://www.thesportsdb.com/api/v1/json/123/eventsday.php?d={date_str}&l={league_id}"
     Log.api(f"Fetching API Events for League ID {league_id} on {date_str}...")
@@ -150,12 +159,7 @@ def merge_events_into_fixtures(fixtures_data, league_id, str_league, str_badge, 
         return
 
     leagues_list = fixtures_data.setdefault("leagues", [])
-    target_league = None
-
-    for l in leagues_list:
-        if str(l.get("idLeague")) == str(league_id):
-            target_league = l
-            break
+    target_league = next((l for l in leagues_list if str(l.get("idLeague")) == str(league_id)), None)
 
     if not target_league:
         target_league = {
@@ -176,6 +180,9 @@ def merge_events_into_fixtures(fixtures_data, league_id, str_league, str_badge, 
             existing_event_ids.add(ev["idEvent"])
             added_count += 1
 
+    # Sort events so the nearest upcoming match is at the top
+    target_league["events"].sort(key=get_sort_key)
+
     if added_count > 0:
         Log.ok(f"Merged {added_count} new events into {str_league}.")
 
@@ -194,8 +201,14 @@ def main():
 
     pending_fetches = task_queue.get("pending_api_fetches", [])
     pending_lookups = task_queue.get("pending_lookups", [])
+    completed_leagues = set(task_queue.get("completed_leagues", []))
 
     Log.info(f"Queue Status: {len(pending_fetches)} pending API fetches, {len(pending_lookups)} pending lookups.")
+
+    # Record which leagues had tasks when we started
+    initial_pending_league_ids = set()
+    for task in pending_fetches + pending_lookups:
+        initial_pending_league_ids.add(str(task["league_id"]))
 
     remaining_fetches = []
     remaining_lookups = []
@@ -241,7 +254,6 @@ def main():
                                     processed = filter_and_process_event(raw_lookup, source="scraped_lookup_resumed")
                                     if processed:
                                         fetched_events[ev_id] = processed
-                                        # Add this line:
                                         Log.match(f"Added via Scraper: {processed['strHomeTeam']} vs {processed['strAwayTeam']}")
                             except RateLimitException:
                                 Log.warn("API 429 Limit hit during scraper lookup! Queueing remaining lookups.")
@@ -297,9 +309,19 @@ def main():
             api_exhausted = True
             remaining_lookups.append(task)
 
-    # 3. Update Task Queue State
+    # 3. Assess which leagues have been fully completed
+    remaining_league_ids = set()
+    for task in remaining_fetches + remaining_lookups:
+        remaining_league_ids.add(str(task["league_id"]))
+
+    for lid in initial_pending_league_ids:
+        if lid not in remaining_league_ids:
+            completed_leagues.add(lid)
+
+    # 4. Update Task Queue State
     task_queue["pending_api_fetches"] = remaining_fetches
     task_queue["pending_lookups"] = remaining_lookups
+    task_queue["completed_leagues"] = list(completed_leagues)
 
     if not remaining_fetches and not remaining_lookups:
         task_queue["status"] = "completed"
@@ -308,7 +330,7 @@ def main():
         task_queue["status"] = "incomplete"
         Log.warn(f"Tasks remaining: {len(remaining_fetches)} fetches, {len(remaining_lookups)} lookups.")
 
-    # 4. Save Updated Files
+    # 5. Save Updated Files
     with open(FIXTURES_FILE, 'w', encoding='utf-8') as f:
         json.dump(fixtures_data, f, indent=2, ensure_ascii=False)
 
