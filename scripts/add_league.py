@@ -15,6 +15,13 @@ def extract_league_id(url):
         return match.group(1)
     return None
 
+def get_division_sort_key(league):
+    """Helper function to convert intDivision string to integer for numerical sorting."""
+    try:
+        return int(league.get("intDivision"))
+    except (ValueError, TypeError):
+        return 999  # Safe fallback for missing or non-numeric division values
+
 def main():
     # 1. Accept leagueUrl as argument
     parser = argparse.ArgumentParser(description="Add a supported league to the JSON data.")
@@ -54,12 +61,12 @@ def main():
         "idAPIfootball": league_data.get("idAPIfootball"),
         "idAPIfootballv3": league_data.get("idAPIfootballv3"),
         "strLeague": league_data.get("strLeague"),
+        "intDivision": league_data.get("intDivision"),
         "strBadge": league_data.get("strBadge"),
         "leagueUrl": league_url
     }
 
     # 5. Store in supported_leagues.json, ensuring uniqueness
-    # Ensure the data directory exists
     os.makedirs(os.path.dirname(DATA_FILE), exist_ok=True)
 
     # Load existing data safely
@@ -78,13 +85,16 @@ def main():
             print(f"Notice: League '{new_league['strLeague']}' (ID: {new_league['idLeague']}) already exists. Skipping addition.")
             sys.exit(0) # Exit cleanly, not an error for the CI/CD pipeline
 
-    # Append and save
+    # Append new league
     supported_leagues.append(new_league)
+
+    # 6. Sort leagues by intDivision numerically (0, 1, 2, 3...)
+    supported_leagues.sort(key=get_division_sort_key)
 
     with open(DATA_FILE, 'w', encoding='utf-8') as file:
         json.dump(supported_leagues, file, indent=2)
 
-    print(f"Success: Added '{new_league['strLeague']}' to {DATA_FILE}.")
+    print(f"Success: Added '{new_league['strLeague']}' (Division: {new_league.get('intDivision')}) to {DATA_FILE} and sorted list by division.")
 
 if __name__ == "__main__":
     main()
