@@ -10,12 +10,27 @@ MAX_RUNTIME_SECONDS = int(os.getenv("MAX_RUNTIME_SECONDS", "240"))
 
 
 def build_league_object(existing: dict, api_league: dict) -> dict:
-    updated = dict(existing)
-    updated["idLeague"] = api_league.get("idLeague", existing.get("idLeague"))
-    updated["idAPIfootballv3"] = api_league.get("idAPIfootballv3", existing.get("idAPIfootballv3"))
-    updated["strLeague"] = api_league.get("strLeague", existing.get("strLeague"))
-    updated["strBadge"] = api_league.get("strBadge", existing.get("strBadge"))
-    return updated
+    logo = existing.get("leagueLogo")
+    if isinstance(logo, dict):
+        Logger.warning(
+            f"League {existing.get('idLeague')} has legacy leagueLogo object shape. "
+            f"Resetting to null — re-set leagueLogoId manually if needed."
+        )
+        logo = None
+
+    return {
+        "idLeague": api_league.get("idLeague", existing.get("idLeague")),
+        "idAPIfootballv3": api_league.get("idAPIfootballv3", existing.get("idAPIfootballv3")),
+        "idCup": api_league.get("idCup", existing.get("idCup")),
+        "strLeague": api_league.get("strLeague", existing.get("strLeague")),
+        "strCurrentSeason": api_league.get("strCurrentSeason", existing.get("strCurrentSeason")),
+        "strComplete": api_league.get("strComplete", existing.get("strComplete")),
+        "strBadge": api_league.get("strBadge", existing.get("strBadge")),
+        "strWebsite": api_league.get("strWebsite", existing.get("strWebsite")),
+        "leagueUrl": existing.get("leagueUrl"),
+        "leagueLogo": logo,
+        "metadata": existing.get("metadata", {}),
+    }
 
 
 def process_queue(manager: APIManager, leagues: list) -> int:

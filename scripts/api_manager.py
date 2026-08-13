@@ -47,13 +47,12 @@ class APIManager:
     # -- notifications (placeholder, not implemented yet) -------------------
 
     def _notify_error(self, message: str) -> None:
-        # TODO: dispatch an alert (Telegram bot / email) when API calls keep
-        # failing. Left unimplemented on purpose for now.
-        #
-        # Example shape once implemented:
-        #   send_telegram_alert(message)
-        #   send_email_alert(message)
-        pass
+        # Not implemented yet — this is a stand-in so the call sites and
+        # control flow are already wired up. Once a real channel exists,
+        # replace the log line below with actual dispatch calls.
+        Logger.warning(f"[NOTIFY-DEMO] Would dispatch alert -> Telegram/Email: {message}")
+        # TODO: send_telegram_alert(message)
+        # TODO: send_email_alert(message)
 
     # -- requests ------------------------------------------------------------
 

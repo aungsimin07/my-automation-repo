@@ -25,15 +25,6 @@ def parse_logo_id(raw: str):
         Logger.error(f"leagueLogoId must be an integer, got: '{raw}'", fatal=True)
 
 
-def build_logo_urls(logo_id):
-    if logo_id is None:
-        return {"light": None, "dark": None}
-    return {
-        "light": f"https://images.fotmob.com/image_resources/logo/leaguelogo/{logo_id}.png",
-        "dark": f"https://images.fotmob.com/image_resources/logo/leaguelogo/dark/{logo_id}.png",
-    }
-
-
 def main():
     league_url = os.getenv("LEAGUE_URL", "").strip()
     logo_id = parse_logo_id(os.getenv("LEAGUE_LOGO_ID", ""))
@@ -63,10 +54,14 @@ def main():
     league_object = {
         "idLeague": api_league.get("idLeague", id_league),
         "idAPIfootballv3": api_league.get("idAPIfootballv3"),
+        "idCup": api_league.get("idCup"),
         "strLeague": api_league.get("strLeague"),
+        "strCurrentSeason": api_league.get("strCurrentSeason"),
+        "strComplete": api_league.get("strComplete"),
         "strBadge": api_league.get("strBadge"),
+        "strWebsite": api_league.get("strWebsite"),
         "leagueUrl": league_url,
-        "leagueLogo": build_logo_urls(logo_id),
+        "leagueLogo": logo_id,
         "metadata": {},
     }
 
