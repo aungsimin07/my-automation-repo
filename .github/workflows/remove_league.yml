@@ -1,14 +1,14 @@
-name: Add League
+name: Remove League
 
 on:
   workflow_dispatch:
     inputs:
       leagueUrl:
-        description: "League home page URL (e.g. https://www.thesportsdb.com/league/4328-english-premier-league)"
-        required: true
+        description: "League home page URL (leave blank if using idLeague)"
+        required: false
         type: string
-      leagueLogoId:
-        description: "Fotmob league logo id (integer, optional)"
+      idLeague:
+        description: "TheSportsDB league id (leave blank if using leagueUrl)"
         required: false
         type: string
 
@@ -16,7 +16,7 @@ permissions:
   contents: write
 
 jobs:
-  add-league:
+  remove-league:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -37,13 +37,11 @@ jobs:
       - name: Install Dependencies
         run: pip install -r requirements.txt
 
-      - name: Run Add League Script
+      - name: Run Remove League Script
         env:
-          THESPORTSDB_BASE_URL: ${{ secrets.THESPORTSDB_BASE_URL }}
-          THESPORTSDB_API_KEY: ${{ secrets.THESPORTSDB_API_KEY }}
           LEAGUE_URL: ${{ github.event.inputs.leagueUrl }}
-          LEAGUE_LOGO_ID: ${{ github.event.inputs.leagueLogoId }}
-        run: python scripts/add_league.py
+          LEAGUE_ID: ${{ github.event.inputs.idLeague }}
+        run: python scripts/remove_league.py
 
       - name: Commit and Push to Data Branch
         run: |

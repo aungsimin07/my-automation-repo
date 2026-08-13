@@ -1,22 +1,15 @@
-name: Add League
+name: Update Leagues
 
 on:
   workflow_dispatch:
-    inputs:
-      leagueUrl:
-        description: "League home page URL (e.g. https://www.thesportsdb.com/league/4328-english-premier-league)"
-        required: true
-        type: string
-      leagueLogoId:
-        description: "Fotmob league logo id (integer, optional)"
-        required: false
-        type: string
+  schedule:
+    - cron: '30 17 * * *'  # 00:00 Asia/Yangon (UTC+6:30)
 
 permissions:
   contents: write
 
 jobs:
-  add-league:
+  update-leagues:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -37,13 +30,12 @@ jobs:
       - name: Install Dependencies
         run: pip install -r requirements.txt
 
-      - name: Run Add League Script
+      - name: Run Update League Script
         env:
           THESPORTSDB_BASE_URL: ${{ secrets.THESPORTSDB_BASE_URL }}
           THESPORTSDB_API_KEY: ${{ secrets.THESPORTSDB_API_KEY }}
-          LEAGUE_URL: ${{ github.event.inputs.leagueUrl }}
-          LEAGUE_LOGO_ID: ${{ github.event.inputs.leagueLogoId }}
-        run: python scripts/add_league.py
+          MAX_RUNTIME_SECONDS: "240"
+        run: python scripts/update_league.py
 
       - name: Commit and Push to Data Branch
         run: |
@@ -51,12 +43,12 @@ jobs:
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
 
-          git add leagues.json
+          git add leagues.json queues/
 
           if ! git diff --staged --quiet; then
             TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
             git commit --amend -m "Automated data: Updated leagues.json at $TIMESTAMP"
             git push --force origin data
           else
-            echo "No leagues.json changes detected. Skipping commit."
+            echo "No changes detected. Skipping commit."
           fi
