@@ -1,0 +1,65 @@
+name: Update League Logo
+
+on:
+  workflow_dispatch:
+    inputs:
+      leagueUrl:
+        description: "League home page URL (leave blank if using idLeague)"
+        required: false
+        type: string
+      idLeague:
+        description: "TheSportsDB league id (leave blank if using leagueUrl)"
+        required: false
+        type: string
+      leagueLogoId:
+        description: "Fotmob league logo id (integer, required)"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  update-league-logo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v7
+
+      - name: Checkout Data Branch
+        uses: actions/checkout@v7
+        with:
+          ref: data
+          path: data
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Update League Logo Script
+        env:
+          LEAGUE_URL: ${{ github.event.inputs.leagueUrl }}
+          LEAGUE_ID: ${{ github.event.inputs.idLeague }}
+          LEAGUE_LOGO_ID: ${{ github.event.inputs.leagueLogoId }}
+        run: python scripts/update_league_logo.py
+
+      - name: Commit and Push to Data Branch
+        run: |
+          cd data
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          git add leagues.json
+
+          if ! git diff --staged --quiet; then
+            TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
+            git commit --amend -m "Automated data: Updated leagues.json at $TIMESTAMP"
+            git push --force origin data
+          else
+            echo "No leagues.json changes detected. Skipping commit."
+          fi
