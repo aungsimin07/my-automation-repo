@@ -10,13 +10,19 @@ MAX_RUNTIME_SECONDS = int(os.getenv("MAX_RUNTIME_SECONDS", "240"))
 
 
 def build_league_object(existing: dict, api_league: dict) -> dict:
-    logo = existing.get("leagueLogo")
-    if isinstance(logo, dict):
-        Logger.warning(
-            f"League {existing.get('idLeague')} has legacy leagueLogo object shape. "
-            f"Resetting to null — re-set leagueLogoId manually if needed."
-        )
-        logo = None
+    metadata = dict(existing.get("metadata") or {})
+
+    # Migrate legacy top-level leagueLogo into metadata, if present.
+    if "leagueLogo" in existing:
+        legacy_logo = existing["leagueLogo"]
+        if isinstance(legacy_logo, dict):
+            Logger.warning(
+                f"League {existing.get('idLeague')} has legacy leagueLogo object shape. "
+                f"Resetting to null — re-set leagueLogoId manually if needed."
+            )
+            metadata.setdefault("leagueLogo", None)
+        else:
+            metadata.setdefault("leagueLogo", legacy_logo)
 
     return {
         "idLeague": api_league.get("idLeague", existing.get("idLeague")),
@@ -28,8 +34,7 @@ def build_league_object(existing: dict, api_league: dict) -> dict:
         "strBadge": api_league.get("strBadge", existing.get("strBadge")),
         "strWebsite": api_league.get("strWebsite", existing.get("strWebsite")),
         "leagueUrl": existing.get("leagueUrl"),
-        "leagueLogo": logo,
-        "metadata": existing.get("metadata", {}),
+        "metadata": metadata,
     }
 
 

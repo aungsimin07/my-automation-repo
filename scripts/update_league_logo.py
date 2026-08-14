@@ -31,8 +31,9 @@ def main():
     if target is None:
         Logger.error("No matching league found in leagues.json.", fatal=True)
 
-    old_logo = target.get("leagueLogo")
-    target["leagueLogo"] = logo_id
+    target.setdefault("metadata", {})
+    old_logo = target["metadata"].get("leagueLogo")
+    target["metadata"]["leagueLogo"] = logo_id
 
     save_leagues(leagues)
     Logger.success(

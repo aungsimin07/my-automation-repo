@@ -61,8 +61,9 @@ def main():
         "strBadge": api_league.get("strBadge"),
         "strWebsite": api_league.get("strWebsite"),
         "leagueUrl": league_url,
-        "leagueLogo": logo_id,
-        "metadata": {},
+        "metadata": {
+            "leagueLogo": logo_id,
+        },
     }
 
     leagues.append(league_object)
