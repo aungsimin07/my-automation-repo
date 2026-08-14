@@ -8,7 +8,7 @@ from event_scraper import scrape_fallback_event_ids
 from event_store import (
     load_events, save_events, build_event_object, build_league_entry_from_tracked,
     build_league_entry_from_event, get_or_create_league_entry, upsert_event,
-    sort_league_events, prune_to_dates,
+    sort_league_events, prune_empty_leagues, prune_to_dates,
 )
 from league_store import load_leagues
 from logger import Logger
