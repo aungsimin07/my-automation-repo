@@ -7,8 +7,8 @@ from api_manager import APIManager, APIError
 from event_scraper import scrape_fallback_event_ids
 from event_store import (
     load_events, save_events, build_event_object, build_league_entry_from_tracked,
-    build_league_entry_from_event, get_or_create_league_entry, upsert_event,
-    sort_league_events, prune_empty_leagues, prune_to_dates,
+    fetch_league_entry_via_api, get_or_create_league_entry, upsert_event,
+    sort_leagues, prune_empty_leagues, prune_to_dates,
 )
 from league_store import load_leagues
 from logger import Logger
@@ -24,12 +24,15 @@ def get_target_dates() -> list:
     tomorrow = today + timedelta(days=1)
     return [today.isoformat(), tomorrow.isoformat()]
 
+
 def _is_complete(league: dict) -> bool:
     return (league.get("strComplete") or "").strip().lower() == "yes"
+
 
 def _skip_complete_enabled() -> bool:
     raw = os.getenv("SKIP_COMPLETE_LEAGUES", "true").strip().lower()
     return raw in ("1", "true", "yes")
+
 
 def process_eventsday_queue(manager: APIManager, data: dict, leagues_by_id: dict, start: float) -> int:
     processed = 0
@@ -115,7 +118,13 @@ def process_lookupevent_queue(manager: APIManager, data: dict, leagues_by_id: di
         if league:
             league_entry = get_or_create_league_entry(data, id_league, lambda: build_league_entry_from_tracked(league))
         else:
-            league_entry = get_or_create_league_entry(data, id_league, lambda: build_league_entry_from_event(raw_event))
+            league_entry = next((l for l in data["leagues"] if l.get("idLeague") == id_league), None)
+            if league_entry is None:
+                league_entry = fetch_league_entry_via_api(manager, id_league)
+                if league_entry is None:
+                    Logger.warning(f"Could not fetch league data for untracked league {id_league}. Dropping event {event_id}.")
+                    continue
+                data["leagues"].append(league_entry)
 
         upsert_event(league_entry, event_obj)
 
@@ -139,6 +148,11 @@ def main():
         if skipped:
             Logger.info(f"Skipping {skipped} league(s) with strComplete=yes (SKIP_COMPLETE_LEAGUES=true).")
 
+    only_league_id = os.getenv("ONLY_LEAGUE_ID", "").strip() or None
+    if only_league_id:
+        active_leagues = [l for l in active_leagues if l["idLeague"] == only_league_id]
+        Logger.info(f"ONLY_LEAGUE_ID set — restricting fetch to league {only_league_id}.")
+
     data = load_events()
     prune_to_dates(data, dates)
 
@@ -149,8 +163,7 @@ def main():
     eventsday_processed = process_eventsday_queue(manager, data, leagues_by_id, start)
     lookupevent_processed = process_lookupevent_queue(manager, data, leagues_by_id, start)
 
-    for league_entry in data["leagues"]:
-        sort_league_events(league_entry)
+    sort_leagues(data)
     prune_empty_leagues(data)
 
     save_events(data)

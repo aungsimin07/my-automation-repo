@@ -39,3 +39,15 @@ def find_by_id(leagues: list, id_league: str):
 
 def find_by_url(leagues: list, league_url: str):
     return next((l for l in leagues if l.get("leagueUrl") == league_url), None)
+
+
+def parse_logo_id(raw: str):
+    """Parse an optional integer logo id. Returns None if blank,
+    fatally errors if present but not a valid integer."""
+    raw = (raw or "").strip()
+    if not raw:
+        return None
+    try:
+        return int(raw)
+    except ValueError:
+        Logger.error(f"leagueLogoId must be an integer, got: '{raw}'", fatal=True)

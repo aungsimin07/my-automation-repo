@@ -1,9 +1,9 @@
 import os
 import re
+from datetime import datetime, timezone
 
 from api_manager import APIManager, APIError
-from datetime import datetime, timezone
-from league_store import load_leagues, save_leagues, find_by_id
+from league_store import load_leagues, save_leagues, find_by_id, parse_logo_id
 from logger import Logger
 
 LEAGUE_URL_PATTERN = re.compile(r"/league/(\d+)-")
@@ -16,14 +16,12 @@ def parse_league_id(league_url: str) -> str:
     return match.group(1)
 
 
-def parse_logo_id(raw: str):
-    raw = (raw or "").strip()
-    if not raw:
-        return None
-    try:
-        return int(raw)
-    except ValueError:
-        Logger.error(f"leagueLogoId must be an integer, got: '{raw}'", fatal=True)
+def write_github_output(key: str, value: str) -> None:
+    output_file = os.getenv("GITHUB_OUTPUT")
+    if not output_file:
+        return
+    with open(output_file, "a", encoding="utf-8") as f:
+        f.write(f"{key}={value}\n")
 
 
 def main():
@@ -34,6 +32,7 @@ def main():
         Logger.error("LEAGUE_URL is required.", fatal=True)
 
     id_league = parse_league_id(league_url)
+    write_github_output("idLeague", id_league)
 
     leagues = load_leagues()
     if find_by_id(leagues, id_league):

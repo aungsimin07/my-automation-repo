@@ -70,12 +70,30 @@ def build_league_entry_from_tracked(league: dict) -> dict:
     return entry
 
 
-def build_league_entry_from_event(raw_event: dict) -> dict:
-    """Minimal league bucket for an untracked league, sourced purely from a
-    lookupevent.php response (used by manual add)."""
-    entry = {"idLeague": raw_event.get("idLeague"), "strLeague": raw_event.get("strLeague"), "events": []}
-    if raw_event.get("strLeagueBadge"):
-        entry["strLeagueBadge"] = raw_event["strLeagueBadge"]
+def fetch_league_entry_via_api(manager, id_league: str, logo_id=None):
+    """Build a schema-conformant league entry for an UNTRACKED league by
+    calling lookupleague.php directly, rather than deriving a partial
+    entry from event data alone. Returns None on failure."""
+    from api_manager import APIError  # local import avoids a circular import at module load time
+
+    try:
+        resp = manager.request("lookupleague.php", {"id": id_league})
+    except APIError as e:
+        Logger.warning(f"lookupleague.php failed for untracked league {id_league}: {e}")
+        return None
+
+    api_leagues = resp.get("leagues") or []
+    if not api_leagues or api_leagues[0] is None:
+        Logger.warning(f"No league data found for id {id_league}.")
+        return None
+
+    api_league = api_leagues[0]
+    entry = {f: api_league.get(f) for f in LEAGUE_FIELDS if api_league.get(f) is not None}
+    metadata = {"last_sync_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")}
+    if logo_id is not None:
+        metadata["leagueLogo"] = logo_id
+    entry["metadata"] = metadata
+    entry["events"] = []
     return entry
 
 
@@ -97,7 +115,7 @@ def upsert_event(league_entry: dict, event_obj: dict) -> None:
     events.append(event_obj)
 
 
-def _sort_key(event: dict):
+def _event_sort_key(event: dict):
     ts = event.get("strTimestamp")
     if ts:
         for fmt in ("%Y-%m-%d %H:%M:%S", "%Y-%m-%dT%H:%M:%S"):
@@ -114,7 +132,24 @@ def _sort_key(event: dict):
 
 
 def sort_league_events(league_entry: dict) -> None:
-    league_entry["events"].sort(key=_sort_key)
+    league_entry["events"].sort(key=_event_sort_key)
+
+
+def _league_sort_key(league: dict):
+    raw = league.get("idAPIfootballv3")
+    try:
+        return (0, int(raw))
+    except (TypeError, ValueError):
+        return (1, str(raw or ""))
+
+
+def sort_leagues(data: dict) -> None:
+    """Sort each league's events, then sort the top-level leagues array
+    itself by idAPIfootballv3. Call this once, right before save."""
+    for league_entry in data["leagues"]:
+        sort_league_events(league_entry)
+    data["leagues"].sort(key=_league_sort_key)
+
 
 def prune_empty_leagues(data: dict) -> None:
     """Drop any league bucket that ended up with zero events after
@@ -125,6 +160,7 @@ def prune_empty_leagues(data: dict) -> None:
     if dropped:
         Logger.info(f"Dropped {dropped} league(s) with no events for this window.")
 
+
 def prune_to_dates(data: dict, dates: list) -> None:
     """Roll the date window forward. Manual events are exempt — they may
     intentionally sit outside today/tomorrow and must survive this."""
@@ -132,6 +168,6 @@ def prune_to_dates(data: dict, dates: list) -> None:
     for league_entry in data["leagues"]:
         league_entry["events"] = [
             e for e in league_entry.get("events", [])
-            if e.get("source") == "manual" or e.get("dateEvent") in date_set
+            if e.get("metadata", {}).get("source") == "manual" or e.get("dateEvent") in date_set
         ]
     data["dates"] = dates

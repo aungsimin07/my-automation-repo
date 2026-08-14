@@ -1,23 +1,17 @@
 import os
 
-from league_store import load_leagues, save_leagues, find_by_id, find_by_url
+from league_store import load_leagues, save_leagues, find_by_id, find_by_url, parse_logo_id
 from logger import Logger
-
-
-def parse_logo_id(raw: str):
-    raw = (raw or "").strip()
-    if not raw:
-        Logger.error("LEAGUE_LOGO_ID is required.", fatal=True)
-    try:
-        return int(raw)
-    except ValueError:
-        Logger.error(f"leagueLogoId must be an integer, got: '{raw}'", fatal=True)
 
 
 def main():
     league_url = os.getenv("LEAGUE_URL", "").strip()
     id_league = os.getenv("LEAGUE_ID", "").strip()
-    logo_id = parse_logo_id(os.getenv("LEAGUE_LOGO_ID", ""))
+
+    logo_id_raw = os.getenv("LEAGUE_LOGO_ID", "").strip()
+    if not logo_id_raw:
+        Logger.error("LEAGUE_LOGO_ID is required.", fatal=True)
+    logo_id = parse_logo_id(logo_id_raw)
 
     if not league_url and not id_league:
         Logger.error("Either LEAGUE_URL or LEAGUE_ID must be provided.", fatal=True)

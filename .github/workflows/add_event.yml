@@ -7,6 +7,10 @@ on:
         description: "TheSportsDB event id (e.g. 441613)"
         required: true
         type: string
+      leagueLogoId:
+        description: "Fotmob league logo id (integer, optional — only used if the event's league is untracked)"
+        required: false
+        type: string
 
 permissions:
   contents: write
@@ -38,6 +42,7 @@ jobs:
           THESPORTSDB_BASE_URL: ${{ secrets.THESPORTSDB_BASE_URL }}
           THESPORTSDB_API_KEY: ${{ secrets.THESPORTSDB_API_KEY }}
           EVENT_ID: ${{ github.event.inputs.eventId }}
+          LEAGUE_LOGO_ID: ${{ github.event.inputs.leagueLogoId }}
         run: python scripts/add_event.py
 
       - name: Commit and Push to Data Branch

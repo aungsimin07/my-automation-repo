@@ -3,14 +3,17 @@ import os
 from api_manager import APIManager, APIError
 from event_store import (
     load_events, save_events, build_event_object, build_league_entry_from_tracked,
-    build_league_entry_from_event, get_or_create_league_entry, upsert_event, sort_league_events,
+    fetch_league_entry_via_api, get_or_create_league_entry, upsert_event,
+    sort_leagues, prune_empty_leagues,
 )
-from league_store import load_leagues
+from league_store import load_leagues, parse_logo_id
 from logger import Logger
 
 
 def main():
     event_id = os.getenv("EVENT_ID", "").strip()
+    logo_id = parse_logo_id(os.getenv("LEAGUE_LOGO_ID", ""))
+
     if not event_id:
         Logger.error("EVENT_ID is required.", fatal=True)
 
@@ -33,18 +36,33 @@ def main():
             fatal=True,
         )
 
-    data = load_events()
     id_league = raw_event.get("idLeague")
+    data = load_events()
     leagues_by_id = {l["idLeague"]: l for l in load_leagues()}
     tracked_league = leagues_by_id.get(id_league)
 
     if tracked_league:
-        league_entry = get_or_create_league_entry(data, id_league, lambda: build_league_entry_from_tracked(tracked_league))
+        if logo_id is not None:
+            Logger.warning(
+                f"League {id_league} is already tracked in leagues.json — ignoring "
+                f"provided leagueLogoId. Use the Update League Logo workflow instead."
+            )
+        league_entry = get_or_create_league_entry(
+            data, id_league, lambda: build_league_entry_from_tracked(tracked_league)
+        )
     else:
-        league_entry = get_or_create_league_entry(data, id_league, lambda: build_league_entry_from_event(raw_event))
+        league_entry = next((l for l in data["leagues"] if l.get("idLeague") == id_league), None)
+        if league_entry is None:
+            league_entry = fetch_league_entry_via_api(manager, id_league, logo_id)
+            if league_entry is None:
+                Logger.error(f"Could not fetch league data for id {id_league}. Cannot add event.", fatal=True)
+            data["leagues"].append(league_entry)
+        elif logo_id is not None:
+            league_entry.setdefault("metadata", {})["leagueLogo"] = logo_id
 
     upsert_event(league_entry, event_obj)
-    sort_league_events(league_entry)
+    sort_leagues(data)
+    prune_empty_leagues(data)  # safety net; harmless here since we just added an event
     save_events(data)
 
     Logger.success(f"Added event '{raw_event.get('strEvent')}' ({event_id}) to league '{league_entry.get('strLeague')}'.")

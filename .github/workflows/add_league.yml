@@ -38,6 +38,7 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Run Add League Script
+        id: add-league
         env:
           THESPORTSDB_BASE_URL: ${{ secrets.THESPORTSDB_BASE_URL }}
           THESPORTSDB_API_KEY: ${{ secrets.THESPORTSDB_API_KEY }}
@@ -45,18 +46,25 @@ jobs:
           LEAGUE_LOGO_ID: ${{ github.event.inputs.leagueLogoId }}
         run: python scripts/add_league.py
 
+      - name: Sync Events for New League
+        env:
+          THESPORTSDB_BASE_URL: ${{ secrets.THESPORTSDB_BASE_URL }}
+          THESPORTSDB_API_KEY: ${{ secrets.THESPORTSDB_API_KEY }}
+          MAX_RUNTIME_SECONDS: "240"
+          SKIP_COMPLETE_LEAGUES: ${{ vars.SKIP_COMPLETE_LEAGUES }}
+          ONLY_LEAGUE_ID: ${{ steps.add-league.outputs.idLeague }}
+        run: python scripts/fetch_events.py
+
       - name: Commit and Push to Data Branch
         run: |
           cd data
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-
-          git add leagues.json
-
+          git add leagues.json events.json queues/
           if ! git diff --staged --quiet; then
             TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
-            git commit --amend -m "Automated data: Updated leagues.json at $TIMESTAMP"
+            git commit --amend -m "Automated data: Updated leagues.json and events.json at $TIMESTAMP"
             git push --force origin data
           else
-            echo "No leagues.json changes detected. Skipping commit."
+            echo "No changes detected. Skipping commit."
           fi
