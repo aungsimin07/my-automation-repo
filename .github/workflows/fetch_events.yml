@@ -35,6 +35,7 @@ jobs:
           THESPORTSDB_BASE_URL: ${{ secrets.THESPORTSDB_BASE_URL }}
           THESPORTSDB_API_KEY: ${{ secrets.THESPORTSDB_API_KEY }}
           MAX_RUNTIME_SECONDS: "240"
+          SKIP_COMPLETE_LEAGUES: ${{ vars.SKIP_COMPLETE_LEAGUES }}
         run: python scripts/fetch_events.py
 
       - name: Commit and Push to Data Branch

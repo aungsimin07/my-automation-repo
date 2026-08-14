@@ -24,6 +24,12 @@ def get_target_dates() -> list:
     tomorrow = today + timedelta(days=1)
     return [today.isoformat(), tomorrow.isoformat()]
 
+def _is_complete(league: dict) -> bool:
+    return (league.get("strComplete") or "").strip().lower() == "yes"
+
+def _skip_complete_enabled() -> bool:
+    raw = os.getenv("SKIP_COMPLETE_LEAGUES", "true").strip().lower()
+    return raw in ("1", "true", "yes")
 
 def process_eventsday_queue(manager: APIManager, data: dict, leagues_by_id: dict, start: float) -> int:
     processed = 0
@@ -123,13 +129,20 @@ def main():
         Logger.warning("No leagues found in leagues.json. Nothing to fetch.")
         return
 
-    leagues_by_id = {l["idLeague"]: l for l in leagues}
+    leagues_by_id = {l["idLeague"]: l for l in leagues}  # full map, unfiltered — needed for lookups
     dates = get_target_dates()
+
+    active_leagues = leagues
+    if _skip_complete_enabled():
+        active_leagues = [l for l in leagues if not _is_complete(l)]
+        skipped = len(leagues) - len(active_leagues)
+        if skipped:
+            Logger.info(f"Skipping {skipped} league(s) with strComplete=yes (SKIP_COMPLETE_LEAGUES=true).")
 
     data = load_events()
     prune_to_dates(data, dates)
 
-    tasks = [{"idLeague": l["idLeague"], "date": d} for l in leagues for d in dates]
+    tasks = [{"idLeague": l["idLeague"], "date": d} for l in active_leagues for d in dates]
     manager.enqueue(EVENTSDAY_QUEUE, tasks)
 
     start = time.monotonic()
@@ -138,6 +151,7 @@ def main():
 
     for league_entry in data["leagues"]:
         sort_league_events(league_entry)
+    prune_empty_leagues(data)
 
     save_events(data)
     Logger.success(f"Processed {eventsday_processed} eventsday task(s), {lookupevent_processed} lookup(s) this run.")

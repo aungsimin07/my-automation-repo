@@ -2,6 +2,7 @@ import os
 import time
 
 from api_manager import APIManager, APIError
+from datetime import datetime, timezone
 from league_store import load_leagues, save_leagues
 from logger import Logger
 
@@ -12,7 +13,6 @@ MAX_RUNTIME_SECONDS = int(os.getenv("MAX_RUNTIME_SECONDS", "240"))
 def build_league_object(existing: dict, api_league: dict) -> dict:
     metadata = dict(existing.get("metadata") or {})
 
-    # Migrate legacy top-level leagueLogo into metadata, if present.
     if "leagueLogo" in existing:
         legacy_logo = existing["leagueLogo"]
         if isinstance(legacy_logo, dict):
@@ -23,6 +23,8 @@ def build_league_object(existing: dict, api_league: dict) -> dict:
             metadata.setdefault("leagueLogo", None)
         else:
             metadata.setdefault("leagueLogo", legacy_logo)
+
+    metadata["last_sync_at"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
     return {
         "idLeague": api_league.get("idLeague", existing.get("idLeague")),

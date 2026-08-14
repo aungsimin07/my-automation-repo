@@ -10,7 +10,9 @@ EVENT_FIELDS = [
     "idEvent", "idAPIfootball", "idLeague", "strLeague", "strLeagueBadge",
     "strSeason", "strGroup", "intRound", "dateEvent", "strTime", "strTimestamp",
     "idHomeTeam", "strHomeTeam", "strHomeTeamBadge", "intHomeScore",
-    "idAwayTeam", "strAwayTeam", "strAwayTeamBadge", "intAwayScore", "strStatus",
+    "idAwayTeam", "strAwayTeam", "strAwayTeamBadge", "intAwayScore",
+    "strVenue", "strPoster", "strSquare", "strFanart", "strThumb", "strBanner",
+    "strStatus",
 ]
 REQUIRED_EVENT_FIELDS = ["idEvent", "dateEvent", "strHomeTeam", "strAwayTeam", "strStatus"]
 LEAGUE_FIELDS = [
@@ -52,16 +54,18 @@ def build_event_object(raw_event: dict, source: str):
             return None
 
     event = {f: raw_event.get(f) for f in EVENT_FIELDS if raw_event.get(f) is not None}
-    event["source"] = source
-    event["metadata"] = {"last_sync_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")}
+    event["metadata"] = {
+        "source": source,
+        "last_sync_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+    }
     return event
 
 
 def build_league_entry_from_tracked(league: dict) -> dict:
     entry = {f: league.get(f) for f in LEAGUE_FIELDS if league.get(f) is not None}
-    logo = (league.get("metadata") or {}).get("leagueLogo")
-    if logo is not None:
-        entry["metadata"] = {"leagueLogo": logo}
+    metadata = league.get("metadata")
+    if metadata:
+        entry["metadata"] = dict(metadata)
     entry["events"] = []
     return entry
 
@@ -112,6 +116,14 @@ def _sort_key(event: dict):
 def sort_league_events(league_entry: dict) -> None:
     league_entry["events"].sort(key=_sort_key)
 
+def prune_empty_leagues(data: dict) -> None:
+    """Drop any league bucket that ended up with zero events after
+    processing — we only want leagues with something to show."""
+    before = len(data["leagues"])
+    data["leagues"] = [l for l in data["leagues"] if l.get("events")]
+    dropped = before - len(data["leagues"])
+    if dropped:
+        Logger.info(f"Dropped {dropped} league(s) with no events for this window.")
 
 def prune_to_dates(data: dict, dates: list) -> None:
     """Roll the date window forward. Manual events are exempt — they may

@@ -2,6 +2,7 @@ import os
 import re
 
 from api_manager import APIManager, APIError
+from datetime import datetime, timezone
 from league_store import load_leagues, save_leagues, find_by_id
 from logger import Logger
 
@@ -63,6 +64,7 @@ def main():
         "leagueUrl": league_url,
         "metadata": {
             "leagueLogo": logo_id,
+            "last_sync_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         },
     }
 
