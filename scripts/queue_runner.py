@@ -2,6 +2,8 @@ import os
 import time
 
 from api_manager import APIManager, APIError
+from event_store import load_events, save_events, sort_league_events
+from fetch_events import EVENTSDAY_QUEUE, LOOKUPEVENT_QUEUE, process_eventsday_queue, process_lookupevent_queue
 from league_store import load_leagues, save_leagues
 from logger import Logger
 from update_league import build_league_object, QUEUE_NAME as LOOKUPLEAGUE_QUEUE
@@ -45,11 +47,33 @@ def run_lookupleague_queue(manager: APIManager, start: float) -> int:
         save_leagues(list(league_by_id.values()))
     return processed
 
+def run_eventsday_queue(manager: APIManager, start: float) -> int:
+    leagues_by_id = {l["idLeague"]: l for l in load_leagues()}
+    data = load_events()
+    processed = process_eventsday_queue(manager, data, leagues_by_id, start)
+    if processed:
+        for league_entry in data["leagues"]:
+            sort_league_events(league_entry)
+        save_events(data)
+    return processed
+
+
+def run_lookupevent_queue(manager: APIManager, start: float) -> int:
+    leagues_by_id = {l["idLeague"]: l for l in load_leagues()}
+    data = load_events()
+    processed = process_lookupevent_queue(manager, data, leagues_by_id, start)
+    if processed:
+        for league_entry in data["leagues"]:
+            sort_league_events(league_entry)
+        save_events(data)
+    return processed
 
 # Add future queues here as they're introduced, e.g.:
 # "lookupevent": run_lookupevent_queue,
 QUEUE_HANDLERS = {
     LOOKUPLEAGUE_QUEUE: run_lookupleague_queue,
+    EVENTSDAY_QUEUE: run_eventsday_queue,
+    LOOKUPEVENT_QUEUE: run_lookupevent_queue,
 }
 
 

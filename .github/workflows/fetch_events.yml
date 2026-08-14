@@ -1,15 +1,15 @@
-name: Queue Runner
+name: Fetch Events
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '*/15 * * * *'
+    - cron: '30 17 * * *'  # 00:00 Asia/Yangon (UTC+6:30)
 
 permissions:
   contents: write
 
 jobs:
-  run-queues:
+  fetch-events:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -30,24 +30,22 @@ jobs:
       - name: Install Dependencies
         run: pip install -r requirements.txt
 
-      - name: Run Queue Runner Script
+      - name: Run Fetch Events Script
         env:
           THESPORTSDB_BASE_URL: ${{ secrets.THESPORTSDB_BASE_URL }}
           THESPORTSDB_API_KEY: ${{ secrets.THESPORTSDB_API_KEY }}
           MAX_RUNTIME_SECONDS: "240"
-        run: python scripts/queue_runner.py
+        run: python scripts/fetch_events.py
 
       - name: Commit and Push to Data Branch
         run: |
           cd data
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-
-          git add leagues.json events.json queues/
-
+          git add events.json queues/
           if ! git diff --staged --quiet; then
             TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
-            git commit --amend -m "Automated data: Processed queues at $TIMESTAMP"
+            git commit --amend -m "Automated data: Updated events.json at $TIMESTAMP"
             git push --force origin data
           else
             echo "No changes detected. Skipping commit."

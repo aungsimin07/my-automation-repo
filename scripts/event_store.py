@@ -1,0 +1,125 @@
+import json
+from datetime import datetime, timezone
+from pathlib import Path
+
+from logger import Logger
+
+EVENTS_FILE = Path("data/events.json")
+
+EVENT_FIELDS = [
+    "idEvent", "idAPIfootball", "idLeague", "strLeague", "strLeagueBadge",
+    "strSeason", "strGroup", "intRound", "dateEvent", "strTime", "strTimestamp",
+    "idHomeTeam", "strHomeTeam", "strHomeTeamBadge", "intHomeScore",
+    "idAwayTeam", "strAwayTeam", "strAwayTeamBadge", "intAwayScore", "strStatus",
+]
+REQUIRED_EVENT_FIELDS = ["idEvent", "dateEvent", "strHomeTeam", "strAwayTeam", "strStatus"]
+LEAGUE_FIELDS = [
+    "idLeague", "idAPIfootballv3", "idCup", "strLeague", "strCurrentSeason",
+    "strComplete", "strBadge", "strLeagueBadge", "strWebsite", "leagueUrl",
+]
+
+
+def load_events() -> dict:
+    if not EVENTS_FILE.exists():
+        return {"dates": [], "leagues": []}
+    with open(EVENTS_FILE, "r", encoding="utf-8") as f:
+        try:
+            data = json.load(f)
+        except json.JSONDecodeError:
+            Logger.warning(f"{EVENTS_FILE} is corrupt/empty. Starting fresh.")
+            return {"dates": [], "leagues": []}
+    data.setdefault("dates", [])
+    data.setdefault("leagues", [])
+    return data
+
+
+def save_events(data: dict) -> None:
+    EVENTS_FILE.parent.mkdir(parents=True, exist_ok=True)
+    with open(EVENTS_FILE, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2)
+    total_events = sum(len(l.get("events", [])) for l in data.get("leagues", []))
+    Logger.success(f"Saved {len(data.get('leagues', []))} league(s), {total_events} event(s) to {EVENTS_FILE}")
+
+
+def build_event_object(raw_event: dict, source: str):
+    """Map a raw TheSportsDB event onto our whitelisted schema.
+    Returns None if status isn't NS or a required field is missing."""
+    if raw_event.get("strStatus") != "NS":
+        return None
+    for field in REQUIRED_EVENT_FIELDS:
+        if not raw_event.get(field):
+            Logger.warning(f"Event missing required field '{field}'. Skipping.")
+            return None
+
+    event = {f: raw_event.get(f) for f in EVENT_FIELDS if raw_event.get(f) is not None}
+    event["source"] = source
+    event["metadata"] = {"last_sync_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")}
+    return event
+
+
+def build_league_entry_from_tracked(league: dict) -> dict:
+    entry = {f: league.get(f) for f in LEAGUE_FIELDS if league.get(f) is not None}
+    logo = (league.get("metadata") or {}).get("leagueLogo")
+    if logo is not None:
+        entry["metadata"] = {"leagueLogo": logo}
+    entry["events"] = []
+    return entry
+
+
+def build_league_entry_from_event(raw_event: dict) -> dict:
+    """Minimal league bucket for an untracked league, sourced purely from a
+    lookupevent.php response (used by manual add)."""
+    entry = {"idLeague": raw_event.get("idLeague"), "strLeague": raw_event.get("strLeague"), "events": []}
+    if raw_event.get("strLeagueBadge"):
+        entry["strLeagueBadge"] = raw_event["strLeagueBadge"]
+    return entry
+
+
+def get_or_create_league_entry(data: dict, id_league: str, builder) -> dict:
+    for entry in data["leagues"]:
+        if entry.get("idLeague") == id_league:
+            return entry
+    entry = builder()
+    data["leagues"].append(entry)
+    return entry
+
+
+def upsert_event(league_entry: dict, event_obj: dict) -> None:
+    events = league_entry.setdefault("events", [])
+    for i, existing in enumerate(events):
+        if existing.get("idEvent") == event_obj["idEvent"]:
+            events[i] = event_obj
+            return
+    events.append(event_obj)
+
+
+def _sort_key(event: dict):
+    ts = event.get("strTimestamp")
+    if ts:
+        for fmt in ("%Y-%m-%d %H:%M:%S", "%Y-%m-%dT%H:%M:%S"):
+            try:
+                return datetime.strptime(ts, fmt)
+            except ValueError:
+                continue
+    date_part = event.get("dateEvent", "1970-01-01")
+    time_part = event.get("strTime", "00:00:00")
+    try:
+        return datetime.strptime(f"{date_part} {time_part}", "%Y-%m-%d %H:%M:%S")
+    except ValueError:
+        return datetime.max
+
+
+def sort_league_events(league_entry: dict) -> None:
+    league_entry["events"].sort(key=_sort_key)
+
+
+def prune_to_dates(data: dict, dates: list) -> None:
+    """Roll the date window forward. Manual events are exempt — they may
+    intentionally sit outside today/tomorrow and must survive this."""
+    date_set = set(dates)
+    for league_entry in data["leagues"]:
+        league_entry["events"] = [
+            e for e in league_entry.get("events", [])
+            if e.get("source") == "manual" or e.get("dateEvent") in date_set
+        ]
+    data["dates"] = dates

@@ -125,12 +125,18 @@ class APIManager:
 
     @classmethod
     def enqueue(cls, queue_name: str, items) -> None:
-        """Append one item or a list of items, de-duplicated."""
+        """Append one item or a list of items, de-duplicated. Items may be
+        strings or JSON-serializable dicts (e.g. {"idLeague", "date"} tasks)."""
         if not isinstance(items, list):
             items = [items]
         existing = cls.load_queue(queue_name)
-        seen = set(existing)
-        added = [i for i in items if i not in seen]
+        seen = {json.dumps(i, sort_keys=True) for i in existing}
+        added = []
+        for i in items:
+            key = json.dumps(i, sort_keys=True)
+            if key not in seen:
+                seen.add(key)
+                added.append(i)
         if added:
             existing.extend(added)
             cls.save_queue(queue_name, existing)
