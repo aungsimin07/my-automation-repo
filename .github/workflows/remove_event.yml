@@ -1,22 +1,18 @@
-name: Remove League
+name: Remove Event
 
 on:
   workflow_dispatch:
     inputs:
-      leagueUrl:
-        description: "League home page URL (leave blank if using idLeague)"
-        required: false
-        type: string
-      idLeague:
-        description: "TheSportsDB league id (leave blank if using leagueUrl)"
-        required: false
+      eventId:
+        description: "TheSportsDB event id to remove (e.g. 2513946)"
+        required: true
         type: string
 
 permissions:
   contents: write
 
 jobs:
-  remove-league:
+  remove-event:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -37,24 +33,21 @@ jobs:
       - name: Install Dependencies
         run: pip install -r requirements.txt
 
-      - name: Run Remove League Script
+      - name: Run Remove Event Script
         env:
-          LEAGUE_URL: ${{ github.event.inputs.leagueUrl }}
-          LEAGUE_ID: ${{ github.event.inputs.idLeague }}
-        run: python scripts/remove_league.py
+          EVENT_ID: ${{ github.event.inputs.eventId }}
+        run: python scripts/remove_event.py
 
       - name: Commit and Push to Data Branch
         run: |
           cd data
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-
-          git add leagues.json events.json
-
+          git add events.json
           if ! git diff --staged --quiet; then
             TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
-            git commit --amend -m "Automated data: Updated leagues.json and events.json at $TIMESTAMP"
+            git commit --amend -m "Automated data: Updated events.json at $TIMESTAMP"
             git push --force origin data
           else
-            echo "No changes detected. Skipping commit."
+            echo "No events.json changes detected. Skipping commit."
           fi
