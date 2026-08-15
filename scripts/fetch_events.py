@@ -12,6 +12,7 @@ from event_store import (
 )
 from league_store import load_leagues
 from logger import Logger
+from sync_state import load_sync_state, save_sync_state, is_synced, mark_synced
 
 TIMEZONE = ZoneInfo("Asia/Yangon")
 EVENTSDAY_QUEUE = "eventsday"
@@ -34,7 +35,7 @@ def _skip_complete_enabled() -> bool:
     return raw in ("1", "true", "yes")
 
 
-def process_eventsday_queue(manager: APIManager, data: dict, leagues_by_id: dict, start: float) -> int:
+def process_eventsday_queue(manager: APIManager, data: dict, leagues_by_id: dict, sync_state: dict, start: float) -> int:
     processed = 0
     while True:
         if time.monotonic() - start > MAX_RUNTIME_SECONDS:
@@ -59,7 +60,7 @@ def process_eventsday_queue(manager: APIManager, data: dict, leagues_by_id: dict
         except APIError as e:
             Logger.error(f"eventsday.php failed for league {id_league} on {date}: {e}")
             manager.enqueue(EVENTSDAY_QUEUE, task)
-            continue
+            continue  # not marked synced — will retry next run
 
         raw_events = resp.get("events") or []
         known_ids = set()
@@ -78,6 +79,7 @@ def process_eventsday_queue(manager: APIManager, data: dict, leagues_by_id: dict
             if extra_ids:
                 manager.enqueue(LOOKUPEVENT_QUEUE, extra_ids)
 
+        mark_synced(sync_state, id_league, date)
         processed += 1
 
     return processed
@@ -156,17 +158,30 @@ def main():
     data = load_events()
     prune_to_dates(data, dates)
 
-    tasks = [{"idLeague": l["idLeague"], "date": d} for l in active_leagues for d in dates]
+    sync_state = load_sync_state(dates)
+
+    tasks = []
+    skipped_synced = 0
+    for l in active_leagues:
+        for d in dates:
+            if is_synced(sync_state, l["idLeague"], d):
+                skipped_synced += 1
+                continue
+            tasks.append({"idLeague": l["idLeague"], "date": d})
+    if skipped_synced:
+        Logger.info(f"Skipping {skipped_synced} league/date pair(s) already synced for this window.")
+
     manager.enqueue(EVENTSDAY_QUEUE, tasks)
 
     start = time.monotonic()
-    eventsday_processed = process_eventsday_queue(manager, data, leagues_by_id, start)
+    eventsday_processed = process_eventsday_queue(manager, data, leagues_by_id, sync_state, start)
     lookupevent_processed = process_lookupevent_queue(manager, data, leagues_by_id, start)
 
     sort_leagues(data)
     prune_empty_leagues(data)
 
     save_events(data)
+    save_sync_state(sync_state)
     Logger.success(f"Processed {eventsday_processed} eventsday task(s), {lookupevent_processed} lookup(s) this run.")
     Logger.info(f"Total API requests this run: {manager.request_count}")
 

@@ -43,7 +43,7 @@ jobs:
           cd data
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add events.json queues/
+          git add events.json sync_state.json queues/
           if ! git diff --staged --quiet; then
             TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
             git commit --amend -m "Automated data: Updated events.json at $TIMESTAMP"

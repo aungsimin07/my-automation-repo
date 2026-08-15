@@ -3,9 +3,13 @@ import time
 
 from api_manager import APIManager, APIError
 from event_store import load_events, save_events, sort_leagues, prune_empty_leagues
-from fetch_events import EVENTSDAY_QUEUE, LOOKUPEVENT_QUEUE, process_eventsday_queue, process_lookupevent_queue
+from fetch_events import (
+    EVENTSDAY_QUEUE, LOOKUPEVENT_QUEUE, get_target_dates,
+    process_eventsday_queue, process_lookupevent_queue,
+)
 from league_store import load_leagues, save_leagues
 from logger import Logger
+from sync_state import load_sync_state, save_sync_state
 from update_league import build_league_object, QUEUE_NAME as LOOKUPLEAGUE_QUEUE
 
 MAX_RUNTIME_SECONDS = int(os.getenv("MAX_RUNTIME_SECONDS", "240"))
@@ -49,13 +53,16 @@ def run_lookupleague_queue(manager: APIManager, start: float) -> int:
 
 
 def run_eventsday_queue(manager: APIManager, start: float) -> int:
+    dates = get_target_dates()
+    sync_state = load_sync_state(dates)
     leagues_by_id = {l["idLeague"]: l for l in load_leagues()}
     data = load_events()
-    processed = process_eventsday_queue(manager, data, leagues_by_id, start)
+    processed = process_eventsday_queue(manager, data, leagues_by_id, sync_state, start)
     if processed:
         sort_leagues(data)
         prune_empty_leagues(data)
         save_events(data)
+        save_sync_state(sync_state)
     return processed
 
 
