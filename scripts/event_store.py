@@ -20,6 +20,10 @@ LEAGUE_FIELDS = [
     "strComplete", "strBadge", "strLeagueBadge", "strWebsite", "leagueUrl",
 ]
 
+LIVE_STATUSES = {"1H", "HT", "2H", "ET", "P", "BT", "INT", "SUSP"}
+FINISHED_STATUSES = {"FT", "AET", "PEN", "AWD", "WO", "PST", "CANC", "ABD"}
+LIVE_RECHECK_MINUTES = 115
+
 
 def load_events() -> dict:
     if not EVENTS_FILE.exists():
@@ -45,9 +49,17 @@ def save_events(data: dict) -> None:
 
 def build_event_object(raw_event: dict, source: str):
     """Map a raw TheSportsDB event onto our whitelisted schema.
-    Returns None if status isn't NS or a required field is missing."""
+    Returns None if status isn't NS or a required field is missing.
+    Used when first ADDING an event — we only ever add scheduled ones."""
     if raw_event.get("strStatus") != "NS":
         return None
+    return build_event_object_any_status(raw_event, source)
+
+
+def build_event_object_any_status(raw_event: dict, source: str):
+    """Like build_event_object but does not filter by status — used when
+    REFRESHING an existing event to whatever status the API now reports
+    (NS -> Live, NS -> Finished, Live -> Finished, etc.)."""
     for field in REQUIRED_EVENT_FIELDS:
         if not raw_event.get(field):
             Logger.warning(f"Event missing required field '{field}'. Skipping.")
@@ -171,3 +183,49 @@ def prune_to_dates(data: dict, dates: list) -> None:
             if e.get("metadata", {}).get("source") == "manual" or e.get("dateEvent") in date_set
         ]
     data["dates"] = dates
+
+
+def parse_event_timestamp(event: dict):
+    """Parse strTimestamp (UTC, e.g. '2026-08-13 19:00:00') into an
+    aware UTC datetime. Returns None if missing/unparseable."""
+    ts = event.get("strTimestamp")
+    if not ts:
+        return None
+    for fmt in ("%Y-%m-%d %H:%M:%S", "%Y-%m-%dT%H:%M:%S"):
+        try:
+            return datetime.strptime(ts, fmt).replace(tzinfo=timezone.utc)
+        except ValueError:
+            continue
+    return None
+
+
+def needs_status_check(event: dict, now: datetime) -> bool:
+    """Decide if an event is due for a lookupevent.php recheck:
+    - NS events whose kickoff time has already passed
+    - Live events that have been live for over LIVE_RECHECK_MINUTES
+    Finished events are never rechecked (they should already be removed)."""
+    status = event.get("strStatus")
+    ts = parse_event_timestamp(event)
+    if ts is None:
+        return False
+
+    if status == "NS":
+        return now > ts
+    if status in LIVE_STATUSES:
+        return (now - ts).total_seconds() > LIVE_RECHECK_MINUTES * 60
+    return False
+
+
+def remove_finished_events(data: dict) -> int:
+    """Drop any event whose strStatus is in FINISHED_STATUSES — those
+    matches are over and no longer need to be tracked."""
+    removed = 0
+    for league_entry in data["leagues"]:
+        before = len(league_entry.get("events", []))
+        league_entry["events"] = [
+            e for e in league_entry.get("events", []) if e.get("strStatus") not in FINISHED_STATUSES
+        ]
+        removed += before - len(league_entry["events"])
+    if removed:
+        Logger.info(f"Removed {removed} finished event(s).")
+    return removed
