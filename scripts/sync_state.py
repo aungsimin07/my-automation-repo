@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from logger import Logger
+from utils.logger import Logger
 
 SYNC_STATE_FILE = Path("data/sync_state.json")
 
