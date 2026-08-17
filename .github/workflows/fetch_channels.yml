@@ -1,4 +1,4 @@
-name: Fetch Playlists
+name: Fetch Channels
 
 on:
   workflow_dispatch:
@@ -9,7 +9,7 @@ permissions:
   contents: write
 
 jobs:
-  fetch-playlists:
+  fetch-channels:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -30,21 +30,22 @@ jobs:
       - name: Install Dependencies
         run: pip install -r requirements.txt
 
-      - name: Run Fetch Playlists Script
+      - name: Run Fetch Channels Script
         env:
+          DEFAULT_HTTP_USER_AGENT: ${{ vars.DEFAULT_HTTP_USER_AGENT }}
           PYTHONPATH: ${{ github.workspace }}
-        run: python playlists/fetch_playlists.py
+        run: python playlists/fetch_channels.py
 
       - name: Commit and Push to Data Branch
         run: |
           cd data
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add my-automated-playlist.m3u
+          git add channels.json
           if ! git diff --staged --quiet; then
             TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
-            git commit --amend -m "Automated data: Updated my-automated-playlist.m3u at $TIMESTAMP"
+            git commit --amend -m "Automated data: Updated channels.json at $TIMESTAMP"
             git push --force origin data
           else
-            echo "No my-automated-playlist.m3u changes detected. Skipping commit."
+            echo "No channels.json changes detected. Skipping commit."
           fi
