@@ -4,7 +4,7 @@ import time
 from api_manager import APIManager, APIError
 from datetime import datetime, timezone
 from league_store import load_leagues, save_leagues
-from logger import Logger
+from utils.logger import Logger
 
 QUEUE_NAME = "lookupleague"
 MAX_RUNTIME_SECONDS = int(os.getenv("MAX_RUNTIME_SECONDS", "240"))

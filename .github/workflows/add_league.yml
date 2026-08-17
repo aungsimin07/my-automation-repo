@@ -44,6 +44,7 @@ jobs:
           THESPORTSDB_API_KEY: ${{ secrets.THESPORTSDB_API_KEY }}
           LEAGUE_URL: ${{ github.event.inputs.leagueUrl }}
           LEAGUE_LOGO_ID: ${{ github.event.inputs.leagueLogoId }}
+          PYTHONPATH: ${{ github.workspace }}
         run: python scripts/add_league.py
 
       - name: Sync Events for New League

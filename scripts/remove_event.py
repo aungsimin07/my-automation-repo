@@ -1,7 +1,7 @@
 import os
 
 from event_store import load_events, save_events, sort_leagues, prune_empty_leagues
-from logger import Logger
+from utils.logger import Logger
 
 
 def main():

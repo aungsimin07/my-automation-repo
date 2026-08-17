@@ -1,26 +1,26 @@
-name: Update League Logo
+name: Add Playlist
 
 on:
   workflow_dispatch:
     inputs:
-      leagueUrl:
-        description: "League home page URL (leave blank if using idLeague)"
-        required: false
-        type: string
-      idLeague:
-        description: "TheSportsDB league id (leave blank if using leagueUrl)"
-        required: false
-        type: string
-      leagueLogoId:
-        description: "Fotmob league logo id (integer, required)"
+      playlistId:
+        description: "Short unique id for this playlist (e.g. iptv-org-sports)"
         required: true
+        type: string
+      playlistUrl:
+        description: "M3U playlist URL"
+        required: true
+        type: string
+      tvgIds:
+        description: "Optional comma-separated tvg-id(s) to track from this playlist"
+        required: false
         type: string
 
 permissions:
   contents: write
 
 jobs:
-  update-league-logo:
+  add-playlist:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -38,29 +38,24 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Install Dependencies
-        run: pip install -r requirements.txt
-
-      - name: Run Update League Logo Script
+      - name: Run Add Playlist Script
         env:
-          LEAGUE_URL: ${{ github.event.inputs.leagueUrl }}
-          LEAGUE_ID: ${{ github.event.inputs.idLeague }}
-          LEAGUE_LOGO_ID: ${{ github.event.inputs.leagueLogoId }}
+          PLAYLIST_ID: ${{ github.event.inputs.playlistId }}
+          PLAYLIST_URL: ${{ github.event.inputs.playlistUrl }}
+          TVG_IDS: ${{ github.event.inputs.tvgIds }}
           PYTHONPATH: ${{ github.workspace }}
-        run: python scripts/update_league_logo.py
+        run: python playlists/add_playlist.py
 
       - name: Commit and Push to Data Branch
         run: |
           cd data
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-
-          git add leagues.json
-
+          git add playlists.json
           if ! git diff --staged --quiet; then
             TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
-            git commit --amend -m "Automated data: Updated leagues.json at $TIMESTAMP"
+            git commit --amend -m "Automated data: Updated playlists.json at $TIMESTAMP"
             git push --force origin data
           else
-            echo "No leagues.json changes detected. Skipping commit."
+            echo "No playlists.json changes detected. Skipping commit."
           fi

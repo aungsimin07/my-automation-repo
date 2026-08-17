@@ -1,7 +1,6 @@
 import sys
 
 class Logger:
-    # ANSI Color Escape Codes
     CYAN = "\033[96m"
     GREEN = "\033[92m"
     YELLOW = "\033[93m"

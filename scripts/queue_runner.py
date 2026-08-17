@@ -8,10 +8,10 @@ from fetch_events import (
     process_eventsday_queue, process_lookupevent_queue,
 )
 from league_store import load_leagues, save_leagues
-from logger import Logger
 from status_sync import run_status_sync
 from sync_state import load_sync_state, save_sync_state
 from update_league import build_league_object, QUEUE_NAME as LOOKUPLEAGUE_QUEUE
+from utils.logger import Logger
 
 MAX_RUNTIME_SECONDS = int(os.getenv("MAX_RUNTIME_SECONDS", "240"))
 

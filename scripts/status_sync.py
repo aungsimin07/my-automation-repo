@@ -6,7 +6,7 @@ from event_store import (
     load_events, save_events, sort_leagues, prune_empty_leagues,
     needs_status_check, remove_finished_events, build_event_object_any_status, upsert_event,
 )
-from logger import Logger
+from utils.logger import Logger
 
 
 def run_status_sync(manager: APIManager, start: float, max_runtime_seconds: int) -> int:

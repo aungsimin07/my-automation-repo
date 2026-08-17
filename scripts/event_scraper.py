@@ -4,7 +4,7 @@ from datetime import datetime
 import requests
 from bs4 import BeautifulSoup
 
-from logger import Logger
+from utils.logger import Logger
 
 HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; SportsDataBot/1.0)"}
 

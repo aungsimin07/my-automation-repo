@@ -1,7 +1,7 @@
 import os
 
 from league_store import load_leagues, save_leagues, find_by_id, find_by_url, parse_logo_id
-from logger import Logger
+from utils.logger import Logger
 
 
 def main():

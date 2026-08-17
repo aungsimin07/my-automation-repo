@@ -2,7 +2,7 @@ import os
 
 from event_store import load_events, save_events, sort_leagues, prune_empty_leagues
 from league_store import load_leagues, save_leagues, find_by_id, find_by_url
-from logger import Logger
+from utils.logger import Logger
 
 
 def main():

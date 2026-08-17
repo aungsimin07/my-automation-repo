@@ -11,8 +11,8 @@ from event_store import (
     sort_leagues, prune_empty_leagues, prune_to_dates,
 )
 from league_store import load_leagues
-from logger import Logger
 from sync_state import load_sync_state, save_sync_state, is_synced, mark_synced
+from utils.logger import Logger
 
 TIMEZONE = ZoneInfo("Asia/Yangon")
 EVENTSDAY_QUEUE = "eventsday"

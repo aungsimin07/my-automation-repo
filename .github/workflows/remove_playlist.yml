@@ -1,15 +1,18 @@
-name: Update Leagues
+name: Remove Playlist
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '30 17 * * *'  # 00:00 Asia/Yangon (UTC+6:30)
+    inputs:
+      playlistId:
+        description: "Playlist id to remove"
+        required: true
+        type: string
 
 permissions:
   contents: write
 
 jobs:
-  update-leagues:
+  remove-playlist:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -27,29 +30,22 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Install Dependencies
-        run: pip install -r requirements.txt
-
-      - name: Run Update League Script
+      - name: Run Remove Playlist Script
         env:
-          THESPORTSDB_BASE_URL: ${{ secrets.THESPORTSDB_BASE_URL }}
-          THESPORTSDB_API_KEY: ${{ secrets.THESPORTSDB_API_KEY }}
-          MAX_RUNTIME_SECONDS: "240"
+          PLAYLIST_ID: ${{ github.event.inputs.playlistId }}
           PYTHONPATH: ${{ github.workspace }}
-        run: python scripts/update_league.py
+        run: python playlists/remove_playlist.py
 
       - name: Commit and Push to Data Branch
         run: |
           cd data
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-
-          git add leagues.json queues/
-
+          git add playlists.json
           if ! git diff --staged --quiet; then
             TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
-            git commit --amend -m "Automated data: Updated leagues.json at $TIMESTAMP"
+            git commit --amend -m "Automated data: Updated playlists.json at $TIMESTAMP"
             git push --force origin data
           else
-            echo "No changes detected. Skipping commit."
+            echo "No playlists.json changes detected. Skipping commit."
           fi

@@ -5,7 +5,7 @@ from pathlib import Path
 
 import requests
 
-from logger import Logger
+from utils.logger import Logger
 
 MAX_REQUESTS_PER_MINUTE = 30
 MIN_SECONDS_BETWEEN_CALLS = 60 / MAX_REQUESTS_PER_MINUTE  # 2.0s safety spacing

@@ -34,6 +34,7 @@ jobs:
         env:
           THESPORTSDB_BASE_URL: ${{ secrets.THESPORTSDB_BASE_URL }}
           THESPORTSDB_API_KEY: ${{ secrets.THESPORTSDB_API_KEY }}
+          PYTHONPATH: ${{ github.workspace }}
           MAX_RUNTIME_SECONDS: "240"
         run: python scripts/queue_runner.py
 

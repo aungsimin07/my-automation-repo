@@ -41,6 +41,7 @@ jobs:
         env:
           LEAGUE_URL: ${{ github.event.inputs.leagueUrl }}
           LEAGUE_ID: ${{ github.event.inputs.idLeague }}
+          PYTHONPATH: ${{ github.workspace }}
         run: python scripts/remove_league.py
 
       - name: Commit and Push to Data Branch

@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 
 from api_manager import APIManager, APIError
 from league_store import load_leagues, save_leagues, find_by_id, parse_logo_id
-from logger import Logger
+from utils.logger import Logger
 
 LEAGUE_URL_PATTERN = re.compile(r"/league/(\d+)-")
 

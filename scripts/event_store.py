@@ -2,7 +2,7 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
-from logger import Logger
+from utils.logger import Logger
 
 EVENTS_FILE = Path("data/events.json")
 

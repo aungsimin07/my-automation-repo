@@ -7,7 +7,7 @@ from event_store import (
     sort_leagues, prune_empty_leagues,
 )
 from league_store import load_leagues, parse_logo_id
-from logger import Logger
+from utils.logger import Logger
 
 
 def main():
