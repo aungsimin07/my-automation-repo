@@ -54,6 +54,7 @@ jobs:
           MAX_RUNTIME_SECONDS: "240"
           SKIP_COMPLETE_LEAGUES: ${{ vars.SKIP_COMPLETE_LEAGUES }}
           ONLY_LEAGUE_ID: ${{ steps.add-league.outputs.idLeague }}
+          PYTHONPATH: ${{ github.workspace }}
         run: python scripts/fetch_events.py
 
       - name: Commit and Push to Data Branch
