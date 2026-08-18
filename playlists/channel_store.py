@@ -5,7 +5,7 @@ from pathlib import Path
 
 from utils.logger import Logger
 
-CHANNELS_DIR = Path("channels")
+CHANNELS_DIR = Path("data/channels")
 QUALITY_PATTERN = re.compile(r'\b(4K|UHD|FHD|HD|SD|\d{3,4}p)\b', re.IGNORECASE)
 MANUAL_SOURCE = "manual"
 
