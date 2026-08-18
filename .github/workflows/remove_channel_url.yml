@@ -1,15 +1,22 @@
-name: Fetch Channels
+name: Remove Channel URL
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '0 * * * *'  # every hour
+    inputs:
+      tvgId:
+        description: "tvg-id of the channel"
+        required: true
+        type: string
+      url:
+        description: "Exact stream URL to remove"
+        required: true
+        type: string
 
 permissions:
   contents: write
 
 jobs:
-  fetch-channels:
+  remove-channel-url:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -27,14 +34,12 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Install Dependencies
-        run: pip install -r requirements.txt
-
-      - name: Run Fetch Channels Script
+      - name: Run Remove Channel URL Script
         env:
-          DEFAULT_HTTP_USER_AGENT: ${{ vars.DEFAULT_HTTP_USER_AGENT }}
+          TVG_ID: ${{ github.event.inputs.tvgId }}
+          URL: ${{ github.event.inputs.url }}
           PYTHONPATH: ${{ github.workspace }}
-        run: python playlists/fetch_channels.py
+        run: python playlists/remove_channel_url.py
 
       - name: Commit and Push to Data Branch
         run: |

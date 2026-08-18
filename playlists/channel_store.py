@@ -5,32 +5,73 @@ from pathlib import Path
 
 from utils.logger import Logger
 
-CHANNELS_FILE = Path("data/channels.json")
-
+CHANNELS_DIR = Path("channels")
 QUALITY_PATTERN = re.compile(r'\b(4K|UHD|FHD|HD|SD|\d{3,4}p)\b', re.IGNORECASE)
+MANUAL_SOURCE = "manual"
+
+_UNSAFE_FILENAME_CHARS = re.compile(r'[\/\\:*?"<>|]')
 
 
-def load_channels() -> list:
-    if not CHANNELS_FILE.exists():
-        return []
-    with open(CHANNELS_FILE, "r", encoding="utf-8") as f:
+def _filename_for(tvg_id: str) -> str:
+    safe = _UNSAFE_FILENAME_CHARS.sub("_", tvg_id.strip())
+    return f"{safe}.json"
+
+
+def _path_for(tvg_id: str) -> Path:
+    return CHANNELS_DIR / _filename_for(tvg_id)
+
+
+def channel_exists(tvg_id: str) -> bool:
+    return _path_for(tvg_id).exists()
+
+
+def load_channel(tvg_id: str):
+    path = _path_for(tvg_id)
+    if not path.exists():
+        return None
+    with open(path, "r", encoding="utf-8") as f:
         try:
             return json.load(f)
         except json.JSONDecodeError:
-            Logger.warning(f"{CHANNELS_FILE} is corrupt/empty. Treating as empty list.")
-            return []
+            Logger.warning(f"{path} is corrupt/empty. Treating as missing.")
+            return None
 
 
-def save_channels(channels: list) -> None:
-    CHANNELS_FILE.parent.mkdir(parents=True, exist_ok=True)
-    with open(CHANNELS_FILE, "w", encoding="utf-8") as f:
-        json.dump(channels, f, indent=2)
-    total_urls = sum(len(c.get("urls", [])) for c in channels)
-    Logger.success(f"Saved {len(channels)} channel(s), {total_urls} url(s) to {CHANNELS_FILE}")
+def save_channel(channel: dict) -> None:
+    tvg_id = channel.get("attributes", {}).get("tvg-id")
+    if not tvg_id:
+        Logger.error("Cannot save a channel without attributes.tvg-id.", fatal=True)
+    CHANNELS_DIR.mkdir(parents=True, exist_ok=True)
+    with open(_path_for(tvg_id), "w", encoding="utf-8") as f:
+        json.dump(channel, f, indent=2)
 
 
-def find_by_tvg_id(channels: list, tvg_id: str):
-    return next((c for c in channels if c.get("attributes", {}).get("tvg-id") == tvg_id), None)
+def delete_channel(tvg_id: str) -> bool:
+    path = _path_for(tvg_id)
+    if not path.exists():
+        return False
+    path.unlink()
+    return True
+
+
+def list_all_tvg_ids() -> list:
+    """Scan /channels/ and return the tvg-id recorded INSIDE each file
+    (not the filename) — a file's own attributes.tvg-id is the source
+    of truth; the filename is just a sanitized on-disk lookup key."""
+    if not CHANNELS_DIR.exists():
+        return []
+    ids = []
+    for path in sorted(CHANNELS_DIR.glob("*.json")):
+        with open(path, "r", encoding="utf-8") as f:
+            try:
+                channel = json.load(f)
+            except json.JSONDecodeError:
+                Logger.warning(f"{path} is corrupt/empty. Skipping.")
+                continue
+        tvg_id = channel.get("attributes", {}).get("tvg-id")
+        if tvg_id:
+            ids.append(tvg_id)
+    return ids
 
 
 def build_channel_object(duration: int, display_name: str, attributes: dict) -> dict:
@@ -43,17 +84,10 @@ def build_channel_object(duration: int, display_name: str, attributes: dict) -> 
     }
 
 
-def upsert_channel(channels: list, tvg_id: str, duration: int, display_name: str, attributes: dict) -> dict:
-    entry = find_by_tvg_id(channels, tvg_id)
-    if entry is None:
-        entry = build_channel_object(duration, display_name, attributes)
-        channels.append(entry)
-    else:
-        # refresh channel-level fields from the latest parse (source of truth is the m3u)
-        entry["duration"] = duration
-        entry["displayName"] = display_name
-        entry["attributes"] = attributes
-    return entry
+def upsert_channel_fields(channel: dict, duration: int, display_name: str, attributes: dict) -> None:
+    channel["duration"] = duration
+    channel["displayName"] = display_name
+    channel["attributes"] = attributes
 
 
 def upsert_url(channel: dict, provider: str, url: str, url_fields: dict) -> None:
@@ -66,9 +100,8 @@ def upsert_url(channel: dict, provider: str, url: str, url_fields: dict) -> None
 
 
 def remove_stale_playlist_urls(channel: dict, provider: str, keep_urls: set) -> int:
-    """Remove URL entries sourced from `provider` whose url isn't in
-    keep_urls (i.e. no longer present in that playlist's current m3u).
-    URL entries from other sources are always left untouched."""
+    """tvg-id IS still tracked by `provider` — drop only that provider's
+    urls no longer present in its current m3u."""
     before = len(channel.get("urls", []))
     channel["urls"] = [
         u for u in channel.get("urls", [])
@@ -77,27 +110,17 @@ def remove_stale_playlist_urls(channel: dict, provider: str, keep_urls: set) -> 
     return before - len(channel["urls"])
 
 
+def strip_provider_urls(channel: dict, provider: str) -> int:
+    """tvg-id is NO LONGER tracked by `provider` at all — drop every url
+    that provider ever contributed to this channel. Manual and other
+    providers' urls are untouched."""
+    before = len(channel.get("urls", []))
+    channel["urls"] = [u for u in channel.get("urls", []) if u.get("metadata", {}).get("source") != provider]
+    return before - len(channel["urls"])
+
+
 def touch_channel_sync(channel: dict) -> None:
     channel.setdefault("metadata", {})["last_sync_at"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-
-
-def _channel_sort_key(channel: dict):
-    tvg_id = channel.get("attributes", {}).get("tvg-id") or ""
-    return (tvg_id.lower(), (channel.get("displayName") or "").lower())
-
-
-def sort_channels(channels: list) -> None:
-    channels.sort(key=_channel_sort_key)
-
-
-def prune_empty_channels(channels: list) -> int:
-    """Drop channels that ended up with zero url sources at all."""
-    before = len(channels)
-    channels[:] = [c for c in channels if c.get("urls")]
-    dropped = before - len(channels)
-    if dropped:
-        Logger.info(f"Dropped {dropped} channel(s) with no remaining url sources.")
-    return dropped
 
 
 def guess_quality(display_name: str):

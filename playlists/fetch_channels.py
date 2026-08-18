@@ -6,9 +6,9 @@ from pathlib import Path
 import requests
 
 from channel_store import (
-    load_channels, save_channels, find_by_tvg_id, upsert_channel, upsert_url,
-    remove_stale_playlist_urls, touch_channel_sync, sort_channels, prune_empty_channels,
-    guess_quality,
+    load_channel, save_channel, delete_channel, list_all_tvg_ids,
+    build_channel_object, upsert_channel_fields, upsert_url,
+    remove_stale_playlist_urls, strip_provider_urls, touch_channel_sync, guess_quality,
 )
 from playlist_store import load_playlists
 from utils.logger import Logger
@@ -42,14 +42,9 @@ def _cast_attr(key: str, value: str):
 def parse_extinf_line(line: str):
     duration_match = EXTINF_DURATION_PATTERN.match(line)
     duration = int(duration_match.group(1)) if duration_match else -1
-
     attributes = {}
     for key, value in EXTINF_ATTR_PATTERN.findall(line):
-        if key in KNOWN_ATTR_KEYS:
-            attributes[key] = _cast_attr(key, value)
-        else:
-            attributes[key] = value  # unknown keys still allowed (additionalProperties: true)
-
+        attributes[key] = _cast_attr(key, value) if key in KNOWN_ATTR_KEYS else value
     display_name = line.rsplit(",", 1)[-1].strip() if "," in line else ""
     return duration, attributes, display_name
 
@@ -68,19 +63,15 @@ def download_playlist(playlist_id: str, url: str):
 
 
 def parse_playlist_file(file_path: Path) -> list:
-    """Returns a list of dicts: {duration, attributes, display_name, url, user_agent}."""
     lines = file_path.read_text(encoding="utf-8", errors="replace").splitlines()
     entries = []
-
     i = 0
     while i < len(lines):
         line = lines[i].strip()
         if not line.startswith("#EXTINF"):
             i += 1
             continue
-
         duration, attributes, display_name = parse_extinf_line(line)
-
         j = i + 1
         stream_url = None
         user_agent = None
@@ -97,24 +88,16 @@ def parse_playlist_file(file_path: Path) -> list:
                 continue
             stream_url = candidate
             break
-
         if stream_url:
             entries.append({
-                "duration": duration,
-                "attributes": attributes,
-                "display_name": display_name,
-                "url": stream_url,
-                "user_agent": user_agent,
+                "duration": duration, "attributes": attributes,
+                "display_name": display_name, "url": stream_url, "user_agent": user_agent,
             })
-
         i = (j + 1) if stream_url else (i + 1)
-
     return entries
 
 
-def sync_playlist(channels: list, playlist: dict, default_user_agent: str) -> bool:
-    """Returns True if this playlist's download succeeded (so caller
-    knows whether stale-URL pruning is safe to apply)."""
+def sync_playlist(playlist: dict, default_user_agent: str) -> bool:
     playlist_id = playlist.get("id")
     url = playlist.get("url")
     tracked_ids = set(playlist.get("tvgIds", []))
@@ -129,8 +112,6 @@ def sync_playlist(channels: list, playlist: dict, default_user_agent: str) -> bo
         return False
 
     parsed_entries = parse_playlist_file(local_file)
-
-    # group matched entries by tvg-id
     matched_by_tvg_id = {}
     for entry in parsed_entries:
         tvg_id = entry["attributes"].get("tvg-id")
@@ -140,19 +121,22 @@ def sync_playlist(channels: list, playlist: dict, default_user_agent: str) -> bo
     now_iso = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     found_count = 0
 
+    # 1) tvg-ids still tracked by this playlist — upsert/refresh, prune stale urls
     for tvg_id in tracked_ids:
         entries = matched_by_tvg_id.get(tvg_id, [])
         keep_urls = {e["url"] for e in entries}
+        channel = load_channel(tvg_id)
 
         if entries:
             first = entries[0]
-            channel = upsert_channel(channels, tvg_id, first["duration"], first["display_name"], first["attributes"])
+            if channel is None:
+                channel = build_channel_object(first["duration"], first["display_name"], first["attributes"])
+            else:
+                upsert_channel_fields(channel, first["duration"], first["display_name"], first["attributes"])
+
             for entry in entries:
                 url_fields = {
-                    "url": entry["url"],
-                    "provider": playlist_id,
-                    "priority": 0,
-                    "format": "hls",
+                    "url": entry["url"], "provider": playlist_id, "priority": 0, "format": "hls",
                     "metadata": {"source": playlist_id, "last_sync_at": now_iso},
                 }
                 quality = guess_quality(entry["display_name"])
@@ -164,14 +148,28 @@ def sync_playlist(channels: list, playlist: dict, default_user_agent: str) -> bo
                 upsert_url(channel, playlist_id, entry["url"], url_fields)
             touch_channel_sync(channel)
             found_count += 1
-        else:
-            channel = find_by_tvg_id(channels, tvg_id)
 
-        # prune this playlist's stale URL(s) for this tvg-id, whether or not
-        # it was found this run — if not found, keep_urls is empty, so any
-        # existing url from this provider for this channel gets removed.
         if channel is not None:
             remove_stale_playlist_urls(channel, playlist_id, keep_urls)
+            if channel.get("urls"):
+                save_channel(channel)
+            else:
+                delete_channel(tvg_id)
+
+    # 2) tvg-ids NO LONGER tracked by this playlist — strip this provider's
+    #    urls wherever they still sit on disk; delete the file if nothing's left
+    for tvg_id in list_all_tvg_ids():
+        if tvg_id in tracked_ids:
+            continue
+        channel = load_channel(tvg_id)
+        if channel is None:
+            continue
+        if strip_provider_urls(channel, playlist_id):
+            if channel.get("urls"):
+                save_channel(channel)
+            else:
+                delete_channel(tvg_id)
+                Logger.info(f"Removed orphaned channel '{tvg_id}' (no urls left, tvg-id dropped from '{playlist_id}').")
 
     missing = tracked_ids - set(matched_by_tvg_id.keys())
     if missing:
@@ -188,20 +186,14 @@ def main():
         return
 
     default_user_agent = os.getenv("DEFAULT_HTTP_USER_AGENT", "").strip() or None
-    channels = load_channels()
 
     any_synced = False
     for playlist in playlists:
-        if sync_playlist(channels, playlist, default_user_agent):
+        if sync_playlist(playlist, default_user_agent):
             any_synced = True
 
     if not any_synced:
-        Logger.warning("No playlist downloads succeeded this run. Nothing to save.")
-        return
-
-    sort_channels(channels)
-    prune_empty_channels(channels)
-    save_channels(channels)
+        Logger.warning("No playlist downloads succeeded this run.")
 
 
 if __name__ == "__main__":

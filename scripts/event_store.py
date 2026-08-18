@@ -118,6 +118,16 @@ def get_or_create_league_entry(data: dict, id_league: str, builder) -> dict:
     return entry
 
 
+def find_event_by_id(data: dict, event_id: str):
+    """Search across all league buckets for an event with this id.
+    Returns (league_entry, event) or (None, None) if not found."""
+    for league_entry in data.get("leagues", []):
+        for event in league_entry.get("events", []):
+            if event.get("idEvent") == event_id:
+                return league_entry, event
+    return None, None
+
+
 def upsert_event(league_entry: dict, event_obj: dict) -> None:
     events = league_entry.setdefault("events", [])
     for i, existing in enumerate(events):
