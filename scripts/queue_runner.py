@@ -2,7 +2,7 @@ import os
 import time
 
 from api_manager import APIManager, APIError
-from event_store import load_events, save_events, sort_leagues, prune_empty_leagues, refresh_tracked_league_fields
+from event_store import load_events, save_events, sort_leagues, prune_empty_leagues, refresh_tracked_league_fields, prune_unreferenced_channels
 from fetch_events import (
     EVENTSDAY_QUEUE, LOOKUPEVENT_QUEUE, get_target_dates,
     process_eventsday_queue, process_lookupevent_queue,
@@ -76,6 +76,7 @@ def run_eventsday_queue(manager: APIManager, start: float) -> int:
     if processed:
         sort_leagues(data)
         prune_empty_leagues(data)
+        prune_unreferenced_channels(data)
         save_events(data)
         save_sync_state(sync_state)
     return processed
@@ -88,6 +89,7 @@ def run_lookupevent_queue(manager: APIManager, start: float) -> int:
     if processed:
         sort_leagues(data)
         prune_empty_leagues(data)
+        prune_unreferenced_channels(data)
         save_events(data)
     return processed
 

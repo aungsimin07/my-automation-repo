@@ -24,18 +24,22 @@ LIVE_STATUSES = {"1H", "HT", "2H", "ET", "P", "BT", "INT", "SUSP"}
 FINISHED_STATUSES = {"FT", "AET", "PEN", "AWD", "WO", "PST", "CANC", "ABD"}
 LIVE_RECHECK_MINUTES = 115
 
+# optional fields carried from a per-url entry into the flattened top-level object
+CHANNEL_ENTRY_OPTIONAL_FIELDS = ["provider", "priority", "quality", "format", "httpUserAgent"]
+
 
 def load_events() -> dict:
     if not EVENTS_FILE.exists():
-        return {"dates": [], "leagues": []}
+        return {"dates": [], "leagues": [], "channels": []}
     with open(EVENTS_FILE, "r", encoding="utf-8") as f:
         try:
             data = json.load(f)
         except json.JSONDecodeError:
             Logger.warning(f"{EVENTS_FILE} is corrupt/empty. Starting fresh.")
-            return {"dates": [], "leagues": []}
+            return {"dates": [], "leagues": [], "channels": []}
     data.setdefault("dates", [])
     data.setdefault("leagues", [])
+    data.setdefault("channels", [])
     return data
 
 
@@ -44,7 +48,10 @@ def save_events(data: dict) -> None:
     with open(EVENTS_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2)
     total_events = sum(len(l.get("events", [])) for l in data.get("leagues", []))
-    Logger.success(f"Saved {len(data.get('leagues', []))} league(s), {total_events} event(s) to {EVENTS_FILE}")
+    Logger.success(
+        f"Saved {len(data.get('leagues', []))} league(s), {total_events} event(s), "
+        f"{len(data.get('channels', []))} channel entr(y/ies) to {EVENTS_FILE}"
+    )
 
 
 def build_event_object(raw_event: dict, source: str):
@@ -110,10 +117,6 @@ def get_or_create_league_entry(data: dict, id_league: str, builder) -> dict:
 
 
 def refresh_tracked_league_fields(data: dict, league: dict) -> bool:
-    """If league['idLeague'] already has a bucket in events.json, refresh
-    its top-level fields (badge, strComplete, metadata, etc.) from the
-    freshly-synced leagues.json record — WITHOUT touching its events
-    array. Returns True if a bucket was found and refreshed."""
     id_league = league.get("idLeague")
     entry = next((l for l in data["leagues"] if l.get("idLeague") == id_league), None)
     if entry is None:
@@ -231,39 +234,101 @@ def remove_finished_events(data: dict) -> int:
     return removed
 
 
-def sync_channels_across_events(channel_updates: dict) -> int:
-    """channel_updates: {tvg_id: channel_dict_or_None}. Refreshes every
-    embedded copy under event['metadata']['channels'] across events.json
-    in ONE load/save pass. None means the channel was deleted — its
-    embedded copy is removed from any event still linking it."""
+# ---- channel linking (top-level `channels` cache) --------------------------
+
+def _flatten_channel_urls(tvg_id: str, channel: dict) -> list:
+    """Turn a per-file channel object's `urls` array into flattened
+    top-level entries, one per url, keyed by url."""
+    entries = []
+    for u in channel.get("urls", []):
+        entry = {
+            "tvg-id": tvg_id,
+            "displayName": channel.get("displayName"),
+            "url": u.get("url"),
+        }
+        for field in CHANNEL_ENTRY_OPTIONAL_FIELDS:
+            if u.get(field) is not None:
+                entry[field] = u.get(field)
+        entries.append(entry)
+    return entries
+
+
+def link_channel_to_event(data: dict, event: dict, tvg_id: str, channel: dict) -> int:
+    """Materialize every current url of `channel` into the top-level
+    channels array (only adding ones not already present) and link them
+    all to `event`. Returns how many NEW urls got linked to this event."""
+    new_entries = _flatten_channel_urls(tvg_id, channel)
+    existing_urls = {c["url"] for c in data["channels"]}
+    for entry in new_entries:
+        if entry["url"] not in existing_urls:
+            data["channels"].append(entry)
+            existing_urls.add(entry["url"])
+
+    ev_channels = event.setdefault("metadata", {}).setdefault("channels", [])
+    ev_set = set(ev_channels)
+    added = [e["url"] for e in new_entries if e["url"] not in ev_set]
+    if added:
+        event["metadata"]["channels"] = sorted(ev_set | set(added))
+    return len(added)
+
+
+def unlink_channel_from_event(data: dict, event: dict, tvg_id: str) -> int:
+    """Remove every url belonging to tvg_id from event's linked channels."""
+    tvgid_urls = {c["url"] for c in data["channels"] if c.get("tvg-id") == tvg_id}
+    ev_channels = event.get("metadata", {}).get("channels", [])
+    remaining = [u for u in ev_channels if u not in tvgid_urls]
+    removed = len(ev_channels) - len(remaining)
+    if removed:
+        event["metadata"]["channels"] = remaining
+    return removed
+
+
+def sync_channel_updates(data: dict, channel_updates: dict) -> int:
+    """channel_updates: {tvg_id: channel_dict_or_None}. For every tvg-id
+    that ALREADY has entries in the top-level channels array (i.e. is
+    currently linked to at least one event), refresh those entries to
+    the latest file content and swap every event's OLD urls for that
+    tvg-id to the NEW ones. A tvg-id with no existing top-level entries
+    is skipped entirely — nothing gets added except via link_event_channels.py."""
     if not channel_updates:
         return 0
-    data = load_events()
-    touched = 0
-    for league_entry in data.get("leagues", []):
-        for event in league_entry.get("events", []):
-            channels_list = event.get("metadata", {}).get("channels")
-            if not channels_list:
-                continue
-            changed = False
-            new_list = []
-            for c in channels_list:
-                tvg_id = c.get("attributes", {}).get("tvg-id")
-                if tvg_id in channel_updates:
-                    changed = True
-                    updated = channel_updates[tvg_id]
-                    if updated is not None:
-                        new_list.append(updated)
-                else:
-                    new_list.append(c)
-            if changed:
-                event["metadata"]["channels"] = new_list
-                touched += 1
-    if touched:
-        save_events(data)
-        Logger.info(f"Refreshed {len(channel_updates)} linked channel(s) across {touched} event(s) in events.json.")
-    return touched
+
+    channels = data.setdefault("channels", [])
+    touched_events = 0
+
+    for tvg_id, channel in channel_updates.items():
+        old_urls = {c["url"] for c in channels if c.get("tvg-id") == tvg_id}
+        if not old_urls:
+            continue  # not currently linked anywhere
+
+        new_entries = _flatten_channel_urls(tvg_id, channel) if channel else []
+        new_urls = {e["url"] for e in new_entries}
+
+        channels[:] = [c for c in channels if c.get("tvg-id") != tvg_id]
+        channels.extend(new_entries)
+
+        for league in data.get("leagues", []):
+            for event in league.get("events", []):
+                ev_channels = event.get("metadata", {}).get("channels", [])
+                if not ev_channels or not (old_urls & set(ev_channels)):
+                    continue
+                event["metadata"]["channels"] = sorted((set(ev_channels) - old_urls) | new_urls)
+                touched_events += 1
+
+    return touched_events
 
 
-def sync_channel_across_events(tvg_id: str, channel_obj) -> int:
-    return sync_channels_across_events({tvg_id: channel_obj})
+def prune_unreferenced_channels(data: dict) -> int:
+    """Drop any top-level channel entry that no event links anymore.
+    Self-healing backstop — call after any operation that could remove
+    an event's channel link (unlink, event removal, league removal)."""
+    referenced = set()
+    for league in data.get("leagues", []):
+        for event in league.get("events", []):
+            referenced.update(event.get("metadata", {}).get("channels", []))
+    before = len(data.get("channels", []))
+    data["channels"] = [c for c in data.get("channels", []) if c.get("url") in referenced]
+    dropped = before - len(data["channels"])
+    if dropped:
+        Logger.info(f"Pruned {dropped} unreferenced channel entr(y/ies) from top-level channels.")
+    return dropped

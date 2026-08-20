@@ -11,6 +11,7 @@ from channel_store import (
     remove_stale_playlist_urls, strip_provider_urls, touch_channel_sync, guess_quality,
 )
 from playlist_store import load_playlists
+from scripts.event_store import load_events, save_events, sync_channel_updates, prune_unreferenced_channels
 from utils.logger import Logger
 
 DOWNLOAD_DIR = Path("/tmp/playlist_downloads")
@@ -97,7 +98,7 @@ def parse_playlist_file(file_path: Path) -> list:
     return entries
 
 
-def sync_playlist(playlist: dict, default_user_agent: str) -> bool:
+def sync_playlist(playlist: dict, default_user_agent: str, channel_updates: dict) -> bool:
     playlist_id = playlist.get("id")
     url = playlist.get("url")
     tracked_ids = set(playlist.get("tvgIds", []))
@@ -121,7 +122,6 @@ def sync_playlist(playlist: dict, default_user_agent: str) -> bool:
     now_iso = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     found_count = 0
 
-    # 1) tvg-ids still tracked by this playlist — upsert/refresh, prune stale urls
     for tvg_id in tracked_ids:
         entries = matched_by_tvg_id.get(tvg_id, [])
         keep_urls = {e["url"] for e in entries}
@@ -153,11 +153,11 @@ def sync_playlist(playlist: dict, default_user_agent: str) -> bool:
             remove_stale_playlist_urls(channel, playlist_id, keep_urls)
             if channel.get("urls"):
                 save_channel(channel)
+                channel_updates[tvg_id] = channel
             else:
                 delete_channel(tvg_id)
+                channel_updates[tvg_id] = None
 
-    # 2) tvg-ids NO LONGER tracked by this playlist — strip this provider's
-    #    urls wherever they still sit on disk; delete the file if nothing's left
     for tvg_id in list_all_tvg_ids():
         if tvg_id in tracked_ids:
             continue
@@ -167,8 +167,10 @@ def sync_playlist(playlist: dict, default_user_agent: str) -> bool:
         if strip_provider_urls(channel, playlist_id):
             if channel.get("urls"):
                 save_channel(channel)
+                channel_updates[tvg_id] = channel
             else:
                 delete_channel(tvg_id)
+                channel_updates[tvg_id] = None
                 Logger.info(f"Removed orphaned channel '{tvg_id}' (no urls left, tvg-id dropped from '{playlist_id}').")
 
     missing = tracked_ids - set(matched_by_tvg_id.keys())
@@ -186,14 +188,21 @@ def main():
         return
 
     default_user_agent = os.getenv("DEFAULT_HTTP_USER_AGENT", "").strip() or None
+    channel_updates = {}
 
     any_synced = False
     for playlist in playlists:
-        if sync_playlist(playlist, default_user_agent):
+        if sync_playlist(playlist, default_user_agent, channel_updates):
             any_synced = True
 
     if not any_synced:
         Logger.warning("No playlist downloads succeeded this run.")
+
+    if channel_updates:
+        events_data = load_events()
+        sync_channel_updates(events_data, channel_updates)
+        prune_unreferenced_channels(events_data)
+        save_events(events_data)
 
 
 if __name__ == "__main__":

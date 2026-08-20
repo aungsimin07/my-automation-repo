@@ -1,6 +1,6 @@
 import os
 
-from event_store import load_events, save_events, sort_leagues, prune_empty_leagues
+from event_store import load_events, save_events, sort_leagues, prune_empty_leagues, prune_unreferenced_channels
 from utils.logger import Logger
 
 
@@ -24,6 +24,7 @@ def main():
 
     sort_leagues(data)
     prune_empty_leagues(data)  # drops the league bucket if that was its last event
+    prune_unreferenced_channels(data)
     save_events(data)
 
     Logger.success(f"Removed event {event_id} from league '{league_entry.get('strLeague')}'.")

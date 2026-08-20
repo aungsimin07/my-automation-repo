@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 from api_manager import APIManager, APIError
 from event_store import (
     load_events, save_events, sort_leagues, prune_empty_leagues,
-    needs_status_check, remove_finished_events, build_event_object_any_status, upsert_event,
+    needs_status_check, remove_finished_events, build_event_object_any_status, upsert_event, prune_unreferenced_channels,
 )
 from utils.logger import Logger
 
@@ -71,6 +71,7 @@ def run_status_sync(manager: APIManager, start: float, max_runtime_seconds: int)
     removed = remove_finished_events(data)
     sort_leagues(data)
     prune_empty_leagues(data)
+    prune_unreferenced_channels(data)
     save_events(data)
 
     Logger.success(f"Status sync processed {processed} event(s), removed {removed} finished event(s).")

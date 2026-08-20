@@ -1,6 +1,7 @@
 import os
 
 from channel_store import load_channel, save_channel, build_channel_object, upsert_url, touch_channel_sync, MANUAL_SOURCE
+from scripts.event_store import load_events, save_events, sync_channel_updates
 from utils.logger import Logger
 
 
@@ -52,6 +53,10 @@ def main():
     upsert_url(channel, provider, url, url_fields)
     touch_channel_sync(channel)
     save_channel(channel)
+
+    events_data = load_events()
+    if sync_channel_updates(events_data, {tvg_id: channel}):
+        save_events(events_data)
 
     Logger.success(f"Added url to channel '{channel.get('displayName')}' ({tvg_id}): {url}")
 

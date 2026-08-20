@@ -1,7 +1,7 @@
 import os
 
-from event_store import load_events, save_events, find_event_by_id
-from playlists.channel_store import channel_exists
+from event_store import load_events, save_events, find_event_by_id, link_channel_to_event
+from playlists.channel_store import load_channel
 from utils.logger import Logger
 
 
@@ -20,11 +20,11 @@ def parse_csv_list(raw: str) -> list:
 
 def main():
     event_id = os.getenv("EVENT_ID", "").strip()
-    channel_ids = parse_csv_list(os.getenv("CHANNEL_IDS", ""))
+    tvg_ids = parse_csv_list(os.getenv("CHANNEL_IDS", ""))
 
     if not event_id:
         Logger.error("EVENT_ID is required.", fatal=True)
-    if not channel_ids:
+    if not tvg_ids:
         Logger.error("CHANNEL_IDS is required (comma-separated tvg-id(s)).", fatal=True)
 
     data = load_events()
@@ -32,23 +32,24 @@ def main():
     if event is None:
         Logger.error(f"Event {event_id} not found in events.json.", fatal=True)
 
-    missing = [cid for cid in channel_ids if not channel_exists(cid)]
+    linked_total = 0
+    missing = []
+    for tvg_id in tvg_ids:
+        channel = load_channel(tvg_id)
+        if channel is None or not channel.get("urls"):
+            missing.append(tvg_id)
+            continue
+        linked_total += link_channel_to_event(data, event, tvg_id, channel)
+
     if missing:
-        Logger.warning(
-            f"{len(missing)} channel id(s) have no channel file under /channels/: {', '.join(missing)}. "
-            f"Linking anyway."
-        )
+        Logger.warning(f"{len(missing)} channel id(s) have no file/urls under data/channels/, skipped: {', '.join(missing)}")
 
-    existing = set(event.setdefault("metadata", {}).setdefault("channels", []))
-    added = [c for c in channel_ids if c not in existing]
-
-    if not added:
-        Logger.warning("All provided channel id(s) are already linked to this event. Nothing to add.")
+    if linked_total == 0:
+        Logger.warning("No new channel url(s) linked.")
         return
 
-    event["metadata"]["channels"] = sorted(existing | set(added))
     save_events(data)
-    Logger.success(f"Linked {len(added)} channel(s) to event {event_id}: {', '.join(added)}")
+    Logger.success(f"Linked {linked_total} url(s) to event {event_id}.")
 
 
 if __name__ == "__main__":

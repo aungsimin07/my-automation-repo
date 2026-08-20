@@ -8,7 +8,7 @@ from event_scraper import scrape_fallback_event_ids
 from event_store import (
     load_events, save_events, build_event_object, build_league_entry_from_tracked,
     fetch_league_entry_via_api, get_or_create_league_entry, upsert_event,
-    sort_leagues, prune_empty_leagues, prune_to_dates,
+    sort_leagues, prune_empty_leagues, prune_to_dates, prune_unreferenced_channels,
 )
 from league_store import load_leagues
 from sync_state import load_sync_state, save_sync_state, is_synced, mark_synced
@@ -179,6 +179,7 @@ def main():
 
     sort_leagues(data)
     prune_empty_leagues(data)
+    prune_unreferenced_channels(data)
 
     save_events(data)
     save_sync_state(sync_state)

@@ -1,6 +1,6 @@
 import os
 
-from event_store import load_events, save_events, sort_leagues, prune_empty_leagues
+from event_store import load_events, save_events, sort_leagues, prune_empty_leagues, prune_unreferenced_channels
 from league_store import load_leagues, save_leagues, find_by_id, find_by_url
 from utils.logger import Logger
 
@@ -35,6 +35,7 @@ def main():
     if removed_count:
         sort_leagues(data)
         prune_empty_leagues(data)  # no-op here, kept for consistency with other save paths
+        prune_unreferenced_channels(data)
         save_events(data)
         Logger.success(f"Removed league {target_id} and its events from events.json.")
     else:

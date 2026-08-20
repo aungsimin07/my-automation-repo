@@ -1,6 +1,7 @@
 import os
 
 from channel_store import load_channel, save_channel, delete_channel
+from scripts.event_store import load_events, save_events, sync_channel_updates, prune_unreferenced_channels
 from utils.logger import Logger
 
 
@@ -27,9 +28,16 @@ def main():
 
     if channel["urls"]:
         save_channel(channel)
+        updated_channel = channel
     else:
         delete_channel(tvg_id)
+        updated_channel = None
         Logger.info(f"Channel '{tvg_id}' had no remaining urls. Removed channel file.")
+
+    events_data = load_events()
+    if sync_channel_updates(events_data, {tvg_id: updated_channel}):
+        prune_unreferenced_channels(events_data)
+        save_events(events_data)
 
     Logger.success(f"Removed url from channel '{tvg_id}': {url}")
 
