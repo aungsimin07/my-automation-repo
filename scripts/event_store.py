@@ -48,18 +48,12 @@ def save_events(data: dict) -> None:
 
 
 def build_event_object(raw_event: dict, source: str):
-    """Map a raw TheSportsDB event onto our whitelisted schema.
-    Returns None if status isn't NS or a required field is missing.
-    Used when first ADDING an event — we only ever add scheduled ones."""
     if raw_event.get("strStatus") != "NS":
         return None
     return build_event_object_any_status(raw_event, source)
 
 
 def build_event_object_any_status(raw_event: dict, source: str):
-    """Like build_event_object but does not filter by status — used when
-    REFRESHING an existing event to whatever status the API now reports
-    (NS -> Live, NS -> Finished, Live -> Finished, etc.)."""
     for field in REQUIRED_EVENT_FIELDS:
         if not raw_event.get(field):
             Logger.warning(f"Event missing required field '{field}'. Skipping.")
@@ -83,10 +77,7 @@ def build_league_entry_from_tracked(league: dict) -> dict:
 
 
 def fetch_league_entry_via_api(manager, id_league: str, logo_id=None):
-    """Build a schema-conformant league entry for an UNTRACKED league by
-    calling lookupleague.php directly, rather than deriving a partial
-    entry from event data alone. Returns None on failure."""
-    from api_manager import APIError  # local import avoids a circular import at module load time
+    from api_manager import APIError
 
     try:
         resp = manager.request("lookupleague.php", {"id": id_league})
@@ -118,9 +109,23 @@ def get_or_create_league_entry(data: dict, id_league: str, builder) -> dict:
     return entry
 
 
+def refresh_tracked_league_fields(data: dict, league: dict) -> bool:
+    """If league['idLeague'] already has a bucket in events.json, refresh
+    its top-level fields (badge, strComplete, metadata, etc.) from the
+    freshly-synced leagues.json record — WITHOUT touching its events
+    array. Returns True if a bucket was found and refreshed."""
+    id_league = league.get("idLeague")
+    entry = next((l for l in data["leagues"] if l.get("idLeague") == id_league), None)
+    if entry is None:
+        return False
+    fresh = build_league_entry_from_tracked(league)
+    fresh["events"] = entry.get("events", [])
+    entry.clear()
+    entry.update(fresh)
+    return True
+
+
 def find_event_by_id(data: dict, event_id: str):
-    """Search across all league buckets for an event with this id.
-    Returns (league_entry, event) or (None, None) if not found."""
     for league_entry in data.get("leagues", []):
         for event in league_entry.get("events", []):
             if event.get("idEvent") == event_id:
@@ -166,16 +171,12 @@ def _league_sort_key(league: dict):
 
 
 def sort_leagues(data: dict) -> None:
-    """Sort each league's events, then sort the top-level leagues array
-    itself by idAPIfootballv3. Call this once, right before save."""
     for league_entry in data["leagues"]:
         sort_league_events(league_entry)
     data["leagues"].sort(key=_league_sort_key)
 
 
 def prune_empty_leagues(data: dict) -> None:
-    """Drop any league bucket that ended up with zero events after
-    processing — we only want leagues with something to show."""
     before = len(data["leagues"])
     data["leagues"] = [l for l in data["leagues"] if l.get("events")]
     dropped = before - len(data["leagues"])
@@ -184,8 +185,6 @@ def prune_empty_leagues(data: dict) -> None:
 
 
 def prune_to_dates(data: dict, dates: list) -> None:
-    """Roll the date window forward. Manual events are exempt — they may
-    intentionally sit outside today/tomorrow and must survive this."""
     date_set = set(dates)
     for league_entry in data["leagues"]:
         league_entry["events"] = [
@@ -196,8 +195,6 @@ def prune_to_dates(data: dict, dates: list) -> None:
 
 
 def parse_event_timestamp(event: dict):
-    """Parse strTimestamp (UTC, e.g. '2026-08-13 19:00:00') into an
-    aware UTC datetime. Returns None if missing/unparseable."""
     ts = event.get("strTimestamp")
     if not ts:
         return None
@@ -210,15 +207,10 @@ def parse_event_timestamp(event: dict):
 
 
 def needs_status_check(event: dict, now: datetime) -> bool:
-    """Decide if an event is due for a lookupevent.php recheck:
-    - NS events whose kickoff time has already passed
-    - Live events that have been live for over LIVE_RECHECK_MINUTES
-    Finished events are never rechecked (they should already be removed)."""
     status = event.get("strStatus")
     ts = parse_event_timestamp(event)
     if ts is None:
         return False
-
     if status == "NS":
         return now > ts
     if status in LIVE_STATUSES:
@@ -227,8 +219,6 @@ def needs_status_check(event: dict, now: datetime) -> bool:
 
 
 def remove_finished_events(data: dict) -> int:
-    """Drop any event whose strStatus is in FINISHED_STATUSES — those
-    matches are over and no longer need to be tracked."""
     removed = 0
     for league_entry in data["leagues"]:
         before = len(league_entry.get("events", []))
@@ -239,3 +229,41 @@ def remove_finished_events(data: dict) -> int:
     if removed:
         Logger.info(f"Removed {removed} finished event(s).")
     return removed
+
+
+def sync_channels_across_events(channel_updates: dict) -> int:
+    """channel_updates: {tvg_id: channel_dict_or_None}. Refreshes every
+    embedded copy under event['metadata']['channels'] across events.json
+    in ONE load/save pass. None means the channel was deleted — its
+    embedded copy is removed from any event still linking it."""
+    if not channel_updates:
+        return 0
+    data = load_events()
+    touched = 0
+    for league_entry in data.get("leagues", []):
+        for event in league_entry.get("events", []):
+            channels_list = event.get("metadata", {}).get("channels")
+            if not channels_list:
+                continue
+            changed = False
+            new_list = []
+            for c in channels_list:
+                tvg_id = c.get("attributes", {}).get("tvg-id")
+                if tvg_id in channel_updates:
+                    changed = True
+                    updated = channel_updates[tvg_id]
+                    if updated is not None:
+                        new_list.append(updated)
+                else:
+                    new_list.append(c)
+            if changed:
+                event["metadata"]["channels"] = new_list
+                touched += 1
+    if touched:
+        save_events(data)
+        Logger.info(f"Refreshed {len(channel_updates)} linked channel(s) across {touched} event(s) in events.json.")
+    return touched
+
+
+def sync_channel_across_events(tvg_id: str, channel_obj) -> int:
+    return sync_channels_across_events({tvg_id: channel_obj})

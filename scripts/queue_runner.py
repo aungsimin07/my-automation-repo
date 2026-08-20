@@ -2,7 +2,7 @@ import os
 import time
 
 from api_manager import APIManager, APIError
-from event_store import load_events, save_events, sort_leagues, prune_empty_leagues
+from event_store import load_events, save_events, sort_leagues, prune_empty_leagues, refresh_tracked_league_fields
 from fetch_events import (
     EVENTSDAY_QUEUE, LOOKUPEVENT_QUEUE, get_target_dates,
     process_eventsday_queue, process_lookupevent_queue,
@@ -20,6 +20,7 @@ def run_lookupleague_queue(manager: APIManager, start: float) -> int:
     leagues = load_leagues()
     league_by_id = {l["idLeague"]: l for l in leagues}
     processed = 0
+    updated_leagues = []
 
     while True:
         if time.monotonic() - start > MAX_RUNTIME_SECONDS:
@@ -45,11 +46,24 @@ def run_lookupleague_queue(manager: APIManager, start: float) -> int:
         if not api_leagues or api_leagues[0] is None:
             continue
 
-        league_by_id[league_id] = build_league_object(existing, api_leagues[0])
+        updated = build_league_object(existing, api_leagues[0])
+        league_by_id[league_id] = updated
+        updated_leagues.append(updated)
         processed += 1
 
     if processed:
         save_leagues(list(league_by_id.values()))
+
+    if updated_leagues:
+        events_data = load_events()
+        touched = 0
+        for league in updated_leagues:
+            if refresh_tracked_league_fields(events_data, league):
+                touched += 1
+        if touched:
+            save_events(events_data)
+            Logger.info(f"Refreshed league metadata for {touched} league(s) in events.json.")
+
     return processed
 
 
