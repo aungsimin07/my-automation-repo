@@ -55,9 +55,6 @@ def delete_channel(tvg_id: str) -> bool:
 
 
 def list_all_tvg_ids() -> list:
-    """Scan /channels/ and return the tvg-id recorded INSIDE each file
-    (not the filename) — a file's own attributes.tvg-id is the source
-    of truth; the filename is just a sanitized on-disk lookup key."""
     if not CHANNELS_DIR.exists():
         return []
     ids = []
@@ -100,8 +97,6 @@ def upsert_url(channel: dict, provider: str, url: str, url_fields: dict) -> None
 
 
 def remove_stale_playlist_urls(channel: dict, provider: str, keep_urls: set) -> int:
-    """tvg-id IS still tracked by `provider` — drop only that provider's
-    urls no longer present in its current m3u."""
     before = len(channel.get("urls", []))
     channel["urls"] = [
         u for u in channel.get("urls", [])
@@ -111,9 +106,6 @@ def remove_stale_playlist_urls(channel: dict, provider: str, keep_urls: set) -> 
 
 
 def strip_provider_urls(channel: dict, provider: str) -> int:
-    """tvg-id is NO LONGER tracked by `provider` at all — drop every url
-    that provider ever contributed to this channel. Manual and other
-    providers' urls are untouched."""
     before = len(channel.get("urls", []))
     channel["urls"] = [u for u in channel.get("urls", []) if u.get("metadata", {}).get("source") != provider]
     return before - len(channel["urls"])
