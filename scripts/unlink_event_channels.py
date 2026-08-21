@@ -17,9 +17,17 @@ def parse_csv_list(raw: str) -> list:
     return result
 
 
+def normalize_tvg_id(raw: str) -> str:
+    if raw.lower().endswith(".json"):
+        stripped = raw[: -len(".json")]
+        Logger.warning(f"'{raw}' looked like a filename — using '{stripped}' as the tvg-id instead.")
+        return stripped
+    return raw
+
+
 def main():
     event_id = os.getenv("EVENT_ID", "").strip()
-    tvg_ids = parse_csv_list(os.getenv("CHANNEL_IDS", ""))
+    tvg_ids = [normalize_tvg_id(t) for t in parse_csv_list(os.getenv("CHANNEL_IDS", ""))]
 
     if not event_id:
         Logger.error("EVENT_ID is required.", fatal=True)
