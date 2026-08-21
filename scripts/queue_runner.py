@@ -5,7 +5,7 @@ from api_manager import APIManager, APIError
 from event_store import (
     load_events, save_events, sort_leagues, prune_empty_leagues,
     needs_status_check, remove_finished_events, build_event_object_any_status, upsert_event,
-    resync_channel_links,
+    resync_channel_links, refresh_tracked_league_fields,
 )
 from fetch_events import (
     EVENTSDAY_QUEUE, LOOKUPEVENT_QUEUE, get_target_dates,

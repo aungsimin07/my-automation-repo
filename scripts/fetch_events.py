@@ -8,7 +8,7 @@ from event_scraper import scrape_fallback_event_ids
 from event_store import (
     load_events, save_events, build_event_object, build_league_entry_from_tracked,
     fetch_league_entry_via_api, get_or_create_league_entry, upsert_event,
-    sort_leagues, prune_empty_leagues, prune_to_dates, prune_unreferenced_channels,
+    sort_leagues, prune_empty_leagues, prune_to_dates, resync_channel_links,
 )
 from league_store import load_leagues
 from sync_state import load_sync_state, save_sync_state, is_synced, mark_synced
@@ -60,7 +60,7 @@ def process_eventsday_queue(manager: APIManager, data: dict, leagues_by_id: dict
         except APIError as e:
             Logger.error(f"eventsday.php failed for league {id_league} on {date}: {e}")
             manager.enqueue(EVENTSDAY_QUEUE, task)
-            continue  # not marked synced — will retry next run
+            continue
 
         raw_events = resp.get("events") or []
         known_ids = set()
@@ -71,8 +71,6 @@ def process_eventsday_queue(manager: APIManager, data: dict, leagues_by_id: dict
             if event_obj:
                 upsert_event(league_entry, event_obj)
 
-        # eventsday.php caps at 3 events/league/day — scrape the league page
-        # for anything beyond that; only ids are scraped, not data.
         league_url = league.get("leagueUrl")
         if league_url:
             extra_ids = scrape_fallback_event_ids(league_url, date, known_ids)
@@ -113,7 +111,7 @@ def process_lookupevent_queue(manager: APIManager, data: dict, leagues_by_id: di
         raw_event = raw_events[0]
         event_obj = build_event_object(raw_event, source="scraped_lookup")
         if not event_obj:
-            continue  # not NS status (or missing fields) — intentionally dropped
+            continue
 
         id_league = raw_event.get("idLeague")
         league = leagues_by_id.get(id_league)
@@ -140,7 +138,7 @@ def main():
         Logger.warning("No leagues found in leagues.json. Nothing to fetch.")
         return
 
-    leagues_by_id = {l["idLeague"]: l for l in leagues}  # full map, unfiltered — needed for lookups
+    leagues_by_id = {l["idLeague"]: l for l in leagues}
     dates = get_target_dates()
 
     active_leagues = leagues
@@ -179,7 +177,7 @@ def main():
 
     sort_leagues(data)
     prune_empty_leagues(data)
-    prune_unreferenced_channels(data)
+    resync_channel_links(data)
 
     save_events(data)
     save_sync_state(sync_state)
