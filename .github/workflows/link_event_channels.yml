@@ -41,6 +41,11 @@ jobs:
           PYTHONPATH: ${{ github.workspace }}
         run: python scripts/link_event_channels.py
 
+      - name: Sync Channel Links
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: python scripts/sync_channel_links.py
+
       - name: Commit and Push to Data Branch
         run: |
           cd data

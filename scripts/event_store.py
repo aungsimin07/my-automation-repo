@@ -24,7 +24,6 @@ LIVE_STATUSES = {"1H", "HT", "2H", "ET", "P", "BT", "INT", "SUSP"}
 FINISHED_STATUSES = {"FT", "AET", "PEN", "AWD", "WO", "PST", "CANC", "ABD"}
 LIVE_RECHECK_MINUTES = 115
 
-# optional fields carried from a per-url entry into the flattened top-level object
 CHANNEL_ENTRY_OPTIONAL_FIELDS = ["provider", "priority", "quality", "format", "httpUserAgent"]
 
 
@@ -234,11 +233,32 @@ def remove_finished_events(data: dict) -> int:
     return removed
 
 
-# ---- channel linking (top-level `channels` cache) --------------------------
+# ---- channel linking (tvg-id keyed) -----------------------------------
+
+def link_channel_to_event(event: dict, tvg_id: str) -> bool:
+    """Add tvg_id to event.metadata.channels if not already present.
+    Does NOT touch the top-level channels array — run sync_channel_links.py
+    afterward to materialize/refresh it. Returns True if newly added."""
+    ev_channels = event.setdefault("metadata", {}).setdefault("channels", [])
+    if tvg_id in ev_channels:
+        return False
+    ev_channels.append(tvg_id)
+    ev_channels.sort()
+    return True
+
+
+def unlink_channel_from_event(event: dict, tvg_id: str) -> bool:
+    """Remove tvg_id from event.metadata.channels if present.
+    Does NOT touch the top-level channels array — run sync_channel_links.py
+    afterward. Returns True if it was removed."""
+    ev_channels = event.get("metadata", {}).get("channels", [])
+    if tvg_id not in ev_channels:
+        return False
+    event["metadata"]["channels"] = [t for t in ev_channels if t != tvg_id]
+    return True
+
 
 def _flatten_channel_urls(tvg_id: str, channel: dict) -> list:
-    """Turn a per-file channel object's `urls` array into flattened
-    top-level entries, one per url, keyed by url."""
     entries = []
     for u in channel.get("urls", []):
         entry = {
@@ -253,82 +273,59 @@ def _flatten_channel_urls(tvg_id: str, channel: dict) -> list:
     return entries
 
 
-def link_channel_to_event(data: dict, event: dict, tvg_id: str, channel: dict) -> int:
-    """Materialize every current url of `channel` into the top-level
-    channels array (only adding ones not already present) and link them
-    all to `event`. Returns how many NEW urls got linked to this event."""
-    new_entries = _flatten_channel_urls(tvg_id, channel)
-    existing_urls = {c["url"] for c in data["channels"]}
-    for entry in new_entries:
-        if entry["url"] not in existing_urls:
-            data["channels"].append(entry)
-            existing_urls.add(entry["url"])
+def resync_channel_links(data: dict) -> dict:
+    """Canonical sync pass — the single source of truth for keeping the
+    top-level `channels` array and every event's metadata.channels list
+    consistent with what's actually on disk under data/channels/.
 
-    ev_channels = event.setdefault("metadata", {}).setdefault("channels", [])
-    ev_set = set(ev_channels)
-    added = [e["url"] for e in new_entries if e["url"] not in ev_set]
-    if added:
-        event["metadata"]["channels"] = sorted(ev_set | set(added))
-    return len(added)
+    For every tvg-id referenced by ANY event:
+      - if its channel file exists and has urls -> refresh its flattened
+        entries in the top-level array to the current state.
+      - if its channel file is missing or has zero urls (a dead
+        reference) -> strip that tvg-id from every event referencing it,
+        and it gets no top-level entry.
 
+    Any top-level entry for a tvg-id no longer referenced by any event
+    is dropped (the array is rebuilt from scratch each run).
 
-def unlink_channel_from_event(data: dict, event: dict, tvg_id: str) -> int:
-    """Remove every url belonging to tvg_id from event's linked channels."""
-    tvgid_urls = {c["url"] for c in data["channels"] if c.get("tvg-id") == tvg_id}
-    ev_channels = event.get("metadata", {}).get("channels", [])
-    remaining = [u for u in ev_channels if u not in tvgid_urls]
-    removed = len(ev_channels) - len(remaining)
-    if removed:
-        event["metadata"]["channels"] = remaining
-    return removed
+    Returns a summary dict for logging."""
+    from playlists.channel_store import load_channel  # local import avoids a circular import at module load time
 
+    referenced_tvg_ids = set()
+    for league in data.get("leagues", []):
+        for event in league.get("events", []):
+            referenced_tvg_ids.update(event.get("metadata", {}).get("channels", []))
 
-def sync_channel_updates(data: dict, channel_updates: dict) -> int:
-    """channel_updates: {tvg_id: channel_dict_or_None}. For every tvg-id
-    that ALREADY has entries in the top-level channels array (i.e. is
-    currently linked to at least one event), refresh those entries to
-    the latest file content and swap every event's OLD urls for that
-    tvg-id to the NEW ones. A tvg-id with no existing top-level entries
-    is skipped entirely — nothing gets added except via link_event_channels.py."""
-    if not channel_updates:
-        return 0
+    alive_tvg_ids = set()
+    dead_tvg_ids = set()
+    channels = []
 
-    channels = data.setdefault("channels", [])
-    touched_events = 0
+    for tvg_id in sorted(referenced_tvg_ids):
+        channel = load_channel(tvg_id)
+        if channel is None or not channel.get("urls"):
+            dead_tvg_ids.add(tvg_id)
+            continue
+        alive_tvg_ids.add(tvg_id)
+        channels.extend(_flatten_channel_urls(tvg_id, channel))
 
-    for tvg_id, channel in channel_updates.items():
-        old_urls = {c["url"] for c in channels if c.get("tvg-id") == tvg_id}
-        if not old_urls:
-            continue  # not currently linked anywhere
+    data["channels"] = channels
 
-        new_entries = _flatten_channel_urls(tvg_id, channel) if channel else []
-        new_urls = {e["url"] for e in new_entries}
-
-        channels[:] = [c for c in channels if c.get("tvg-id") != tvg_id]
-        channels.extend(new_entries)
-
+    unlinked_events = 0
+    if dead_tvg_ids:
         for league in data.get("leagues", []):
             for event in league.get("events", []):
                 ev_channels = event.get("metadata", {}).get("channels", [])
-                if not ev_channels or not (old_urls & set(ev_channels)):
+                if not ev_channels:
                     continue
-                event["metadata"]["channels"] = sorted((set(ev_channels) - old_urls) | new_urls)
-                touched_events += 1
+                remaining = [t for t in ev_channels if t not in dead_tvg_ids]
+                if len(remaining) != len(ev_channels):
+                    event["metadata"]["channels"] = remaining
+                    unlinked_events += 1
 
-    return touched_events
-
-
-def prune_unreferenced_channels(data: dict) -> int:
-    """Drop any top-level channel entry that no event links anymore.
-    Self-healing backstop — call after any operation that could remove
-    an event's channel link (unlink, event removal, league removal)."""
-    referenced = set()
-    for league in data.get("leagues", []):
-        for event in league.get("events", []):
-            referenced.update(event.get("metadata", {}).get("channels", []))
-    before = len(data.get("channels", []))
-    data["channels"] = [c for c in data.get("channels", []) if c.get("url") in referenced]
-    dropped = before - len(data["channels"])
-    if dropped:
-        Logger.info(f"Pruned {dropped} unreferenced channel entr(y/ies) from top-level channels.")
-    return dropped
+    return {
+        "referenced": len(referenced_tvg_ids),
+        "alive": len(alive_tvg_ids),
+        "dead": sorted(dead_tvg_ids),
+        "unlinked_events": unlinked_events,
+        "top_level_entries": len(channels),
+    }

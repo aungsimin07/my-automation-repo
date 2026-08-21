@@ -1,6 +1,6 @@
 import os
 
-from event_store import load_events, save_events, find_event_by_id, unlink_channel_from_event, prune_unreferenced_channels
+from event_store import load_events, save_events, find_event_by_id, unlink_channel_from_event
 from utils.logger import Logger
 
 
@@ -39,15 +39,15 @@ def main():
     if event is None:
         Logger.error(f"Event {event_id} not found in events.json.", fatal=True)
 
-    removed_total = sum(unlink_channel_from_event(data, event, tvg_id) for tvg_id in tvg_ids)
+    removed = [t for t in tvg_ids if unlink_channel_from_event(event, t)]
 
-    if removed_total == 0:
+    if not removed:
         Logger.warning("None of the provided channel id(s) were linked to this event. Nothing removed.")
         return
 
-    prune_unreferenced_channels(data)
     save_events(data)
-    Logger.success(f"Unlinked {removed_total} url(s) from event {event_id}.")
+    Logger.success(f"Unlinked {len(removed)} channel(s) from event {event_id}: {', '.join(removed)}")
+    Logger.info("Run sync_channel_links.py next to refresh the top-level channels array.")
 
 
 if __name__ == "__main__":

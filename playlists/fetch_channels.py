@@ -11,7 +11,6 @@ from channel_store import (
     remove_stale_playlist_urls, strip_provider_urls, touch_channel_sync, guess_quality,
 )
 from playlist_store import load_playlists
-from scripts.event_store import load_events, save_events, sync_channel_updates, prune_unreferenced_channels
 from utils.logger import Logger
 
 DOWNLOAD_DIR = Path("/tmp/playlist_downloads")
@@ -98,7 +97,7 @@ def parse_playlist_file(file_path: Path) -> list:
     return entries
 
 
-def sync_playlist(playlist: dict, default_user_agent: str, channel_updates: dict) -> bool:
+def sync_playlist(playlist: dict, default_user_agent: str) -> bool:
     playlist_id = playlist.get("id")
     url = playlist.get("url")
     tracked_ids = set(playlist.get("tvgIds", []))
@@ -153,10 +152,8 @@ def sync_playlist(playlist: dict, default_user_agent: str, channel_updates: dict
             remove_stale_playlist_urls(channel, playlist_id, keep_urls)
             if channel.get("urls"):
                 save_channel(channel)
-                channel_updates[tvg_id] = channel
             else:
                 delete_channel(tvg_id)
-                channel_updates[tvg_id] = None
 
     for tvg_id in list_all_tvg_ids():
         if tvg_id in tracked_ids:
@@ -167,10 +164,8 @@ def sync_playlist(playlist: dict, default_user_agent: str, channel_updates: dict
         if strip_provider_urls(channel, playlist_id):
             if channel.get("urls"):
                 save_channel(channel)
-                channel_updates[tvg_id] = channel
             else:
                 delete_channel(tvg_id)
-                channel_updates[tvg_id] = None
                 Logger.info(f"Removed orphaned channel '{tvg_id}' (no urls left, tvg-id dropped from '{playlist_id}').")
 
     missing = tracked_ids - set(matched_by_tvg_id.keys())
@@ -188,21 +183,14 @@ def main():
         return
 
     default_user_agent = os.getenv("DEFAULT_HTTP_USER_AGENT", "").strip() or None
-    channel_updates = {}
 
     any_synced = False
     for playlist in playlists:
-        if sync_playlist(playlist, default_user_agent, channel_updates):
+        if sync_playlist(playlist, default_user_agent):
             any_synced = True
 
     if not any_synced:
         Logger.warning("No playlist downloads succeeded this run.")
-
-    if channel_updates:
-        events_data = load_events()
-        sync_channel_updates(events_data, channel_updates)
-        prune_unreferenced_channels(events_data)
-        save_events(events_data)
 
 
 if __name__ == "__main__":

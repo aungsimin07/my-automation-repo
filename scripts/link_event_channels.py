@@ -1,7 +1,7 @@
 import os
 
 from event_store import load_events, save_events, find_event_by_id, link_channel_to_event
-from playlists.channel_store import load_channel
+from playlists.channel_store import channel_exists
 from utils.logger import Logger
 
 
@@ -42,24 +42,25 @@ def main():
     if event is None:
         Logger.error(f"Event {event_id} not found in events.json.", fatal=True)
 
-    linked_total = 0
+    added = []
     missing = []
     for tvg_id in tvg_ids:
-        channel = load_channel(tvg_id)
-        if channel is None or not channel.get("urls"):
+        if not channel_exists(tvg_id):
             missing.append(tvg_id)
             continue
-        linked_total += link_channel_to_event(data, event, tvg_id, channel)
+        if link_channel_to_event(event, tvg_id):
+            added.append(tvg_id)
 
     if missing:
-        Logger.warning(f"{len(missing)} channel id(s) have no file/urls under data/channels/, skipped: {', '.join(missing)}")
+        Logger.warning(f"{len(missing)} channel id(s) have no file under data/channels/, skipped: {', '.join(missing)}")
 
-    if linked_total == 0:
-        Logger.warning("No new channel url(s) linked.")
+    if not added:
+        Logger.warning("No new channel(s) linked.")
         return
 
     save_events(data)
-    Logger.success(f"Linked {linked_total} url(s) to event {event_id}.")
+    Logger.success(f"Linked {len(added)} channel(s) to event {event_id}: {', '.join(added)}")
+    Logger.info("Run sync_channel_links.py next to refresh the top-level channels array.")
 
 
 if __name__ == "__main__":
