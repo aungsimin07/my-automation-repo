@@ -13,7 +13,7 @@ from channel_store import (
 from utils.logger import Logger
 
 DOWNLOAD_DIR = Path("/tmp/playlist_downloads")
-PROVIDER_ID = "playlist-sync"  # fixed source label for this single playlist
+PROVIDER_ID = "playlist-sync"
 
 EXTINF_ATTR_PATTERN = re.compile(r'([\w-]+)="([^"]*)"')
 EXTINF_DURATION_PATTERN = re.compile(r'^#EXTINF:(-?\d+)')
@@ -24,6 +24,11 @@ KNOWN_ATTR_KEYS = {
     "tvg-language", "tvg-country", "tvg-shift", "radio", "catchup",
     "catchup-source", "http-user-agent",
 }
+
+# Reserved, non-standard EXTINF attributes we define ourselves, describing
+# the URL that follows THIS #EXTINF block specifically (not the channel as
+# a whole) — so a channel with 2 urls can tag each with its own quality.
+RESERVED_URL_KEYS = {"quality", "priority", "format"}
 
 
 def parse_csv_list(raw: str) -> list:
@@ -52,14 +57,29 @@ def _cast_attr(key: str, value: str):
     return value if value != "" else None
 
 
+def parse_int(raw, default=0):
+    try:
+        return int(raw)
+    except (TypeError, ValueError):
+        return default
+
+
 def parse_extinf_line(line: str):
     duration_match = EXTINF_DURATION_PATTERN.match(line)
     duration = int(duration_match.group(1)) if duration_match else -1
+
     attributes = {}
+    url_overrides = {}
     for key, value in EXTINF_ATTR_PATTERN.findall(line):
-        attributes[key] = _cast_attr(key, value) if key in KNOWN_ATTR_KEYS else value
+        if key in RESERVED_URL_KEYS:
+            url_overrides[key] = value
+        elif key in KNOWN_ATTR_KEYS:
+            attributes[key] = _cast_attr(key, value)
+        else:
+            attributes[key] = value  # unrecognized key, still passed through as channel-level
+
     display_name = line.rsplit(",", 1)[-1].strip() if "," in line else ""
-    return duration, attributes, display_name
+    return duration, attributes, display_name, url_overrides
 
 
 def download_playlist(url: str):
@@ -78,8 +98,7 @@ def download_playlist(url: str):
 def parse_playlist_file(file_path: Path) -> list:
     """Each #EXTINF opens one entry and consumes exactly the next
     non-comment line as its url. A channel with multiple urls MUST
-    repeat the full #EXTINF (+ optional #EXTVLCOPT) block once per url —
-    this is the only valid M3U shape, and this parser assumes it."""
+    repeat the full #EXTINF (+ optional #EXTVLCOPT) block once per url."""
     lines = file_path.read_text(encoding="utf-8", errors="replace").splitlines()
     entries = []
     i = 0
@@ -88,7 +107,7 @@ def parse_playlist_file(file_path: Path) -> list:
         if not line.startswith("#EXTINF"):
             i += 1
             continue
-        duration, attributes, display_name = parse_extinf_line(line)
+        duration, attributes, display_name, url_overrides = parse_extinf_line(line)
         j = i + 1
         stream_url = None
         user_agent = None
@@ -107,8 +126,8 @@ def parse_playlist_file(file_path: Path) -> list:
             break
         if stream_url:
             entries.append({
-                "duration": duration, "attributes": attributes,
-                "display_name": display_name, "url": stream_url, "user_agent": user_agent,
+                "duration": duration, "attributes": attributes, "display_name": display_name,
+                "url": stream_url, "user_agent": user_agent, "url_overrides": url_overrides,
             })
         i = (j + 1) if stream_url else (i + 1)
     return entries
@@ -153,11 +172,15 @@ def main():
                 upsert_channel_fields(channel, first["duration"], first["display_name"], first["attributes"])
 
             for entry in entries:
+                overrides = entry["url_overrides"]
                 url_fields = {
-                    "url": entry["url"], "provider": PROVIDER_ID, "priority": 0, "format": "hls",
+                    "url": entry["url"],
+                    "provider": PROVIDER_ID,
+                    "priority": parse_int(overrides.get("priority"), default=0),
+                    "format": overrides.get("format") or "hls",
                     "metadata": {"source": PROVIDER_ID, "last_sync_at": now_iso},
                 }
-                quality = guess_quality(entry["display_name"])
+                quality = overrides.get("quality") or guess_quality(entry["display_name"])
                 if quality:
                     url_fields["quality"] = quality
                 ua = entry["user_agent"] or entry["attributes"].get("http-user-agent") or default_user_agent
@@ -174,8 +197,6 @@ def main():
             else:
                 delete_channel(tvg_id)
 
-    # orphan cleanup: strip this provider's urls from any channel file
-    # whose tvg-id is no longer in TVG_IDS at all
     for tvg_id in list_all_tvg_ids():
         if tvg_id in tracked_ids:
             continue

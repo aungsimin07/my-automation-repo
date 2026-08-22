@@ -1,0 +1,45 @@
+name: Cleanup Legacy Data (one-time)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v7
+
+      - name: Checkout Data Branch
+        uses: actions/checkout@v7
+        with:
+          ref: data
+          path: data
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.10'
+
+      - name: Run Cleanup Script
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: python scripts/cleanup_legacy_data.py
+
+      - name: Commit and Push to Data Branch
+        run: |
+          cd data
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add -A
+          if ! git diff --staged --quiet; then
+            TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
+            git commit --amend -m "Automated data: Cleaned up legacy files at $TIMESTAMP"
+            git push --force origin data
+          else
+            echo "No changes detected. Skipping commit."
+          fi
