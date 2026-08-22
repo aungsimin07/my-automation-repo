@@ -17,17 +17,13 @@ PROVIDER_ID = "playlist-sync"
 
 EXTINF_ATTR_PATTERN = re.compile(r'([\w-]+)="([^"]*)"')
 EXTINF_DURATION_PATTERN = re.compile(r'^#EXTINF:(-?\d+)')
-VLCOPT_UA_PATTERN = re.compile(r'^#EXTVLCOPT:http-user-agent=(.+)$', re.IGNORECASE)
 
 KNOWN_ATTR_KEYS = {
     "tvg-id", "tvg-name", "tvg-logo", "group-title", "tvg-chno",
     "tvg-language", "tvg-country", "tvg-shift", "radio", "catchup",
-    "catchup-source", "http-user-agent",
+    "catchup-source",
 }
 
-# Reserved, non-standard EXTINF attributes we define ourselves, describing
-# the URL that follows THIS #EXTINF block specifically (not the channel as
-# a whole) — so a channel with 2 urls can tag each with its own quality.
 RESERVED_URL_KEYS = {"quality", "priority", "format"}
 
 
@@ -76,7 +72,7 @@ def parse_extinf_line(line: str):
         elif key in KNOWN_ATTR_KEYS:
             attributes[key] = _cast_attr(key, value)
         else:
-            attributes[key] = value  # unrecognized key, still passed through as channel-level
+            attributes[key] = value
 
     display_name = line.rsplit(",", 1)[-1].strip() if "," in line else ""
     return duration, attributes, display_name, url_overrides
@@ -98,7 +94,7 @@ def download_playlist(url: str):
 def parse_playlist_file(file_path: Path) -> list:
     """Each #EXTINF opens one entry and consumes exactly the next
     non-comment line as its url. A channel with multiple urls MUST
-    repeat the full #EXTINF (+ optional #EXTVLCOPT) block once per url."""
+    repeat the full #EXTINF block once per url."""
     lines = file_path.read_text(encoding="utf-8", errors="replace").splitlines()
     entries = []
     i = 0
@@ -110,16 +106,12 @@ def parse_playlist_file(file_path: Path) -> list:
         duration, attributes, display_name, url_overrides = parse_extinf_line(line)
         j = i + 1
         stream_url = None
-        user_agent = None
         while j < len(lines):
             candidate = lines[j].strip()
             if not candidate:
                 j += 1
                 continue
             if candidate.startswith("#"):
-                ua_match = VLCOPT_UA_PATTERN.match(candidate)
-                if ua_match:
-                    user_agent = ua_match.group(1).strip()
                 j += 1
                 continue
             stream_url = candidate
@@ -127,7 +119,7 @@ def parse_playlist_file(file_path: Path) -> list:
         if stream_url:
             entries.append({
                 "duration": duration, "attributes": attributes, "display_name": display_name,
-                "url": stream_url, "user_agent": user_agent, "url_overrides": url_overrides,
+                "url": stream_url, "url_overrides": url_overrides,
             })
         i = (j + 1) if stream_url else (i + 1)
     return entries
@@ -183,9 +175,8 @@ def main():
                 quality = overrides.get("quality") or guess_quality(entry["display_name"])
                 if quality:
                     url_fields["quality"] = quality
-                ua = entry["user_agent"] or entry["attributes"].get("http-user-agent") or default_user_agent
-                if ua:
-                    url_fields["httpUserAgent"] = ua
+                if default_user_agent:
+                    url_fields["httpUserAgent"] = default_user_agent
                 upsert_url(channel, PROVIDER_ID, entry["url"], url_fields)
             touch_channel_sync(channel)
             found_count += 1
