@@ -125,20 +125,6 @@ def parse_playlist_file(file_path: Path) -> list:
     return entries
 
 
-def build_channel_id_index() -> dict:
-    """Scan every channel file and build {channel-id: tvg-id}. Only
-    channels whose .m3u entry actually set channel-id="..." appear here."""
-    index = {}
-    for tvg_id in list_all_tvg_ids():
-        channel = load_channel(tvg_id)
-        if channel is None:
-            continue
-        channel_id = channel.get("attributes", {}).get("channel-id")
-        if channel_id:
-            index[str(channel_id)] = tvg_id
-    return index
-
-
 def main():
     playlist_url = os.getenv("PLAYLIST_URL", "").strip()
     tracked_ids = set(parse_csv_list(os.getenv("TVG_IDS", "")))

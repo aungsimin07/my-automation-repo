@@ -80,6 +80,20 @@ def build_channel_object(duration: int, display_name: str, attributes: dict) -> 
     }
 
 
+def build_channel_id_index() -> dict:
+    """Scan every channel file and build {channel-id: tvg-id}. Only
+    channels whose .m3u entry actually set channel-id="..." appear here."""
+    index = {}
+    for tvg_id in list_all_tvg_ids():
+        channel = load_channel(tvg_id)
+        if channel is None:
+            continue
+        channel_id = channel.get("attributes", {}).get("channel-id")
+        if channel_id:
+            index[str(channel_id)] = tvg_id
+    return index
+
+
 def upsert_channel_fields(channel: dict, duration: int, display_name: str, attributes: dict) -> None:
     channel["duration"] = duration
     channel["displayName"] = display_name
