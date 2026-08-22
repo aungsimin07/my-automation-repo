@@ -43,6 +43,13 @@ jobs:
           PYTHONPATH: ${{ github.workspace }}
         run: python scripts/sync_channel_links.py
 
+      - name: Run Auto Link Channels Script
+        env:
+          DEFAULT_HTTP_USER_AGENT: ${{ vars.DEFAULT_HTTP_USER_AGENT }}
+          MAX_RUNTIME_SECONDS: "240"
+          AUTO_LINK_RECHECK_HOURS: "6"
+          PYTHONPATH: ${{ github.workspace }}
+
       - name: Commit and Push to Data Branch
         run: |
           cd data

@@ -21,7 +21,7 @@ EXTINF_DURATION_PATTERN = re.compile(r'^#EXTINF:(-?\d+)')
 KNOWN_ATTR_KEYS = {
     "tvg-id", "tvg-name", "tvg-logo", "group-title", "tvg-chno",
     "tvg-language", "tvg-country", "tvg-shift", "radio", "catchup",
-    "catchup-source",
+    "catchup-source", "channel-id",
 }
 
 RESERVED_URL_KEYS = {"quality", "priority", "format"}
@@ -123,6 +123,20 @@ def parse_playlist_file(file_path: Path) -> list:
             })
         i = (j + 1) if stream_url else (i + 1)
     return entries
+
+
+def build_channel_id_index() -> dict:
+    """Scan every channel file and build {channel-id: tvg-id}. Only
+    channels whose .m3u entry actually set channel-id="..." appear here."""
+    index = {}
+    for tvg_id in list_all_tvg_ids():
+        channel = load_channel(tvg_id)
+        if channel is None:
+            continue
+        channel_id = channel.get("attributes", {}).get("channel-id")
+        if channel_id:
+            index[str(channel_id)] = tvg_id
+    return index
 
 
 def main():
