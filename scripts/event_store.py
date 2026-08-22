@@ -136,9 +136,17 @@ def find_event_by_id(data: dict, event_id: str):
 
 
 def upsert_event(league_entry: dict, event_obj: dict) -> None:
+    """Insert or replace an event by idEvent. If replacing an existing
+    event, metadata.channels is preserved from the old object unless the
+    new event_obj explicitly provides its own — upsert_event is never the
+    authority on channel links (only link/unlink_event_channels.py are),
+    so a status/score refresh must never silently drop them."""
     events = league_entry.setdefault("events", [])
     for i, existing in enumerate(events):
         if existing.get("idEvent") == event_obj["idEvent"]:
+            existing_channels = existing.get("metadata", {}).get("channels")
+            if existing_channels and "channels" not in event_obj.get("metadata", {}):
+                event_obj.setdefault("metadata", {})["channels"] = existing_channels
             events[i] = event_obj
             return
     events.append(event_obj)
