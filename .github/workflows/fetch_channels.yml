@@ -49,6 +49,7 @@ jobs:
           MAX_RUNTIME_SECONDS: "240"
           AUTO_LINK_RECHECK_HOURS: "6"
           PYTHONPATH: ${{ github.workspace }}
+        run: python scripts/auto_link_channels.py
 
       - name: Commit and Push to Data Branch
         run: |
