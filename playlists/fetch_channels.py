@@ -10,10 +10,10 @@ from channel_store import (
     build_channel_object, upsert_channel_fields, upsert_url,
     remove_stale_playlist_urls, strip_provider_urls, touch_channel_sync, guess_quality,
 )
-from playlist_store import load_playlists
 from utils.logger import Logger
 
 DOWNLOAD_DIR = Path("/tmp/playlist_downloads")
+PROVIDER_ID = "playlist-sync"  # fixed source label for this single playlist
 
 EXTINF_ATTR_PATTERN = re.compile(r'([\w-]+)="([^"]*)"')
 EXTINF_DURATION_PATTERN = re.compile(r'^#EXTINF:(-?\d+)')
@@ -24,6 +24,19 @@ KNOWN_ATTR_KEYS = {
     "tvg-language", "tvg-country", "tvg-shift", "radio", "catchup",
     "catchup-source", "http-user-agent",
 }
+
+
+def parse_csv_list(raw: str) -> list:
+    if not raw:
+        return []
+    seen = set()
+    result = []
+    for part in raw.split(","):
+        val = part.strip()
+        if val and val not in seen:
+            seen.add(val)
+            result.append(val)
+    return result
 
 
 def _cast_attr(key: str, value: str):
@@ -49,20 +62,24 @@ def parse_extinf_line(line: str):
     return duration, attributes, display_name
 
 
-def download_playlist(playlist_id: str, url: str):
+def download_playlist(url: str):
     DOWNLOAD_DIR.mkdir(parents=True, exist_ok=True)
-    dest = DOWNLOAD_DIR / f"{playlist_id}.m3u"
+    dest = DOWNLOAD_DIR / "playlist.m3u"
     try:
         resp = requests.get(url, timeout=30)
         resp.raise_for_status()
     except requests.exceptions.RequestException as e:
-        Logger.error(f"Failed to download playlist '{playlist_id}' from {url}: {e}")
+        Logger.error(f"Failed to download playlist from {url}: {e}")
         return None
     dest.write_text(resp.text, encoding="utf-8")
     return dest
 
 
 def parse_playlist_file(file_path: Path) -> list:
+    """Each #EXTINF opens one entry and consumes exactly the next
+    non-comment line as its url. A channel with multiple urls MUST
+    repeat the full #EXTINF (+ optional #EXTVLCOPT) block once per url —
+    this is the only valid M3U shape, and this parser assumes it."""
     lines = file_path.read_text(encoding="utf-8", errors="replace").splitlines()
     entries = []
     i = 0
@@ -97,19 +114,21 @@ def parse_playlist_file(file_path: Path) -> list:
     return entries
 
 
-def sync_playlist(playlist: dict, default_user_agent: str) -> bool:
-    playlist_id = playlist.get("id")
-    url = playlist.get("url")
-    tracked_ids = set(playlist.get("tvgIds", []))
+def main():
+    playlist_url = os.getenv("PLAYLIST_URL", "").strip()
+    tracked_ids = set(parse_csv_list(os.getenv("TVG_IDS", "")))
+    default_user_agent = os.getenv("DEFAULT_HTTP_USER_AGENT", "").strip() or None
 
+    if not playlist_url:
+        Logger.error("PLAYLIST_URL is required.", fatal=True)
     if not tracked_ids:
-        Logger.info(f"Playlist '{playlist_id}' has no tvgIds configured. Skipping.")
-        return False
+        Logger.warning("TVG_IDS is empty. Nothing to sync.")
+        return
 
-    Logger.info(f"Downloading playlist '{playlist_id}' from {url}")
-    local_file = download_playlist(playlist_id, url)
+    Logger.info(f"Downloading playlist from {playlist_url}")
+    local_file = download_playlist(playlist_url)
     if local_file is None:
-        return False
+        return
 
     parsed_entries = parse_playlist_file(local_file)
     matched_by_tvg_id = {}
@@ -135,8 +154,8 @@ def sync_playlist(playlist: dict, default_user_agent: str) -> bool:
 
             for entry in entries:
                 url_fields = {
-                    "url": entry["url"], "provider": playlist_id, "priority": 0, "format": "hls",
-                    "metadata": {"source": playlist_id, "last_sync_at": now_iso},
+                    "url": entry["url"], "provider": PROVIDER_ID, "priority": 0, "format": "hls",
+                    "metadata": {"source": PROVIDER_ID, "last_sync_at": now_iso},
                 }
                 quality = guess_quality(entry["display_name"])
                 if quality:
@@ -144,53 +163,37 @@ def sync_playlist(playlist: dict, default_user_agent: str) -> bool:
                 ua = entry["user_agent"] or entry["attributes"].get("http-user-agent") or default_user_agent
                 if ua:
                     url_fields["httpUserAgent"] = ua
-                upsert_url(channel, playlist_id, entry["url"], url_fields)
+                upsert_url(channel, PROVIDER_ID, entry["url"], url_fields)
             touch_channel_sync(channel)
             found_count += 1
 
         if channel is not None:
-            remove_stale_playlist_urls(channel, playlist_id, keep_urls)
+            remove_stale_playlist_urls(channel, PROVIDER_ID, keep_urls)
             if channel.get("urls"):
                 save_channel(channel)
             else:
                 delete_channel(tvg_id)
 
+    # orphan cleanup: strip this provider's urls from any channel file
+    # whose tvg-id is no longer in TVG_IDS at all
     for tvg_id in list_all_tvg_ids():
         if tvg_id in tracked_ids:
             continue
         channel = load_channel(tvg_id)
         if channel is None:
             continue
-        if strip_provider_urls(channel, playlist_id):
+        if strip_provider_urls(channel, PROVIDER_ID):
             if channel.get("urls"):
                 save_channel(channel)
             else:
                 delete_channel(tvg_id)
-                Logger.info(f"Removed orphaned channel '{tvg_id}' (no urls left, tvg-id dropped from '{playlist_id}').")
+                Logger.info(f"Removed orphaned channel '{tvg_id}' (no urls left, tvg-id dropped from TVG_IDS).")
 
     missing = tracked_ids - set(matched_by_tvg_id.keys())
     if missing:
-        Logger.warning(f"Playlist '{playlist_id}': {len(missing)} tvg-id(s) not found in source: {', '.join(sorted(missing))}")
+        Logger.warning(f"{len(missing)} tvg-id(s) not found in playlist source: {', '.join(sorted(missing))}")
 
-    Logger.success(f"Playlist '{playlist_id}': matched {found_count}/{len(tracked_ids)} tvg-id(s).")
-    return True
-
-
-def main():
-    playlists = load_playlists()
-    if not playlists:
-        Logger.warning("No playlists found in playlists.json. Nothing to sync.")
-        return
-
-    default_user_agent = os.getenv("DEFAULT_HTTP_USER_AGENT", "").strip() or None
-
-    any_synced = False
-    for playlist in playlists:
-        if sync_playlist(playlist, default_user_agent):
-            any_synced = True
-
-    if not any_synced:
-        Logger.warning("No playlist downloads succeeded this run.")
+    Logger.success(f"Matched {found_count}/{len(tracked_ids)} tvg-id(s) from playlist.")
 
 
 if __name__ == "__main__":

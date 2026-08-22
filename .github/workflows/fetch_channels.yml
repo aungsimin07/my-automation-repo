@@ -32,6 +32,8 @@ jobs:
 
       - name: Run Fetch Channels Script
         env:
+          PLAYLIST_URL: ${{ secrets.PLAYLIST_URL }}
+          TVG_IDS: ${{ vars.TVG_IDS }}
           DEFAULT_HTTP_USER_AGENT: ${{ vars.DEFAULT_HTTP_USER_AGENT }}
           PYTHONPATH: ${{ github.workspace }}
         run: python playlists/fetch_channels.py
@@ -49,8 +51,8 @@ jobs:
           git add channels/ events.json
           if ! git diff --staged --quiet; then
             TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
-            git commit --amend -m "Automated data: Updated channels.json at $TIMESTAMP"
+            git commit --amend -m "Automated data: Updated channels at $TIMESTAMP"
             git push --force origin data
           else
-            echo "No channels.json changes detected. Skipping commit."
+            echo "No changes detected. Skipping commit."
           fi
