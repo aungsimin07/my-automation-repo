@@ -131,6 +131,11 @@ def process_lookupevent_queue(manager: APIManager, data: dict, leagues_by_id: di
     return processed
 
 
+def _force_refresh_enabled() -> bool:
+    raw = os.getenv("FORCE_REFRESH", "false").strip().lower()
+    return raw in ("1", "true", "yes")
+
+
 def main():
     manager = APIManager(script_name="fetch_events.py")
     leagues = load_leagues()
@@ -158,11 +163,15 @@ def main():
 
     sync_state = load_sync_state(dates)
 
+    force_refresh = _force_refresh_enabled()
+    if force_refresh:
+        Logger.info("FORCE_REFRESH is set (manual trigger) — ignoring sync_state.json, refetching every league/date pair.")
+
     tasks = []
     skipped_synced = 0
     for l in active_leagues:
         for d in dates:
-            if is_synced(sync_state, l["idLeague"], d):
+            if not force_refresh and is_synced(sync_state, l["idLeague"], d):
                 skipped_synced += 1
                 continue
             tasks.append({"idLeague": l["idLeague"], "date": d})

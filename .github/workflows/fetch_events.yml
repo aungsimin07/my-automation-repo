@@ -36,6 +36,7 @@ jobs:
           THESPORTSDB_API_KEY: ${{ secrets.THESPORTSDB_API_KEY }}
           MAX_RUNTIME_SECONDS: "240"
           SKIP_COMPLETE_LEAGUES: ${{ vars.SKIP_COMPLETE_LEAGUES }}
+          FORCE_REFRESH: ${{ github.event_name == 'workflow_dispatch' }}
           PYTHONPATH: ${{ github.workspace }}
         run: python scripts/fetch_events.py
 
