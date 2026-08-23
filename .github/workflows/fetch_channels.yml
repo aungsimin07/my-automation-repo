@@ -33,7 +33,6 @@ jobs:
       - name: Run Fetch Channels Script
         env:
           PLAYLIST_URL: ${{ secrets.PLAYLIST_URL }}
-          TVG_IDS: ${{ vars.TVG_IDS }}
           DEFAULT_HTTP_USER_AGENT: ${{ vars.DEFAULT_HTTP_USER_AGENT }}
           PYTHONPATH: ${{ github.workspace }}
         run: python playlists/fetch_channels.py

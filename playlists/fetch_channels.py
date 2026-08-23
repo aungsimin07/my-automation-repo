@@ -27,19 +27,6 @@ KNOWN_ATTR_KEYS = {
 RESERVED_URL_KEYS = {"quality", "priority", "format"}
 
 
-def parse_csv_list(raw: str) -> list:
-    if not raw:
-        return []
-    seen = set()
-    result = []
-    for part in raw.split(","):
-        val = part.strip()
-        if val and val not in seen:
-            seen.add(val)
-            result.append(val)
-    return result
-
-
 def _cast_attr(key: str, value: str):
     if key == "tvg-chno":
         return int(value) if value.isdigit() else None
@@ -127,14 +114,10 @@ def parse_playlist_file(file_path: Path) -> list:
 
 def main():
     playlist_url = os.getenv("PLAYLIST_URL", "").strip()
-    tracked_ids = set(parse_csv_list(os.getenv("TVG_IDS", "")))
     default_user_agent = os.getenv("DEFAULT_HTTP_USER_AGENT", "").strip() or None
 
     if not playlist_url:
         Logger.error("PLAYLIST_URL is required.", fatal=True)
-    if not tracked_ids:
-        Logger.warning("TVG_IDS is empty. Nothing to sync.")
-        return
 
     Logger.info(f"Downloading playlist from {playlist_url}")
     local_file = download_playlist(playlist_url)
@@ -142,70 +125,80 @@ def main():
         return
 
     parsed_entries = parse_playlist_file(local_file)
-    matched_by_tvg_id = {}
+
+    entries_by_tvg_id = {}
+    skipped_no_tvg_id = 0
     for entry in parsed_entries:
         tvg_id = entry["attributes"].get("tvg-id")
-        if tvg_id in tracked_ids:
-            matched_by_tvg_id.setdefault(tvg_id, []).append(entry)
+        if not tvg_id:
+            skipped_no_tvg_id += 1
+            continue
+        entries_by_tvg_id.setdefault(tvg_id, []).append(entry)
+
+    if skipped_no_tvg_id:
+        Logger.warning(f"Skipped {skipped_no_tvg_id} playlist entr(y/ies) with no tvg-id attribute.")
+
+    playlist_tvg_ids = set(entries_by_tvg_id.keys())
+    Logger.info(f"Playlist contains {len(playlist_tvg_ids)} distinct tvg-id(s).")
 
     now_iso = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-    found_count = 0
+    synced_count = 0
 
-    for tvg_id in tracked_ids:
-        entries = matched_by_tvg_id.get(tvg_id, [])
+    for tvg_id, entries in entries_by_tvg_id.items():
         keep_urls = {e["url"] for e in entries}
         channel = load_channel(tvg_id)
 
-        if entries:
-            first = entries[0]
-            if channel is None:
-                channel = build_channel_object(first["duration"], first["display_name"], first["attributes"])
-            else:
-                upsert_channel_fields(channel, first["duration"], first["display_name"], first["attributes"])
+        first = entries[0]
+        if channel is None:
+            channel = build_channel_object(first["duration"], first["display_name"], first["attributes"])
+        else:
+            upsert_channel_fields(channel, first["duration"], first["display_name"], first["attributes"])
 
-            for entry in entries:
-                overrides = entry["url_overrides"]
-                url_fields = {
-                    "url": entry["url"],
-                    "provider": PROVIDER_ID,
-                    "priority": parse_int(overrides.get("priority"), default=0),
-                    "format": overrides.get("format") or "hls",
-                    "metadata": {"source": PROVIDER_ID, "last_sync_at": now_iso},
-                }
-                quality = overrides.get("quality") or guess_quality(entry["display_name"])
-                if quality:
-                    url_fields["quality"] = quality
-                if default_user_agent:
-                    url_fields["httpUserAgent"] = default_user_agent
-                upsert_url(channel, PROVIDER_ID, entry["url"], url_fields)
-            touch_channel_sync(channel)
-            found_count += 1
+        for entry in entries:
+            overrides = entry["url_overrides"]
+            url_fields = {
+                "url": entry["url"],
+                "provider": PROVIDER_ID,
+                "priority": parse_int(overrides.get("priority"), default=0),
+                "format": overrides.get("format") or "hls",
+                "metadata": {"source": PROVIDER_ID, "last_sync_at": now_iso},
+            }
+            quality = overrides.get("quality") or guess_quality(entry["display_name"])
+            if quality:
+                url_fields["quality"] = quality
+            if default_user_agent:
+                url_fields["httpUserAgent"] = default_user_agent
+            upsert_url(channel, PROVIDER_ID, entry["url"], url_fields)
+        touch_channel_sync(channel)
 
-        if channel is not None:
-            remove_stale_playlist_urls(channel, PROVIDER_ID, keep_urls)
-            if channel.get("urls"):
-                save_channel(channel)
-            else:
-                delete_channel(tvg_id)
+        remove_stale_playlist_urls(channel, PROVIDER_ID, keep_urls)
+        if channel.get("urls"):
+            save_channel(channel)
+        else:
+            delete_channel(tvg_id)
+        synced_count += 1
 
+    # orphan cleanup: strip this provider's urls from any channel file
+    # whose tvg-id is no longer present ANYWHERE in the current playlist
+    orphaned = 0
     for tvg_id in list_all_tvg_ids():
-        if tvg_id in tracked_ids:
+        if tvg_id in playlist_tvg_ids:
             continue
         channel = load_channel(tvg_id)
         if channel is None:
             continue
         if strip_provider_urls(channel, PROVIDER_ID):
+            orphaned += 1
             if channel.get("urls"):
                 save_channel(channel)
             else:
                 delete_channel(tvg_id)
-                Logger.info(f"Removed orphaned channel '{tvg_id}' (no urls left, tvg-id dropped from TVG_IDS).")
+                Logger.info(f"Removed orphaned channel '{tvg_id}' (no urls left, dropped from playlist).")
 
-    missing = tracked_ids - set(matched_by_tvg_id.keys())
-    if missing:
-        Logger.warning(f"{len(missing)} tvg-id(s) not found in playlist source: {', '.join(sorted(missing))}")
+    if orphaned:
+        Logger.info(f"Cleaned up {orphaned} channel(s) no longer present in the playlist.")
 
-    Logger.success(f"Matched {found_count}/{len(tracked_ids)} tvg-id(s) from playlist.")
+    Logger.success(f"Synced {synced_count} channel(s) from playlist.")
 
 
 if __name__ == "__main__":
