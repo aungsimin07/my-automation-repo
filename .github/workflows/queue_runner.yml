@@ -2,8 +2,8 @@ name: Queue Runner
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '*/15 * * * *'
+  repository_dispatch:
+    types: [queue-runner]
 
 permissions:
   contents: write
@@ -34,8 +34,8 @@ jobs:
         env:
           THESPORTSDB_BASE_URL: ${{ secrets.THESPORTSDB_BASE_URL }}
           THESPORTSDB_API_KEY: ${{ secrets.THESPORTSDB_API_KEY }}
-          PYTHONPATH: ${{ github.workspace }}
           MAX_RUNTIME_SECONDS: "240"
+          PYTHONPATH: ${{ github.workspace }}
         run: python scripts/queue_runner.py
 
       - name: Commit and Push to Data Branch
@@ -43,9 +43,7 @@ jobs:
           cd data
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-
           git add leagues.json events.json sync_state.json queues/
-
           if ! git diff --staged --quiet; then
             TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
             git commit --amend -m "Automated data: Processed queues at $TIMESTAMP"
