@@ -2,8 +2,8 @@ name: Update Leagues
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '30 17 * * *'  # 00:00 Asia/Yangon (UTC+6:30)
+  repository_dispatch:
+    types: [update-league]
 
 permissions:
   contents: write
@@ -43,9 +43,7 @@ jobs:
           cd data
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-
           git add leagues.json events.json queues/
-
           if ! git diff --staged --quiet; then
             TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
             git commit --amend -m "Automated data: Updated leagues.json at $TIMESTAMP"

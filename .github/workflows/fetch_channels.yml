@@ -2,8 +2,8 @@ name: Fetch Channels
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '0 * * * *'  # every hour
+  repository_dispatch:
+    types: [fetch-channels]
 
 permissions:
   contents: write
@@ -58,7 +58,7 @@ jobs:
           git add channels/ events.json
           if ! git diff --staged --quiet; then
             TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
-            git commit --amend -m "Automated data: Updated channels at $TIMESTAMP"
+            git commit --amend -m "Automated data: Updated channels and event links at $TIMESTAMP"
             git push --force origin data
           else
             echo "No changes detected. Skipping commit."

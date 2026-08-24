@@ -2,8 +2,8 @@ name: Fetch Events
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '30 17 * * *'  # 00:00 Asia/Yangon (UTC+6:30)
+  repository_dispatch:
+    types: [fetch-events]
 
 permissions:
   contents: write
