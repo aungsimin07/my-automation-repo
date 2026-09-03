@@ -11,6 +11,10 @@ from fetch_events import (
     EVENTSDAY_QUEUE, LOOKUPEVENT_QUEUE, get_target_dates,
     process_eventsday_queue, process_lookupevent_queue,
 )
+from fetch_events_from_channels import (
+    CHANNEL_SCHEDULE_QUEUE, CHANNEL_LOOKUPEVENT_QUEUE,
+    process_channel_schedule_queue, process_channel_lookupevent_queue,
+)
 from league_store import load_leagues, save_leagues
 from status_sync import run_status_sync
 from sync_state import load_sync_state, save_sync_state
@@ -98,10 +102,28 @@ def run_lookupevent_queue(manager: APIManager, start: float) -> int:
     return processed
 
 
+def run_channel_schedule_queue(manager: APIManager, start: float) -> int:
+    return process_channel_schedule_queue(manager, start)
+
+
+def run_channel_lookupevent_queue(manager: APIManager, start: float) -> int:
+    leagues_by_id = {l["idLeague"]: l for l in load_leagues()}
+    data = load_events()
+    processed = process_channel_lookupevent_queue(manager, data, leagues_by_id, start)
+    if processed:
+        sort_leagues(data)
+        prune_empty_leagues(data)
+        resync_channel_links(data)
+        save_events(data)
+    return processed
+
+
 QUEUE_HANDLERS = {
     LOOKUPLEAGUE_QUEUE: run_lookupleague_queue,
     EVENTSDAY_QUEUE: run_eventsday_queue,
     LOOKUPEVENT_QUEUE: run_lookupevent_queue,
+    CHANNEL_SCHEDULE_QUEUE: run_channel_schedule_queue,
+    CHANNEL_LOOKUPEVENT_QUEUE: run_channel_lookupevent_queue,
 }
 
 

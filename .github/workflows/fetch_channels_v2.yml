@@ -1,15 +1,15 @@
-name: Queue Runner
+name: Fetch Channels V2
 
 on:
   workflow_dispatch:
   repository_dispatch:
-    types: [queue-runner]
+    types: [fetch-channels-v2]
 
 permissions:
   contents: write
 
 jobs:
-  run-queues:
+  fetch-channels-v2:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -30,24 +30,23 @@ jobs:
       - name: Install Dependencies
         run: pip install -r requirements.txt
 
-      - name: Run Queue Runner Script
+      - name: Run Fetch Channels V2 Script
         env:
-          THESPORTSDB_BASE_URL: ${{ secrets.THESPORTSDB_BASE_URL }}
-          THESPORTSDB_API_KEY: ${{ secrets.THESPORTSDB_API_KEY }}
-          MAX_RUNTIME_SECONDS: "240"
+          PLAYLIST_URLV2: ${{ secrets.PLAYLIST_URLV2 }}
+          DEFAULT_HTTP_USER_AGENT: ${{ vars.DEFAULT_HTTP_USER_AGENT }}
           PYTHONPATH: ${{ github.workspace }}
-        run: python scripts/queue_runner.py
+        run: python playlists/fetch_channels_v2.py
 
       - name: Commit and Push to Data Branch
         run: |
           cd data
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add leagues.json events.json events_v2.json sync_state.json queues/
+          git add channels_v2.json
           if ! git diff --staged --quiet; then
             TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
-            git commit --amend -m "Automated data: Processed queues at $TIMESTAMP"
+            git commit --amend -m "Automated data: Updated channels_v2.json at $TIMESTAMP"
             git push --force origin data
           else
-            echo "No changes detected. Skipping commit."
+            echo "No channels_v2.json changes detected. Skipping commit."
           fi
