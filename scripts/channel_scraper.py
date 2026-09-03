@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 
 from utils.logger import Logger
 
-BASE_URL = "https://www.thesportsdb.com"
+BASE_URL = "https://www.thesportsdb.com/channel"
 HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; SportsDataBot/1.0)"}
 EVENT_ID_PATTERN = re.compile(r'/event/(\d+)-')
 
