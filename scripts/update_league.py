@@ -3,7 +3,6 @@ import time
 from datetime import datetime, timezone
 
 from api_manager import APIManager, APIError
-from event_store import load_events, save_events, refresh_tracked_league_fields
 from league_store import load_leagues, save_leagues
 from utils.logger import Logger
 
@@ -44,7 +43,6 @@ def build_league_object(existing: dict, api_league: dict) -> dict:
 def process_queue(manager: APIManager, leagues: list):
     start = time.monotonic()
     updated_count = 0
-    updated_leagues = []
     league_by_id = {l["idLeague"]: l for l in leagues}
 
     while True:
@@ -77,11 +75,10 @@ def process_queue(manager: APIManager, leagues: list):
 
         updated = build_league_object(existing, api_leagues[0])
         league_by_id[league_id] = updated
-        updated_leagues.append(updated)
         updated_count += 1
 
     save_leagues(list(league_by_id.values()))
-    return updated_count, updated_leagues
+    return updated_count
 
 
 def main():
@@ -94,19 +91,8 @@ def main():
 
     manager.enqueue(QUEUE_NAME, [l["idLeague"] for l in leagues])
 
-    updated_count, updated_leagues = process_queue(manager, leagues)
+    updated_count = process_queue(manager, leagues)
     Logger.success(f"Updated {updated_count} league(s) this run.")
-
-    if updated_leagues:
-        events_data = load_events()
-        touched = 0
-        for league in updated_leagues:
-            if refresh_tracked_league_fields(events_data, league):
-                touched += 1
-        if touched:
-            save_events(events_data)
-            Logger.info(f"Refreshed league metadata for {touched} league(s) in events.json.")
-
     Logger.info(f"Total API requests this run: {manager.request_count}")
 
 
