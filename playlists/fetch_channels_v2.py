@@ -208,7 +208,7 @@ def save_channel_map(mapping: dict) -> None:
 
 
 def main():
-    playlist_url = os.getenv("PLAYLIST_URL", "").strip()
+    playlist_url = os.getenv("PLAYLIST_URLV2", "").strip()
     default_user_agent = os.getenv("DEFAULT_HTTP_USER_AGENT", "").strip() or None
 
     if not playlist_url:
