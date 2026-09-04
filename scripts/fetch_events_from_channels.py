@@ -2,9 +2,11 @@ import json
 import os
 import time
 from pathlib import Path
+from datetime import datetime, timezone
 
 from api_manager import APIManager, APIError
 from channel_scraper import scrape_channel_schedule
+from channel_sync_state import load_sync_state, save_sync_state, is_synced, mark_synced
 from event_store_v2 import (
     load_events, save_events, build_event_object, build_league_entry_from_tracked,
     fetch_league_entry_via_api, get_or_create_league_entry, upsert_event,
@@ -31,10 +33,12 @@ def load_channel_entries() -> list:
             return []
 
 
-def process_channel_schedule_queue(manager: APIManager, start: float) -> int:
-    """Drains queue_channel_schedule.json: one task per channel entry.
-    Scrapes its schedule page, enqueues discovered event ids (tagged
-    with which tvg-id found them) into queue_channel_lookupevent.json."""
+def _force_refresh_enabled() -> bool:
+    raw = os.getenv("FORCE_REFRESH", "false").strip().lower()
+    return raw in ("1", "true", "yes")
+
+
+def process_channel_schedule_queue(manager: APIManager, sync_state: dict, start: float) -> int:
     processed = 0
     while True:
         if time.monotonic() - start > MAX_RUNTIME_SECONDS:
@@ -52,15 +56,13 @@ def process_channel_schedule_queue(manager: APIManager, start: float) -> int:
         if event_ids:
             manager.enqueue(CHANNEL_LOOKUPEVENT_QUEUE, [{"eventId": eid, "tvgId": tvg_id} for eid in event_ids])
 
+        mark_synced(sync_state, channel_path, datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"))
         processed += 1
 
     return processed
 
 
 def process_channel_lookupevent_queue(manager: APIManager, data: dict, leagues_by_id: dict, start: float) -> int:
-    """Drains queue_channel_lookupevent.json: one task per (event id,
-    tvg-id that discovered it). Calls lookupevent.php, filters to Soccer
-    + NS, upserts into events.json, links the discovering channel."""
     processed = 0
     linked = 0
     skipped_sport = 0
@@ -97,7 +99,7 @@ def process_channel_lookupevent_queue(manager: APIManager, data: dict, leagues_b
 
         event_obj = build_event_object(raw_event, source="channel_schedule")
         if event_obj is None:
-            continue  # not NS, or missing required fields
+            continue
 
         id_league = raw_event.get("idLeague")
         league = leagues_by_id.get(id_league)
@@ -139,19 +141,49 @@ def main():
         Logger.warning("No channel entries have channelPath set. Nothing to do.")
         return
 
-    tasks = [{"tvgId": c["tvg"]["id"], "channelPath": c["channelPath"]} for c in eligible]
+    sync_state = load_sync_state()
+
+    # prune sync state for channelPaths no longer present in the current playlist
+    current_paths = {c["channelPath"] for c in eligible}
+    stale_paths = [p for p in sync_state["synced"] if p not in current_paths]
+    for p in stale_paths:
+        del sync_state["synced"][p]
+    if stale_paths:
+        Logger.info(f"Pruned {len(stale_paths)} stale channelPath(s) from sync state.")
+
+    force_refresh = _force_refresh_enabled()
+    if force_refresh:
+        Logger.info("FORCE_REFRESH is set (manual trigger) — ignoring channel_sync_state.json, rescraping every channel.")
+
+    # dedupe by channelPath first — multiple entries can share one path
+    # (e.g. same channel page linked via different tvg-ids); only need to
+    # scrape each distinct path once per run.
+    tasks_by_path = {}
+    skipped_synced = 0
+    for c in eligible:
+        channel_path = c["channelPath"]
+        if not force_refresh and is_synced(sync_state, channel_path):
+            skipped_synced += 1
+            continue
+        tasks_by_path.setdefault(channel_path, c["tvg"]["id"])
+
+    if skipped_synced:
+        Logger.info(f"Skipping {skipped_synced} channel entr(y/ies) whose channelPath is already synced.")
+
+    tasks = [{"tvgId": tvg_id, "channelPath": path} for path, tvg_id in tasks_by_path.items()]
     manager.enqueue(CHANNEL_SCHEDULE_QUEUE, tasks)
 
     data = load_events()
     leagues_by_id = {l["idLeague"]: l for l in load_leagues()}
 
     start = time.monotonic()
-    schedule_processed = process_channel_schedule_queue(manager, start)
+    schedule_processed = process_channel_schedule_queue(manager, sync_state, start)
     lookupevent_processed = process_channel_lookupevent_queue(manager, data, leagues_by_id, start)
 
     sort_leagues(data)
     prune_empty_leagues(data)
     save_events(data)
+    save_sync_state(sync_state)
 
     Logger.success(
         f"Processed {schedule_processed} channel schedule task(s), "

@@ -2,6 +2,7 @@ import os
 import time
 
 from api_manager import APIManager, APIError
+from channel_sync_state import load_sync_state as load_channel_sync_state, save_sync_state as save_channel_sync_state
 from event_store import (
     load_events, save_events, sort_leagues, prune_empty_leagues,
     needs_status_check, remove_finished_events, build_event_object_any_status, upsert_event,
@@ -103,7 +104,11 @@ def run_lookupevent_queue(manager: APIManager, start: float) -> int:
 
 
 def run_channel_schedule_queue(manager: APIManager, start: float) -> int:
-    return process_channel_schedule_queue(manager, start)
+    sync_state = load_channel_sync_state()
+    processed = process_channel_schedule_queue(manager, sync_state, start)
+    if processed:
+        save_channel_sync_state(sync_state)
+    return processed
 
 
 def run_channel_lookupevent_queue(manager: APIManager, start: float) -> int:

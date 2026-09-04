@@ -9,6 +9,7 @@ from utils.logger import Logger
 
 DOWNLOAD_DIR = Path("/tmp/playlist_downloads_v2")
 CHANNELS_FILE = Path("data/channels_v2.json")
+CHANNEL_MAP_FILE = Path("data/channel_tvgid_map.json")
 
 EXTINF_ATTR_PATTERN = re.compile(r'([\w-]+)="([^"]*)"')
 EXTINF_DURATION_PATTERN = re.compile(r'^#EXTINF:(-?[\d.]+)')
@@ -180,9 +181,34 @@ def save_channels(entries: list) -> None:
         json.dump(entries, f, indent=2)
     Logger.success(f"Saved {len(entries)} channel entr(y/ies) to {CHANNELS_FILE}")
 
+def build_tvgid_channelpath_map(entries: list) -> dict:
+    """tvg-id -> sorted list of distinct channelPaths seen for it.
+    A tvg-id can appear on multiple #EXTINF blocks (different urls,
+    same logical channel) — each with a potentially different
+    channelPath, so this is 1:many, not 1:1."""
+    mapping = {}
+    for entry in entries:
+        tvg_id = entry.get("tvg", {}).get("id")
+        channel_path = entry.get("channelPath")
+        if not tvg_id or not channel_path:
+            continue
+        paths = mapping.setdefault(tvg_id, [])
+        if channel_path not in paths:
+            paths.append(channel_path)
+    for tvg_id in mapping:
+        mapping[tvg_id].sort()
+    return mapping
+
+
+def save_channel_map(mapping: dict) -> None:
+    CHANNEL_MAP_FILE.parent.mkdir(parents=True, exist_ok=True)
+    with open(CHANNEL_MAP_FILE, "w", encoding="utf-8") as f:
+        json.dump(mapping, f, indent=2)
+    Logger.success(f"Saved {len(mapping)} tvg-id -> channelPath mapping(s) to {CHANNEL_MAP_FILE}")
+
 
 def main():
-    playlist_url = os.getenv("PLAYLIST_URLV2", "").strip()
+    playlist_url = os.getenv("PLAYLIST_URL", "").strip()
     default_user_agent = os.getenv("DEFAULT_HTTP_USER_AGENT", "").strip() or None
 
     if not playlist_url:
@@ -200,6 +226,9 @@ def main():
         Logger.warning(f"{missing_tvg_id} entr(y/ies) have no tvg-id set.")
 
     save_channels(entries)
+
+    tvgid_map = build_tvgid_channelpath_map(entries)
+    save_channel_map(tvgid_map)
 
 
 if __name__ == "__main__":
