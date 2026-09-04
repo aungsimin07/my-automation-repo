@@ -10,7 +10,7 @@ from channel_sync_state import load_sync_state, save_sync_state, is_synced, mark
 from event_store_v2 import (
     load_events, save_events, build_event_object, build_league_entry_from_tracked,
     fetch_league_entry_via_api, get_or_create_league_entry, upsert_event,
-    sort_leagues, prune_empty_leagues, link_channel_to_event,
+    sort_leagues, prune_empty_leagues, link_channel_to_event, resync_channel_links,
 )
 from league_store import load_leagues
 from utils.logger import Logger
@@ -143,7 +143,6 @@ def main():
 
     sync_state = load_sync_state()
 
-    # prune sync state for channelPaths no longer present in the current playlist
     current_paths = {c["channelPath"] for c in eligible}
     stale_paths = [p for p in sync_state["synced"] if p not in current_paths]
     for p in stale_paths:
@@ -155,9 +154,6 @@ def main():
     if force_refresh:
         Logger.info("FORCE_REFRESH is set (manual trigger) — ignoring channel_sync_state.json, rescraping every channel.")
 
-    # dedupe by channelPath first — multiple entries can share one path
-    # (e.g. same channel page linked via different tvg-ids); only need to
-    # scrape each distinct path once per run.
     tasks_by_path = {}
     skipped_synced = 0
     for c in eligible:
@@ -182,6 +178,12 @@ def main():
 
     sort_leagues(data)
     prune_empty_leagues(data)
+    summary = resync_channel_links(data, channels)
+    if summary["dead"]:
+        Logger.warning(
+            f"{len(summary['dead'])} referenced tvg-id(s) had no matching channel entries, "
+            f"unlinked from {summary['unlinked_events']} event(s): {', '.join(summary['dead'])}"
+        )
     save_events(data)
     save_sync_state(sync_state)
 

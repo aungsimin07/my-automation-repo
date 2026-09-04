@@ -7,8 +7,6 @@ SYNC_STATE_FILE = Path("data/channel_sync_state.json")
 
 
 def load_sync_state() -> dict:
-    """No date-window concept here (unlike v1's per-date sync state) —
-    this just tracks 'have we scraped this channelPath at all / recently'."""
     if not SYNC_STATE_FILE.exists():
         return {"synced": {}}
     with open(SYNC_STATE_FILE, "r", encoding="utf-8") as f:

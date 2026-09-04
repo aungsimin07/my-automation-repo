@@ -21,8 +21,6 @@ LEAGUE_FIELDS = [
     "strComplete", "strBadge", "strLeagueBadge", "strWebsite", "leagueUrl",
 ]
 
-CHANNEL_ENTRY_OPTIONAL_FIELDS = ["provider", "priority", "quality", "format", "httpUserAgent"]
-
 
 def load_events() -> dict:
     if not EVENTS_FILE.exists():
@@ -49,9 +47,10 @@ def save_events(data: dict) -> None:
     )
 
 
-def build_event_object(raw_event: dict, source: str):
-    if raw_event.get("strStatus") != "NS":
-        return None
+def build_event_object_any_status(raw_event: dict, source: str):
+    """Map a raw TheSportsDB event onto our whitelisted schema, regardless
+    of strStatus. Used both when first adding an event and when
+    refreshing an existing one to whatever status the API now reports."""
     for field in REQUIRED_EVENT_FIELDS:
         if not raw_event.get(field):
             Logger.warning(f"Event missing required field '{field}'. Skipping.")
@@ -62,6 +61,14 @@ def build_event_object(raw_event: dict, source: str):
         "last_sync_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
     }
     return event
+
+
+def build_event_object(raw_event: dict, source: str):
+    """NS-only variant — used when first discovering an event, since we
+    only ever want to add events that are still scheduled."""
+    if raw_event.get("strStatus") != "NS":
+        return None
+    return build_event_object_any_status(raw_event, source)
 
 
 def build_league_entry_from_tracked(league: dict) -> dict:
@@ -156,3 +163,59 @@ def link_channel_to_event(event: dict, tvg_id: str) -> bool:
     ev_channels.append(tvg_id)
     ev_channels.sort()
     return True
+
+
+def resync_channel_links(data: dict, channel_entries: list) -> dict:
+    """Rebuild the top-level `channels` array from scratch, based on
+    which tvg-ids are currently referenced by any event's
+    metadata.channels list. For each referenced tvg-id, include EVERY
+    channel_v2 entry carrying that tvg-id (a tvg-id can have multiple
+    entries — same channel, different urls).
+
+    Any referenced tvg-id with zero matching entries (dead reference —
+    e.g. removed from the playlist) gets stripped from every event that
+    references it."""
+    referenced_tvg_ids = set()
+    for league in data.get("leagues", []):
+        for event in league.get("events", []):
+            referenced_tvg_ids.update(event.get("metadata", {}).get("channels", []))
+
+    entries_by_tvg_id = {}
+    for entry in channel_entries:
+        tvg_id = entry.get("tvg", {}).get("id")
+        if tvg_id:
+            entries_by_tvg_id.setdefault(tvg_id, []).append(entry)
+
+    alive_tvg_ids = set()
+    dead_tvg_ids = set()
+    channels = []
+
+    for tvg_id in sorted(referenced_tvg_ids):
+        matches = entries_by_tvg_id.get(tvg_id)
+        if not matches:
+            dead_tvg_ids.add(tvg_id)
+            continue
+        alive_tvg_ids.add(tvg_id)
+        channels.extend(matches)
+
+    data["channels"] = channels
+
+    unlinked_events = 0
+    if dead_tvg_ids:
+        for league in data.get("leagues", []):
+            for event in league.get("events", []):
+                ev_channels = event.get("metadata", {}).get("channels", [])
+                if not ev_channels:
+                    continue
+                remaining = [t for t in ev_channels if t not in dead_tvg_ids]
+                if len(remaining) != len(ev_channels):
+                    event["metadata"]["channels"] = remaining
+                    unlinked_events += 1
+
+    return {
+        "referenced": len(referenced_tvg_ids),
+        "alive": len(alive_tvg_ids),
+        "dead": sorted(dead_tvg_ids),
+        "unlinked_events": unlinked_events,
+        "top_level_entries": len(channels),
+    }
