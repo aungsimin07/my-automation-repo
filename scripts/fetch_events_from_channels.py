@@ -11,6 +11,7 @@ from event_store_v2 import (
     load_events, save_events, build_event_object, build_league_entry_from_tracked,
     fetch_league_entry_via_api, get_or_create_league_entry, upsert_event,
     sort_leagues, prune_empty_leagues, link_channel_to_event, resync_channel_links,
+    get_target_dates, prune_to_dates,
 )
 from league_store import load_leagues
 from utils.logger import Logger
@@ -175,6 +176,8 @@ def main():
     start = time.monotonic()
     schedule_processed = process_channel_schedule_queue(manager, sync_state, start)
     lookupevent_processed = process_channel_lookupevent_queue(manager, data, leagues_by_id, start)
+
+    prune_to_dates(data, get_target_dates())
 
     sort_leagues(data)
     prune_empty_leagues(data)

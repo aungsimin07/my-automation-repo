@@ -2,23 +2,18 @@ import os
 import time
 
 from api_manager import APIManager, APIError
+from channel_path_linker import run_channel_path_discovery
 from channel_sync_state import load_sync_state as load_channel_sync_state, save_sync_state as save_channel_sync_state
-from event_store import (
-    load_events, save_events, sort_leagues, prune_empty_leagues,
-    needs_status_check, remove_finished_events, build_event_object_any_status, upsert_event,
-    resync_channel_links, refresh_tracked_league_fields,
-)
-from fetch_events import (
-    EVENTSDAY_QUEUE, LOOKUPEVENT_QUEUE, get_target_dates,
-    process_eventsday_queue, process_lookupevent_queue,
+from event_store_v2 import (
+    load_events, save_events, sort_leagues, prune_empty_leagues, resync_channel_links,
 )
 from fetch_events_from_channels import (
     CHANNEL_SCHEDULE_QUEUE, CHANNEL_LOOKUPEVENT_QUEUE,
     process_channel_schedule_queue, process_channel_lookupevent_queue,
+    load_channel_entries,
 )
 from league_store import load_leagues, save_leagues
 from status_sync import run_status_sync
-from sync_state import load_sync_state, save_sync_state
 from update_league import build_league_object, QUEUE_NAME as LOOKUPLEAGUE_QUEUE
 from utils.logger import Logger
 
@@ -29,7 +24,6 @@ def run_lookupleague_queue(manager: APIManager, start: float) -> int:
     leagues = load_leagues()
     league_by_id = {l["idLeague"]: l for l in leagues}
     processed = 0
-    updated_leagues = []
 
     while True:
         if time.monotonic() - start > MAX_RUNTIME_SECONDS:
@@ -55,51 +49,11 @@ def run_lookupleague_queue(manager: APIManager, start: float) -> int:
         if not api_leagues or api_leagues[0] is None:
             continue
 
-        updated = build_league_object(existing, api_leagues[0])
-        league_by_id[league_id] = updated
-        updated_leagues.append(updated)
+        league_by_id[league_id] = build_league_object(existing, api_leagues[0])
         processed += 1
 
     if processed:
         save_leagues(list(league_by_id.values()))
-
-    if updated_leagues:
-        events_data = load_events()
-        touched = 0
-        for league in updated_leagues:
-            if refresh_tracked_league_fields(events_data, league):
-                touched += 1
-        if touched:
-            save_events(events_data)
-            Logger.info(f"Refreshed league metadata for {touched} league(s) in events.json.")
-
-    return processed
-
-
-def run_eventsday_queue(manager: APIManager, start: float) -> int:
-    dates = get_target_dates()
-    sync_state = load_sync_state(dates)
-    leagues_by_id = {l["idLeague"]: l for l in load_leagues()}
-    data = load_events()
-    processed = process_eventsday_queue(manager, data, leagues_by_id, sync_state, start)
-    if processed:
-        sort_leagues(data)
-        prune_empty_leagues(data)
-        resync_channel_links(data)
-        save_events(data)
-        save_sync_state(sync_state)
-    return processed
-
-
-def run_lookupevent_queue(manager: APIManager, start: float) -> int:
-    leagues_by_id = {l["idLeague"]: l for l in load_leagues()}
-    data = load_events()
-    processed = process_lookupevent_queue(manager, data, leagues_by_id, start)
-    if processed:
-        sort_leagues(data)
-        prune_empty_leagues(data)
-        resync_channel_links(data)
-        save_events(data)
     return processed
 
 
@@ -118,15 +72,14 @@ def run_channel_lookupevent_queue(manager: APIManager, start: float) -> int:
     if processed:
         sort_leagues(data)
         prune_empty_leagues(data)
-        resync_channel_links(data)
+        channels = load_channel_entries()
+        resync_channel_links(data, channels)
         save_events(data)
     return processed
 
 
 QUEUE_HANDLERS = {
     LOOKUPLEAGUE_QUEUE: run_lookupleague_queue,
-    EVENTSDAY_QUEUE: run_eventsday_queue,
-    LOOKUPEVENT_QUEUE: run_lookupevent_queue,
     CHANNEL_SCHEDULE_QUEUE: run_channel_schedule_queue,
     CHANNEL_LOOKUPEVENT_QUEUE: run_channel_lookupevent_queue,
 }
@@ -151,8 +104,9 @@ def main():
             break
 
     if not any_work:
-        Logger.info("All queues empty. Using this cycle for event status sync instead.")
+        Logger.info("All queues empty. Using this cycle for status sync + channel path discovery.")
         run_status_sync(manager, start, MAX_RUNTIME_SECONDS)
+        run_channel_path_discovery(manager, start, MAX_RUNTIME_SECONDS)
 
     Logger.info(f"Total API requests this run: {manager.request_count}")
 

@@ -1,9 +1,11 @@
 import json
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from utils.logger import Logger
+from zoneinfo import ZoneInfo
 
+TIMEZONE = ZoneInfo("Asia/Yangon")
 EVENTS_FILE = Path("data/events_v2.json")
 
 EVENT_FIELDS = [
@@ -154,6 +156,25 @@ def prune_empty_leagues(data: dict) -> None:
     dropped = before - len(data["leagues"])
     if dropped:
         Logger.info(f"Dropped {dropped} league(s) with no events.")
+
+
+def get_target_dates() -> list:
+    today = datetime.now(TIMEZONE).date()
+    tomorrow = today + timedelta(days=1)
+    return [today.isoformat(), tomorrow.isoformat()]
+
+
+def prune_to_dates(data: dict, dates: list) -> int:
+    """Drop any event whose dateEvent isn't in the given date window."""
+    date_set = set(dates)
+    removed = 0
+    for league_entry in data.get("leagues", []):
+        before = len(league_entry.get("events", []))
+        league_entry["events"] = [e for e in league_entry.get("events", []) if e.get("dateEvent") in date_set]
+        removed += before - len(league_entry["events"])
+    if removed:
+        Logger.info(f"Pruned {removed} event(s) outside today/tomorrow window.")
+    return removed
 
 
 def link_channel_to_event(event: dict, tvg_id: str) -> bool:
