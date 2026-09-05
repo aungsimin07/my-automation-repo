@@ -61,15 +61,26 @@ def scrape_event_channel_paths(event_url: str, headers: dict):
     return unique_paths, resp.status_code
 
 
+def _normalize_channel_path(path: str) -> str:
+    """channels_v2.json stores channelPath WITHOUT the '/channel' prefix
+    (e.g. '/6518-tnt-sports-1-tv-schedule'), while scraped hrefs include
+    it (e.g. '/channel/6518-tnt-sports-1-tv-schedule'). Normalize both
+    to the same shape before comparing."""
+    if path.startswith("/channel/"):
+        return path[len("/channel"):]
+    return path
+
+
 def build_channelpath_tvgid_index(channel_entries: list) -> dict:
-    """channelPath -> sorted list of distinct tvg-ids CURRENTLY mapped to it."""
+    """normalized channelPath -> sorted list of distinct tvg-ids CURRENTLY mapped to it."""
     index = {}
     for entry in channel_entries:
         path = entry.get("channelPath")
         tvg_id = entry.get("tvg", {}).get("id")
         if not path or not tvg_id:
             continue
-        index.setdefault(path, set()).add(tvg_id)
+        norm_path = _normalize_channel_path(path)
+        index.setdefault(norm_path, set()).add(tvg_id)
     return {path: sorted(ids) for path, ids in index.items()}
 
 
@@ -84,8 +95,9 @@ def relink_from_stored_paths(data: dict, channel_entries: list) -> int:
             scrape = event.get("metadata", {}).get("channel_path_scrape")
             if not scrape:
                 continue
-            for path in scrape.get("channel_paths_found") or []:
-                for tvg_id in path_index.get(path, []):
+            for raw_path in scrape.get("channel_paths_found") or []:
+                norm_path = _normalize_channel_path(raw_path)
+                for tvg_id in path_index.get(norm_path, []):
                     if link_channel_to_event(event, tvg_id):
                         linked += 1
     if linked:
