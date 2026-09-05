@@ -8,6 +8,9 @@ on:
     workflows: ["Fetch Channels V2"]
     types: [completed]
 
+permissions:
+  contents: write
+
 jobs:
   fetch-events-from-channels:
     if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
