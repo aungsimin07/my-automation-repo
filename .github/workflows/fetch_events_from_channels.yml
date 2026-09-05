@@ -4,12 +4,13 @@ on:
   workflow_dispatch:
   repository_dispatch:
     types: [fetch-events-from-channels]
-
-permissions:
-  contents: write
+  workflow_run:
+    workflows: ["Fetch Channels V2"]
+    types: [completed]
 
 jobs:
   fetch-events-from-channels:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
