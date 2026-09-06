@@ -39,7 +39,7 @@ jobs:
           THESPORTSDB_BASE_URL: ${{ secrets.THESPORTSDB_BASE_URL }}
           THESPORTSDB_API_KEY: ${{ secrets.THESPORTSDB_API_KEY }}
           MAX_RUNTIME_SECONDS: "240"
-          FORCE_REFRESH: ${{ github.event_name == 'workflow_dispatch' }}
+          FORCE_REFRESH: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'repository_dispatch' }}
           PYTHONPATH: ${{ github.workspace }}
         run: python scripts/fetch_events_from_channels.py
 
