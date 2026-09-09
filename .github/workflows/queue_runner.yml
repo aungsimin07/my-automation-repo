@@ -35,6 +35,8 @@ jobs:
           THESPORTSDB_BASE_URL: ${{ secrets.THESPORTSDB_BASE_URL }}
           THESPORTSDB_API_KEY: ${{ secrets.THESPORTSDB_API_KEY }}
           MAX_RUNTIME_SECONDS: "240"
+          FCM_PROJECT_ID: ${{ vars.FCM_PROJECT_ID }}
+          FCM_SERVICE_ACCOUNT_JSON: ${{ secrets.FCM_SERVICE_ACCOUNT_JSON }}
           PYTHONPATH: ${{ github.workspace }}
         run: python scripts/queue_runner.py
 

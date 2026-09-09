@@ -1,3 +1,4 @@
+import os
 import time
 from datetime import datetime, timezone, timedelta
 
@@ -7,12 +8,18 @@ from event_store_v2 import (
     build_event_object_any_status, upsert_event, resync_channel_links,
     get_target_dates, prune_to_dates,
 )
+from fcm_notifier import get_access_token
 from fetch_events_from_channels import load_channel_entries
+from match_notifications import notify_match_started
 from utils.logger import Logger
 
 LIVE_STATUSES = {"1H", "HT", "2H", "ET", "P", "BT", "INT", "SUSP"}
 FINISHED_STATUSES = {"FT", "AET", "PEN", "AWD", "WO", "PST", "CANC", "ABD"}
 LIVE_RECHECK_MINUTES = 115
+
+
+def _fcm_enabled() -> bool:
+    return bool(os.getenv("FCM_PROJECT_ID", "").strip() and os.getenv("FCM_SERVICE_ACCOUNT_JSON", "").strip())
 
 
 def parse_event_timestamp(event: dict):
@@ -53,12 +60,13 @@ def remove_finished_events(data: dict) -> int:
 
 
 def run_status_sync(manager: APIManager, start: float, max_runtime_seconds: int) -> int:
-    """Idle-cycle task for queue_runner.py: when no queue has pending work,
-    use the budget to refresh strStatus for events that are due a recheck
-    (NS events past kickoff, or Live events stuck live past the threshold),
-    then remove any event that has finished."""
+    """Idle-cycle task for queue_runner.py: refresh strStatus for events
+    due a recheck, fire a Match Started notification on NS->1H, then
+    remove any event that has finished."""
     data = load_events()
     now = datetime.now(timezone.utc)
+    fcm_enabled = _fcm_enabled()
+    channel_entries = load_channel_entries() if fcm_enabled else []
 
     candidates = []
     for league_entry in data["leagues"]:
@@ -80,6 +88,8 @@ def run_status_sync(manager: APIManager, start: float, max_runtime_seconds: int)
 
     Logger.info(f"Status sync: {len(candidates)} event(s) due for a recheck.")
     processed = 0
+    access_token = get_access_token(os.getenv("FCM_SERVICE_ACCOUNT_JSON")) if fcm_enabled else None
+    project_id = os.getenv("FCM_PROJECT_ID", "").strip()
 
     for event in candidates:
         if time.monotonic() - start > max_runtime_seconds:
@@ -111,9 +121,12 @@ def run_status_sync(manager: APIManager, start: float, max_runtime_seconds: int)
 
         # build_event_object_any_status builds a fresh, empty metadata
         # dict — preserve everything already recorded on this event
-        # (channels, channel_path_scrape, etc.), only bumping last_sync_at.
+        # (channels, channel_path_scrape, notifications_sent, etc.).
         updated["metadata"] = event.get("metadata", {})
         updated["metadata"]["last_sync_at"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+        if fcm_enabled and old_status != "1H" and new_status == "1H":
+            notify_match_started(updated, channel_entries, project_id, access_token)
 
         id_league = raw_event.get("idLeague") or event.get("idLeague")
         league_entry = next((l for l in data["leagues"] if l.get("idLeague") == id_league), None)
