@@ -109,9 +109,11 @@ def run_status_sync(manager: APIManager, start: float, max_runtime_seconds: int)
         if old_status != new_status:
             Logger.info(f"Event {event_id} status changed: {old_status} -> {new_status}")
 
-        # lookupevent.php has no notion of our channel links — carry
-        # them forward from the existing event object, or they'd be lost
-        updated.setdefault("metadata", {})["channels"] = event.get("metadata", {}).get("channels", [])
+        # build_event_object_any_status builds a fresh, empty metadata
+        # dict — preserve everything already recorded on this event
+        # (channels, channel_path_scrape, etc.), only bumping last_sync_at.
+        updated["metadata"] = event.get("metadata", {})
+        updated["metadata"]["last_sync_at"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
         id_league = raw_event.get("idLeague") or event.get("idLeague")
         league_entry = next((l for l in data["leagues"] if l.get("idLeague") == id_league), None)
