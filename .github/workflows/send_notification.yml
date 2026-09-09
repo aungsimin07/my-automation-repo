@@ -1,0 +1,40 @@
+name: Send Notification
+
+on:
+  workflow_dispatch:
+    inputs:
+      title:
+        description: "Notification title"
+        required: true
+        type: string
+      message:
+        description: "Notification message body"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  send-notification:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: pip install -r requirements.txt
+
+      - name: Send FCM Notification
+        env:
+          NOTIFICATION_TITLE: ${{ github.event.inputs.title }}
+          NOTIFICATION_MESSAGE: ${{ github.event.inputs.message }}
+          FCM_PROJECT_ID: ${{ vars.FCM_PROJECT_ID }}
+          FCM_SERVICE_ACCOUNT_JSON: ${{ secrets.FCM_SERVICE_ACCOUNT_JSON }}
+          PYTHONPATH: ${{ github.workspace }}
+        run: python scripts/send_fcm_notification.py
