@@ -66,6 +66,7 @@ def run_status_sync(manager: APIManager, start: float, max_runtime_seconds: int)
     data = load_events()
     now = datetime.now(timezone.utc)
     fcm_enabled = _fcm_enabled()
+    Logger.info(f"Status sync: FCM notifications {'enabled' if fcm_enabled else 'disabled (missing FCM_PROJECT_ID/FCM_SERVICE_ACCOUNT_JSON)'}.")
     channel_entries = load_channel_entries() if fcm_enabled else []
 
     candidates = []
@@ -126,7 +127,10 @@ def run_status_sync(manager: APIManager, start: float, max_runtime_seconds: int)
         updated["metadata"]["last_sync_at"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
         if fcm_enabled and old_status != "1H" and new_status == "1H":
+            Logger.info(f"Event {event_id}: status transitioned to 1H — triggering match started notification.")
             notify_match_started(updated, channel_entries, project_id, access_token)
+        elif fcm_enabled and new_status == "1H":
+            Logger.info(f"Event {event_id}: already 1H before this check (old_status was also 1H or None), no notification trigger.")
 
         id_league = raw_event.get("idLeague") or event.get("idLeague")
         league_entry = next((l for l in data["leagues"] if l.get("idLeague") == id_league), None)
