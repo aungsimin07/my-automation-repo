@@ -17,6 +17,11 @@ LIVE_STATUSES = {"1H", "HT", "2H", "ET", "P", "BT", "INT", "SUSP"}
 FINISHED_STATUSES = {"FT", "AET", "PEN", "AWD", "WO", "PST", "CANC", "ABD"}
 LIVE_RECHECK_MINUTES = 115
 
+# Match-started notification window: only notify if this is the FIRST
+# recheck within this many minutes after kickoff. Deliberately independent
+# of strStatus — TheSportsDB can lag updating NS -> 1H well past kickoff.
+MATCH_STARTED_WINDOW_MINUTES = 15
+
 
 def _fcm_enabled() -> bool:
     return bool(os.getenv("FCM_PROJECT_ID", "").strip() and os.getenv("FCM_SERVICE_ACCOUNT_JSON", "").strip())
@@ -46,6 +51,46 @@ def needs_status_check(event: dict, now: datetime) -> bool:
     return False
 
 
+def should_notify_match_started(event: dict, now: datetime) -> bool:
+    """True if this event's strTimestamp has passed, it's still recorded
+    as NS, hasn't been notified yet, and 'now' falls within
+    MATCH_STARTED_WINDOW_MINUTES of that timestamp — i.e. this is (close
+    to) the first time we're catching it after kickoff."""
+    event_id = event.get("idEvent")
+    already_sent = event.get("metadata", {}).get("notifications_sent", [])
+
+    if "started" in already_sent:
+        Logger.info(f"Event {event_id}: 'started' already sent, skipping notify check.")
+        return False
+
+    if event.get("strStatus") != "NS":
+        Logger.info(f"Event {event_id}: strStatus is '{event.get('strStatus')}' (not NS), skipping timestamp-based notify check.")
+        return False
+
+    ts = parse_event_timestamp(event)
+    if ts is None:
+        Logger.info(f"Event {event_id}: no strTimestamp, cannot evaluate notify window.")
+        return False
+
+    gap = now - ts
+    if gap < timedelta(0):
+        Logger.info(f"Event {event_id}: strTimestamp is in the future (kicks off in {-gap}), not due yet.")
+        return False
+
+    if gap >= timedelta(minutes=MATCH_STARTED_WINDOW_MINUTES):
+        Logger.warning(
+            f"Event {event_id}: gap since strTimestamp is {gap}, past the "
+            f"{MATCH_STARTED_WINDOW_MINUTES}min window — treating as missed, will NOT notify."
+        )
+        return False
+
+    Logger.info(
+        f"Event {event_id}: gap since strTimestamp is {gap}, within "
+        f"{MATCH_STARTED_WINDOW_MINUTES}min window — will notify as match started."
+    )
+    return True
+
+
 def remove_finished_events(data: dict) -> int:
     removed = 0
     for league_entry in data["leagues"]:
@@ -61,8 +106,9 @@ def remove_finished_events(data: dict) -> int:
 
 def run_status_sync(manager: APIManager, start: float, max_runtime_seconds: int) -> int:
     """Idle-cycle task for queue_runner.py: refresh strStatus for events
-    due a recheck, fire a Match Started notification on NS->1H, then
-    remove any event that has finished."""
+    due a recheck, fire a Match Started notification based on
+    strTimestamp proximity (independent of the API's strStatus, which can
+    lag), then remove any event that has finished."""
     data = load_events()
     now = datetime.now(timezone.utc)
     fcm_enabled = _fcm_enabled()
@@ -98,6 +144,11 @@ def run_status_sync(manager: APIManager, start: float, max_runtime_seconds: int)
             break
 
         event_id = event.get("idEvent")
+
+        # Decide BEFORE the API call, using the event's current (pre-refresh)
+        # data — deliberately independent of what the API says strStatus is.
+        should_notify = should_notify_match_started(event, now) if fcm_enabled else False
+
         try:
             resp = manager.request("lookupevent.php", {"id": event_id})
         except APIError as e:
@@ -126,11 +177,8 @@ def run_status_sync(manager: APIManager, start: float, max_runtime_seconds: int)
         updated["metadata"] = event.get("metadata", {})
         updated["metadata"]["last_sync_at"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
-        if fcm_enabled and old_status != "1H" and new_status == "1H":
-            Logger.info(f"Event {event_id}: status transitioned to 1H — triggering match started notification.")
+        if should_notify:
             notify_match_started(updated, channel_entries, project_id, access_token)
-        elif fcm_enabled and new_status == "1H":
-            Logger.info(f"Event {event_id}: already 1H before this check (old_status was also 1H or None), no notification trigger.")
 
         id_league = raw_event.get("idLeague") or event.get("idLeague")
         league_entry = next((l for l in data["leagues"] if l.get("idLeague") == id_league), None)
