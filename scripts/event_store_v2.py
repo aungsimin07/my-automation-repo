@@ -10,11 +10,11 @@ EVENTS_FILE = Path("data/events_v2.json")
 
 EVENT_FIELDS = [
     "idEvent", "idAPIfootball", "idLeague", "strLeague", "strLeagueBadge",
-    "strSeason", "strGroup", "intRound", "dateEvent", "strTime", "strTimestamp",
+    "strGroup", "intRound", "dateEvent", "strTime", "strTimestamp",
     "strEvent",
     "idHomeTeam", "strHomeTeam", "strHomeTeamBadge", "intHomeScore",
     "idAwayTeam", "strAwayTeam", "strAwayTeamBadge", "intAwayScore",
-    "strVenue", "strPoster", "strSquare", "strFanart", "strThumb", "strBanner",
+    "strThumb",
     "strStatus",
 ]
 REQUIRED_EVENT_FIELDS = ["idEvent", "dateEvent", "strHomeTeam", "strAwayTeam", "strStatus"]
