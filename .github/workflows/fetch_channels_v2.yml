@@ -33,7 +33,6 @@ jobs:
       - name: Run Fetch Channels V2 Script
         env:
           PLAYLIST_URLV2: ${{ secrets.PLAYLIST_URLV2 }}
-          DEFAULT_HTTP_USER_AGENT: ${{ vars.DEFAULT_HTTP_USER_AGENT }}
           PYTHONPATH: ${{ github.workspace }}
         run: python playlists/fetch_channels_v2.py
 

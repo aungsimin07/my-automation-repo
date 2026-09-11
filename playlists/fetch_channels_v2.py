@@ -151,7 +151,7 @@ def download_playlist(url: str):
     return dest
 
 
-def parse_playlist_file(file_path: Path, default_user_agent: str) -> list:
+def parse_playlist_file(file_path: Path) -> list:
     lines = file_path.read_text(encoding="utf-8", errors="replace").splitlines()
     entries = []
     i = 0
@@ -181,9 +181,6 @@ def parse_playlist_file(file_path: Path, default_user_agent: str) -> list:
 
         if stream_url:
             entry["url"] = stream_url
-            if default_user_agent:
-                vlc = entry.setdefault("options", {}).setdefault("vlc", {})
-                vlc.setdefault("httpUserAgent", default_user_agent)
             entries.append(entry)
 
         i = (j + 1) if stream_url else (i + 1)
@@ -217,7 +214,6 @@ def save_channels(entries: list) -> None:
 
 def main():
     playlist_url = os.getenv("PLAYLIST_URLV2", "").strip()
-    default_user_agent = os.getenv("DEFAULT_HTTP_USER_AGENT", "").strip() or None
 
     if not playlist_url:
         Logger.error("PLAYLIST_URL is required.", fatal=True)
@@ -227,7 +223,7 @@ def main():
     if local_file is None:
         return
 
-    entries = parse_playlist_file(local_file, default_user_agent)
+    entries = parse_playlist_file(local_file)
     Logger.info(f"Parsed {len(entries)} entr(y/ies) from playlist.")
 
     entries = filter_dead_servers(entries)
