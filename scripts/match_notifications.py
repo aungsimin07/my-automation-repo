@@ -42,6 +42,17 @@ def _trim_channel_for_payload(channel: dict) -> dict:
     return trimmed
 
 
+def _trim_event_for_payload(event: dict) -> dict:
+    """Copy of the event with backend-only metadata stripped — the client
+    has no use for channel_path_scrape (once-ever scrape bookkeeping).
+    Operates on a NEW dict — never mutates the source event object."""
+    trimmed = copy.deepcopy(event)
+    metadata = trimmed.get("metadata")
+    if metadata and "channel_path_scrape" in metadata:
+        del metadata["channel_path_scrape"]
+    return trimmed
+
+
 def get_channels_for_event(channel_entries: list, event: dict) -> list:
     tvg_ids = set(event.get("metadata", {}).get("channels", []))
     if not tvg_ids:
@@ -97,11 +108,13 @@ def notify_match_started(event: dict, channel_entries: list, project_id: str, ac
         matched_channels = matched_channels[:MAX_CHANNELS_IN_PAYLOAD]
     trimmed_channels = [_trim_channel_for_payload(c) for c in matched_channels]
 
+    event_for_payload = _trim_event_for_payload(event)
+
     data = {
         "type": "match_started",
         "title": title,
         "body": body,
-        "eventJson": json.dumps(event),
+        "eventJson": json.dumps(event_for_payload),
         "channelsJson": json.dumps(trimmed_channels),
     }
     thumb = event.get("strThumb")
