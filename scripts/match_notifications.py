@@ -5,6 +5,7 @@ from utils.logger import Logger
 
 MAX_CHANNELS_IN_PAYLOAD = 5
 PAYLOAD_SIZE_WARNING_BYTES = 3800  # stay clear of FCM's ~4KB data payload ceiling
+MATCH_STARTED_TTL_SECONDS = 30 * 60  # 30 minutes
 
 # Not in production yet — no per-league/per-match subscriptions set up on
 # the Android side. Broadcasting to "all" for now. To switch back to
@@ -120,8 +121,8 @@ def notify_match_started(event: dict, channel_entries: list, project_id: str, ac
 
     any_sent = False
     for topic in topics:
-        Logger.info(f"Event {event_id}: sending to topic '{topic}'...")
-        sent = send_data_message_to_topic(project_id, access_token, topic, data)
+        Logger.info(f"Event {event_id}: sending to topic '{topic}' (ttl={MATCH_STARTED_TTL_SECONDS}s)...")
+        sent = send_data_message_to_topic(project_id, access_token, topic, data, ttl_seconds=MATCH_STARTED_TTL_SECONDS)
         Logger.info(f"Event {event_id}: send to '{topic}' -> {'success' if sent else 'FAILED'}")
         if sent:
             any_sent = True

@@ -51,23 +51,29 @@ def send_to_topic(project_id: str, access_token: str, topic: str, title: str, bo
     return True
 
 
-def send_data_message_to_topic(project_id: str, access_token: str, topic: str, data: dict) -> bool:
+def send_data_message_to_topic(project_id: str, access_token: str, topic: str, data: dict, ttl_seconds: int = None) -> bool:
     """Data-only message (NO top-level 'notification' key). This forces
     Android's FirebaseMessagingService.onMessageReceived to fire regardless
     of foreground/background state, giving the app full control to build
     the notification and its tap action. All values must be strings —
-    FCM's data payload rejects non-string values."""
+    FCM's data payload rejects non-string values.
+
+    ttl_seconds, if given, sets message.android.ttl so FCM stops trying
+    to deliver a stale message past that window."""
     url = f"https://fcm.googleapis.com/v1/projects/{project_id}/messages:send"
     headers = {
         "Authorization": f"Bearer {access_token}",
         "Content-Type": "application/json; UTF-8",
     }
     string_data = {k: str(v) for k, v in data.items()}
-    payload = {"message": {"topic": topic, "data": string_data}}
+    message = {"topic": topic, "data": string_data}
+    if ttl_seconds is not None:
+        message["android"] = {"ttl": f"{ttl_seconds}s"}
+    payload = {"message": message}
 
     resp = requests.post(url, headers=headers, json=payload, timeout=15)
     if resp.status_code != 200:
         Logger.error(f"FCM data send to topic '{topic}' failed: {resp.status_code} {resp.text}")
         return False
-    Logger.success(f"Sent data message to '{topic}' (type={data.get('type', '?')})")
+    Logger.success(f"Sent data message to '{topic}' (type={data.get('type', '?')}, ttl={ttl_seconds}s)")
     return True
