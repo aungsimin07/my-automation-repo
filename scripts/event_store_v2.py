@@ -186,12 +186,26 @@ def link_channel_to_event(event: dict, tvg_id: str) -> bool:
     return True
 
 
+def _trim_channel_for_top_level(entry: dict) -> dict:
+    """Strip fields not needed once a channel is embedded in events_v2.json's
+    top-level channels array. Operates on a NEW dict — never mutates the
+    source entry from channels_v2.json."""
+    trimmed = {"title": entry.get("title"), "url": entry.get("url")}
+    tvg = entry.get("tvg")
+    if tvg:
+        trimmed_tvg = {k: v for k, v in tvg.items() if k != "logo"}
+        if trimmed_tvg:
+            trimmed["tvg"] = trimmed_tvg
+    return trimmed
+
+
 def resync_channel_links(data: dict, channel_entries: list) -> dict:
     """Rebuild the top-level `channels` array from scratch, based on
     which tvg-ids are currently referenced by any event's
-    metadata.channels list. For each referenced tvg-id, include EVERY
-    channel_v2 entry carrying that tvg-id (a tvg-id can have multiple
-    entries — same channel, different urls).
+    metadata.channels list. For each referenced tvg-id, include a
+    TRIMMED copy of every channel_v2 entry carrying that tvg-id (a
+    tvg-id can have multiple entries — same channel, different urls).
+    The source channel_entries (channels_v2.json) are never mutated.
 
     Any referenced tvg-id with zero matching entries (dead reference —
     e.g. removed from the playlist) gets stripped from every event that
@@ -217,7 +231,7 @@ def resync_channel_links(data: dict, channel_entries: list) -> dict:
             dead_tvg_ids.add(tvg_id)
             continue
         alive_tvg_ids.add(tvg_id)
-        channels.extend(matches)
+        channels.extend(_trim_channel_for_top_level(m) for m in matches)
 
     data["channels"] = channels
 
