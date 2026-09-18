@@ -23,6 +23,13 @@ LEAGUE_FIELDS = [
     "strComplete", "strBadge", "strLeagueBadge", "strWebsite", "leagueUrl",
 ]
 
+# Statuses that mean "this match is over / no longer relevant". Shared
+# between remove_finished_events (status_sync.py) and prune_to_dates
+# (here) — a date-window prune must only ever remove an event that has
+# ALSO been confirmed finished, otherwise the midnight date rollover can
+# delete NS/live events before the day's refresh has replaced them.
+FINISHED_STATUSES = {"FT", "AET", "PEN", "AWD", "WO", "PST", "CANC", "ABD"}
+
 
 def load_events() -> dict:
     if not EVENTS_FILE.exists():
@@ -165,15 +172,23 @@ def get_target_dates() -> list:
 
 
 def prune_to_dates(data: dict, dates: list) -> int:
-    """Drop any event whose dateEvent isn't in the given date window."""
+    """Drop events outside the today/tomorrow window, but ONLY if their
+    strStatus marks them as finished/no-longer-relevant. An NS or
+    still-live event outside the window is left alone — the date
+    rollover at midnight must never delete an event that hasn't been
+    superseded by a fresh fetch yet, or events_v2.json can go empty
+    while the daily refresh is still catching up."""
     date_set = set(dates)
     removed = 0
     for league_entry in data.get("leagues", []):
         before = len(league_entry.get("events", []))
-        league_entry["events"] = [e for e in league_entry.get("events", []) if e.get("dateEvent") in date_set]
+        league_entry["events"] = [
+            e for e in league_entry.get("events", [])
+            if e.get("dateEvent") in date_set or e.get("strStatus") not in FINISHED_STATUSES
+        ]
         removed += before - len(league_entry["events"])
     if removed:
-        Logger.info(f"Pruned {removed} event(s) outside today/tomorrow window.")
+        Logger.info(f"Pruned {removed} finished event(s) outside today/tomorrow window.")
     return removed
 
 

@@ -6,7 +6,7 @@ from api_manager import APIManager, APIError
 from event_store_v2 import (
     load_events, save_events, sort_leagues, prune_empty_leagues,
     build_event_object_any_status, upsert_event, resync_channel_links,
-    get_target_dates, prune_to_dates,
+    get_target_dates, prune_to_dates, FINISHED_STATUSES,
 )
 from fcm_notifier import get_access_token
 from fetch_events_from_channels import load_channel_entries
@@ -14,7 +14,6 @@ from match_notifications import notify_match_started
 from utils.logger import Logger
 
 LIVE_STATUSES = {"1H", "HT", "2H", "ET", "P", "BT", "INT", "SUSP"}
-FINISHED_STATUSES = {"FT", "AET", "PEN", "AWD", "WO", "PST", "CANC", "ABD"}
 LIVE_RECHECK_MINUTES = 115
 
 # Match-started notification window: only notify if this is the FIRST
