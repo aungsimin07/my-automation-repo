@@ -203,14 +203,29 @@ def link_channel_to_event(event: dict, tvg_id: str) -> bool:
 
 def _trim_channel_for_top_level(entry: dict) -> dict:
     """Strip fields not needed once a channel is embedded in events_v2.json's
-    top-level channels array. Operates on a NEW dict — never mutates the
-    source entry from channels_v2.json."""
+    top-level channels array. Keeps everything relevant to actually
+    playing the stream (loadControl, quality, vlc options) — only drops
+    decorative/backend metadata (groupTitle, channelPath, tvg.logo).
+    Operates on a NEW dict — never mutates the source entry from
+    channels_v2.json."""
     trimmed = {"title": entry.get("title"), "url": entry.get("url")}
+
     tvg = entry.get("tvg")
     if tvg:
         trimmed_tvg = {k: v for k, v in tvg.items() if k != "logo"}
         if trimmed_tvg:
             trimmed["tvg"] = trimmed_tvg
+
+    if entry.get("loadControl"):
+        trimmed["loadControl"] = entry["loadControl"]
+
+    if entry.get("quality"):
+        trimmed["quality"] = entry["quality"]
+
+    vlc = (entry.get("options") or {}).get("vlc")
+    if vlc:
+        trimmed["options"] = {"vlc": vlc}
+
     return trimmed
 
 
