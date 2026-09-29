@@ -7,7 +7,7 @@ import requests
 
 from event_store_v2 import (
     load_events, save_events, sort_leagues, prune_empty_leagues,
-    link_channel_to_event, resync_channel_links,
+    resync_channel_links, relink_from_stored_paths,
 )
 from fetch_events_from_channels import load_channel_entries
 from utils.logger import Logger
@@ -27,13 +27,25 @@ def build_event_url(id_event: str, str_event: str) -> str:
 
 
 def needs_scrape(event: dict) -> bool:
-    """Scrape at most ONCE per event, ever — regardless of outcome
-    (invalid url, error status, zero channels found). Never rechecked."""
+    """Scrape once per event — UNLESS the previous attempt failed with a
+    transient error (network failure, or an HTTP 5xx from the server),
+    in which case it's retried. A clean 200 (even with zero channels
+    found) or a non-5xx error status (e.g. 404) is treated as a
+    permanent result and never retried."""
     if event.get("strStatus") != "NS":
         return False
     if not event.get("strEvent"):
         return False
-    return "channel_path_scrape" not in event.get("metadata", {})
+
+    scrape = event.get("metadata", {}).get("channel_path_scrape")
+    if not scrape:
+        return True  # never scraped
+
+    http_status = scrape.get("http_status")
+    if http_status is None or http_status >= 500:
+        return True  # transient failure (network error or 5xx) — retry
+
+    return False  # permanent result (200 or non-5xx error) — never retry
 
 
 def scrape_event_channel_paths(event_url: str, headers: dict):
@@ -61,55 +73,10 @@ def scrape_event_channel_paths(event_url: str, headers: dict):
     return unique_paths, resp.status_code
 
 
-def _normalize_channel_path(path: str) -> str:
-    """channels_v2.json stores channelPath WITHOUT the '/channel' prefix
-    (e.g. '/6518-tnt-sports-1-tv-schedule'), while scraped hrefs include
-    it (e.g. '/channel/6518-tnt-sports-1-tv-schedule'). Normalize both
-    to the same shape before comparing."""
-    if path.startswith("/channel/"):
-        return path[len("/channel"):]
-    return path
-
-
-def build_channelpath_tvgid_index(channel_entries: list) -> dict:
-    """normalized channelPath -> sorted list of distinct tvg-ids CURRENTLY mapped to it."""
-    index = {}
-    for entry in channel_entries:
-        path = entry.get("channelPath")
-        tvg_id = entry.get("tvg", {}).get("id")
-        if not path or not tvg_id:
-            continue
-        norm_path = _normalize_channel_path(path)
-        index.setdefault(norm_path, set()).add(tvg_id)
-    return {path: sorted(ids) for path, ids in index.items()}
-
-
-def relink_from_stored_paths(data: dict, channel_entries: list) -> int:
-    """Re-match every event's already-stored channel_paths_found against
-    the CURRENT channels_v2.json — lets a channel added after an event
-    was scraped still get linked, with zero new network requests."""
-    path_index = build_channelpath_tvgid_index(channel_entries)
-    linked = 0
-    for league in data.get("leagues", []):
-        for event in league.get("events", []):
-            scrape = event.get("metadata", {}).get("channel_path_scrape")
-            if not scrape:
-                continue
-            for raw_path in scrape.get("channel_paths_found") or []:
-                norm_path = _normalize_channel_path(raw_path)
-                for tvg_id in path_index.get(norm_path, []):
-                    if link_channel_to_event(event, tvg_id):
-                        linked += 1
-    if linked:
-        Logger.info(f"Re-matched stored channel paths against current channels: {linked} new link(s).")
-    return linked
-
-
 def run_channel_path_discovery(manager, start: float, max_runtime_seconds: int) -> int:
-    """Idle-cycle task: scrape NS events never scraped before (once,
-    ever), then re-match every event's stored raw paths against the
-    current channel list, so new channels retroactively link without
-    re-scraping."""
+    """Idle-cycle task: scrape NS events never (successfully) scraped
+    before — or whose last attempt failed transiently — then re-match
+    every event's stored raw paths against the current channel list."""
     default_user_agent = os.getenv("DEFAULT_HTTP_USER_AGENT", "").strip() or "Mozilla/5.0"
     headers = {"User-Agent": default_user_agent}
 
@@ -125,9 +92,9 @@ def run_channel_path_discovery(manager, start: float, max_runtime_seconds: int) 
 
     scraped = 0
     if not candidates:
-        Logger.info("Channel path discovery: no event(s) due for a first-time scrape.")
+        Logger.info("Channel path discovery: no event(s) due for a scrape.")
     else:
-        Logger.info(f"Channel path discovery: {len(candidates)} event(s) never scraped.")
+        Logger.info(f"Channel path discovery: {len(candidates)} event(s) due for a scrape.")
         for event in candidates:
             if time.monotonic() - start > max_runtime_seconds:
                 Logger.warning("Runtime budget reached during channel path discovery. Remaining event(s) next cycle.")

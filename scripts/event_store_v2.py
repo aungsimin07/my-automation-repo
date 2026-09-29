@@ -201,6 +201,50 @@ def link_channel_to_event(event: dict, tvg_id: str) -> bool:
     return True
 
 
+def _normalize_channel_path(path: str) -> str:
+    """channels_v2.json stores channelPath WITHOUT the '/channel' prefix
+    (e.g. '/6518-tnt-sports-1-tv-schedule'), while scraped hrefs include
+    it (e.g. '/channel/6518-tnt-sports-1-tv-schedule'). Normalize both
+    to the same shape before comparing."""
+    if path.startswith("/channel/"):
+        return path[len("/channel"):]
+    return path
+
+
+def build_channelpath_tvgid_index(channel_entries: list) -> dict:
+    """normalized channelPath -> sorted list of distinct tvg-ids CURRENTLY mapped to it."""
+    index = {}
+    for entry in channel_entries:
+        path = entry.get("channelPath")
+        tvg_id = entry.get("tvg", {}).get("id")
+        if not path or not tvg_id:
+            continue
+        norm_path = _normalize_channel_path(path)
+        index.setdefault(norm_path, set()).add(tvg_id)
+    return {path: sorted(ids) for path, ids in index.items()}
+
+
+def relink_from_stored_paths(data: dict, channel_entries: list) -> int:
+    """Re-match every event's already-stored channel_paths_found against
+    the CURRENT channels_v2.json — lets a channel added/revived after an
+    event was scraped still get linked, with zero new network requests."""
+    path_index = build_channelpath_tvgid_index(channel_entries)
+    linked = 0
+    for league in data.get("leagues", []):
+        for event in league.get("events", []):
+            scrape = event.get("metadata", {}).get("channel_path_scrape")
+            if not scrape:
+                continue
+            for raw_path in scrape.get("channel_paths_found") or []:
+                norm_path = _normalize_channel_path(raw_path)
+                for tvg_id in path_index.get(norm_path, []):
+                    if link_channel_to_event(event, tvg_id):
+                        linked += 1
+    if linked:
+        Logger.info(f"Re-matched stored channel paths against current channels: {linked} new link(s).")
+    return linked
+
+
 def _trim_channel_for_top_level(entry: dict) -> dict:
     """Strip fields not needed once a channel is embedded in events_v2.json's
     top-level channels array. Keeps everything relevant to actually

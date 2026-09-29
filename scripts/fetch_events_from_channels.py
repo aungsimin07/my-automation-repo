@@ -11,7 +11,7 @@ from event_store_v2 import (
     load_events, save_events, build_event_object, build_league_entry_from_tracked,
     fetch_league_entry_via_api, get_or_create_league_entry, upsert_event,
     sort_leagues, prune_empty_leagues, link_channel_to_event, resync_channel_links,
-    get_target_dates, prune_to_dates,
+    get_target_dates, prune_to_dates, relink_from_stored_paths,
 )
 from league_store import load_leagues
 from utils.logger import Logger
@@ -115,9 +115,20 @@ def process_channel_lookupevent_queue(manager: APIManager, data: dict, leagues_b
                     continue
                 data["leagues"].append(league_entry)
 
-        upsert_event(league_entry, event_obj)
+        # Preserve metadata from any existing copy of this event —
+        # build_event_object always starts with a fresh, empty metadata.
+        # Without this, a SECOND task for the same event_id (a different
+        # channel that also broadcasts it) would silently wipe out the
+        # link the FIRST task just made, since upsert_event REPLACES the
+        # whole object rather than merging.
+        existing_event = next((e for e in league_entry.get("events", []) if e.get("idEvent") == event_id), None)
+        if existing_event:
+            event_obj["metadata"] = existing_event.get("metadata", event_obj["metadata"])
+
         if link_channel_to_event(event_obj, tvg_id):
             linked += 1
+
+        upsert_event(league_entry, event_obj)
 
     if skipped_sport:
         Logger.info(f"Skipped {skipped_sport} non-Soccer event(s).")
@@ -181,6 +192,11 @@ def main():
 
     sort_leagues(data)
     prune_empty_leagues(data)
+
+    relinked = relink_from_stored_paths(data, channels)
+    if relinked:
+        Logger.info(f"Relinked {relinked} channel(s) from previously-stored scrape paths against current channel data.")
+
     summary = resync_channel_links(data, channels)
     if summary["dead"]:
         Logger.warning(
