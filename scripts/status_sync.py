@@ -6,7 +6,7 @@ from api_manager import APIManager, APIError
 from event_store_v2 import (
     load_events, save_events, sort_leagues, prune_empty_leagues,
     build_event_object_any_status, upsert_event, resync_channel_links,
-    get_target_dates, prune_to_dates, FINISHED_STATUSES,
+    get_target_dates, prune_to_dates, FINISHED_STATUSES, prune_channelless_events,
 )
 from fcm_notifier import get_access_token
 from fetch_events_from_channels import load_channel_entries
@@ -129,6 +129,9 @@ def run_status_sync(manager: APIManager, start: float, max_runtime_seconds: int)
             prune_empty_leagues(data)
             channels = load_channel_entries()
             resync_channel_links(data, channels)
+            pruned_channelless = prune_channelless_events(data)
+            if pruned_channelless:
+                prune_empty_leagues(data)
             save_events(data)
         return 0
 
@@ -190,6 +193,9 @@ def run_status_sync(manager: APIManager, start: float, max_runtime_seconds: int)
     prune_empty_leagues(data)
     channels = load_channel_entries()
     resync_channel_links(data, channels)
+    pruned_channelless = prune_channelless_events(data)
+    if pruned_channelless:
+        prune_empty_leagues(data)
     save_events(data)
 
     Logger.success(f"Status sync processed {processed} event(s), removed {removed} finished event(s).")

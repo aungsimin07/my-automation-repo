@@ -7,7 +7,7 @@ import requests
 
 from event_store_v2 import (
     load_events, save_events, sort_leagues, prune_empty_leagues,
-    resync_channel_links, relink_from_stored_paths,
+    resync_channel_links, relink_from_stored_paths, prune_channelless_events,
 )
 from fetch_events_from_channels import load_channel_entries
 from utils.logger import Logger
@@ -122,6 +122,9 @@ def run_channel_path_discovery(manager, start: float, max_runtime_seconds: int) 
         sort_leagues(data)
         prune_empty_leagues(data)
         resync_channel_links(data, channel_entries)
+        pruned_channelless = prune_channelless_events(data)
+        if pruned_channelless:
+            prune_empty_leagues(data)
         save_events(data)
 
     Logger.success(f"Channel path discovery complete: {scraped} event(s) scraped, {linked} new link(s) made.")

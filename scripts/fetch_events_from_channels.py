@@ -11,7 +11,7 @@ from event_store_v2 import (
     load_events, save_events, build_event_object, build_league_entry_from_tracked,
     fetch_league_entry_via_api, get_or_create_league_entry, upsert_event,
     sort_leagues, prune_empty_leagues, link_channel_to_event, resync_channel_links,
-    get_target_dates, prune_to_dates, relink_from_stored_paths,
+    get_target_dates, prune_to_dates, relink_from_stored_paths, prune_channelless_events,
 )
 from league_store import load_leagues
 from utils.logger import Logger
@@ -203,6 +203,11 @@ def main():
             f"{len(summary['dead'])} referenced tvg-id(s) had no matching channel entries, "
             f"unlinked from {summary['unlinked_events']} event(s): {', '.join(summary['dead'])}"
         )
+
+    pruned_channelless = prune_channelless_events(data)
+    if pruned_channelless:
+        prune_empty_leagues(data)
+
     save_events(data)
     save_sync_state(sync_state)
 

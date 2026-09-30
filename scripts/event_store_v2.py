@@ -165,6 +165,45 @@ def prune_empty_leagues(data: dict) -> None:
         Logger.info(f"Dropped {dropped} league(s) with no events.")
 
 
+def prune_channelless_events(data: dict) -> int:
+    """Remove any event whose channel scrape has DEFINITIVELY concluded
+    with zero viable channels (metadata.channels is empty AND
+    channel_path_scrape completed with a non-transient result). An event
+    still awaiting its first scrape, or mid-retry after a 5xx/network
+    failure, is left alone — only a confirmed dead-end is pruned.
+    Must be called AFTER resync_channel_links, since that's what
+    determines the current, authoritative metadata.channels value."""
+    removed = 0
+    for league_entry in data.get("leagues", []):
+        before = len(league_entry.get("events", []))
+        kept = []
+        for e in league_entry.get("events", []):
+            metadata = e.get("metadata", {})
+            channels = metadata.get("channels", [])
+            scrape = metadata.get("channel_path_scrape")
+
+            if channels:
+                kept.append(e)
+                continue
+
+            if not scrape:
+                kept.append(e)  # never scraped yet — not confirmed channelless
+                continue
+
+            http_status = scrape.get("http_status")
+            if http_status is None or http_status >= 500:
+                kept.append(e)  # transient failure, still pending retry
+                continue
+
+            # channels empty AND scrape concluded (200 or non-5xx error) —
+            # confirmed dead-end, prune it
+        league_entry["events"] = kept
+        removed += before - len(kept)
+    if removed:
+        Logger.info(f"Pruned {removed} event(s) with no viable channels after a completed scrape.")
+    return removed
+
+
 def get_target_dates() -> list:
     today = datetime.now(TIMEZONE).date()
     tomorrow = today + timedelta(days=1)
