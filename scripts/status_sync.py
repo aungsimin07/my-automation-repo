@@ -2,9 +2,8 @@ import os
 import time
 from datetime import datetime, timezone, timedelta
 
-from api_manager import APIManager, APIError
+from api_manager import APIManager
 from event_scraper import scrape_event
-from channel_path_linker import build_event_url  # not needed; see slug helper below
 from event_store_v2 import (
     load_events, save_events, sort_leagues, prune_empty_leagues,
     build_event_object_any_status, upsert_event, resync_channel_links,
@@ -18,10 +17,17 @@ from utils.logger import Logger
 LIVE_STATUSES = {"1H", "HT", "2H", "ET", "P", "BT", "INT", "SUSP"}
 LIVE_RECHECK_MINUTES = 115
 
+# A match this long past kickoff is over, whatever the page still says.
+# Backstop for pages stuck on NS / UNK / a live status.
+STALE_HOURS = 4
+
 # Match-started notification window: only notify if this is the FIRST
 # recheck within this many minutes after kickoff. Deliberately independent
-# of strStatus — TheSportsDB can lag updating NS -> 1H well past kickoff.
+# of strStatus, since the page can lag updating NS -> 1H well past kickoff.
 MATCH_STARTED_WINDOW_MINUTES = 15
+
+DELAY_BETWEEN_REQUESTS = 1.5
+
 
 def _slug_for(event: dict) -> str:
     return (event.get("strEvent") or "").strip().lower().replace(" ", "-")
@@ -48,7 +54,7 @@ def needs_status_check(event: dict, now: datetime) -> bool:
     ts = parse_event_timestamp(event)
     if ts is None:
         return False
-    if status == "NS":
+    if status in ("NS", "UNK"):
         return now > ts
     if status in LIVE_STATUSES:
         return (now - ts) >= timedelta(minutes=LIVE_RECHECK_MINUTES)
@@ -58,7 +64,7 @@ def needs_status_check(event: dict, now: datetime) -> bool:
 def should_notify_match_started(event: dict, now: datetime) -> bool:
     """True if this event's strTimestamp has passed, it's still recorded
     as NS, hasn't been notified yet, and 'now' falls within
-    MATCH_STARTED_WINDOW_MINUTES of that timestamp — i.e. this is (close
+    MATCH_STARTED_WINDOW_MINUTES of that timestamp, i.e. this is (close
     to) the first time we're catching it after kickoff."""
     event_id = event.get("idEvent")
     already_sent = event.get("metadata", {}).get("notifications_sent", [])
@@ -84,13 +90,13 @@ def should_notify_match_started(event: dict, now: datetime) -> bool:
     if gap >= timedelta(minutes=MATCH_STARTED_WINDOW_MINUTES):
         Logger.warning(
             f"Event {event_id}: gap since strTimestamp is {gap}, past the "
-            f"{MATCH_STARTED_WINDOW_MINUTES}min window — treating as missed, will NOT notify."
+            f"{MATCH_STARTED_WINDOW_MINUTES}min window, treating as missed, will NOT notify."
         )
         return False
 
     Logger.info(
         f"Event {event_id}: gap since strTimestamp is {gap}, within "
-        f"{MATCH_STARTED_WINDOW_MINUTES}min window — will notify as match started."
+        f"{MATCH_STARTED_WINDOW_MINUTES}min window, will notify as match started."
     )
     return True
 
@@ -108,11 +114,24 @@ def remove_finished_events(data: dict) -> int:
     return removed
 
 
+def _finalize(data: dict) -> int:
+    """Shared cleanup + resync. Returns number of finished events removed."""
+    removed = remove_finished_events(data)
+    prune_to_dates(data, get_target_dates())
+    sort_leagues(data)
+    prune_empty_leagues(data)
+    channels = load_channel_entries()
+    resync_channel_links(data, channels)
+    if prune_channelless_events(data):
+        prune_empty_leagues(data)
+    return removed
+
+
 def run_status_sync(manager: APIManager, start: float, max_runtime_seconds: int) -> int:
     """Idle-cycle task for queue_runner.py: refresh strStatus for events
-    due a recheck, fire a Match Started notification based on
-    strTimestamp proximity (independent of the API's strStatus, which can
-    lag), then remove any event that has finished."""
+    due a recheck by scraping the event page, fire a Match Started
+    notification based on strTimestamp proximity (independent of the
+    page's status, which can lag), then remove any event that has finished."""
     data = load_events()
     now = datetime.now(timezone.utc)
     fcm_enabled = _fcm_enabled()
@@ -127,16 +146,16 @@ def run_status_sync(manager: APIManager, start: float, max_runtime_seconds: int)
 
     if not candidates:
         Logger.info("Status sync: no events due for a recheck.")
-        removed = remove_finished_events(data)
-        pruned = prune_to_dates(data, get_target_dates())
-        if removed or pruned:
-            sort_leagues(data)
-            prune_empty_leagues(data)
-            channels = load_channel_entries()
-            resync_channel_links(data, channels)
-            pruned_channelless = prune_channelless_events(data)
-            if pruned_channelless:
-                prune_empty_leagues(data)
+        before_state = (
+            sum(len(l.get("events", [])) for l in data["leagues"]),
+            len(data["leagues"]),
+        )
+        removed = _finalize(data)
+        after_state = (
+            sum(len(l.get("events", [])) for l in data["leagues"]),
+            len(data["leagues"]),
+        )
+        if removed or before_state != after_state:
             save_events(data)
         return 0
 
@@ -153,13 +172,16 @@ def run_status_sync(manager: APIManager, start: float, max_runtime_seconds: int)
         event_id = event.get("idEvent")
 
         # Decide BEFORE the scrape, using the event's current (pre-refresh)
-        # data — deliberately independent of what the page says the status is.
+        # data, deliberately independent of what the page says the status is.
         should_notify = should_notify_match_started(event, now) if fcm_enabled else False
 
         raw_event, http_status = scrape_event(event_id, _slug_for(event))
-        time.sleep(1.5)
+        time.sleep(DELAY_BETWEEN_REQUESTS)
         if raw_event is None:
-            Logger.error(f"Event page scrape failed for {event_id} (HTTP {http_status}), will retry next cycle.")
+            Logger.error(
+                f"Event page scrape failed for {event_id} (HTTP {http_status}; "
+                f"None/5xx = fetch problem, 200 = parse problem), will retry next cycle."
+            )
             continue
 
         processed += 1
@@ -168,12 +190,20 @@ def run_status_sync(manager: APIManager, start: float, max_runtime_seconds: int)
         if updated is None:
             continue
 
+        # Backstop: a match this far past kickoff is over even if the page
+        # is stuck on NS / UNK / a live status.
+        ts = parse_event_timestamp(event)
+        stuck = updated.get("strStatus") in ({"UNK", "NS"} | LIVE_STATUSES)
+        if stuck and ts and (now - ts) > timedelta(hours=STALE_HOURS):
+            Logger.info(f"Event {event_id}: status '{updated.get('strStatus')}' but {now - ts} past kickoff, treating as finished.")
+            updated["strStatus"] = "FT"
+
         old_status, new_status = event.get("strStatus"), updated.get("strStatus")
         if old_status != new_status:
             Logger.info(f"Event {event_id} status changed: {old_status} -> {new_status}")
 
         # build_event_object_any_status builds a fresh, empty metadata
-        # dict — preserve everything already recorded on this event
+        # dict, so preserve everything already recorded on this event
         # (channels, channel_path_scrape, notifications_sent, etc.).
         updated["metadata"] = event.get("metadata", {})
         updated["metadata"]["last_sync_at"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -186,15 +216,7 @@ def run_status_sync(manager: APIManager, start: float, max_runtime_seconds: int)
         if league_entry:
             upsert_event(league_entry, updated)
 
-    removed = remove_finished_events(data)
-    prune_to_dates(data, get_target_dates())
-    sort_leagues(data)
-    prune_empty_leagues(data)
-    channels = load_channel_entries()
-    resync_channel_links(data, channels)
-    pruned_channelless = prune_channelless_events(data)
-    if pruned_channelless:
-        prune_empty_leagues(data)
+    removed = _finalize(data)
     save_events(data)
 
     Logger.success(f"Status sync processed {processed} event(s), removed {removed} finished event(s).")

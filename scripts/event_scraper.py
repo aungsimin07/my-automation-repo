@@ -11,8 +11,23 @@ HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; SportsDataBot/1.0)"}
 REQUEST_TIMEOUT = 15
 
 UTC_RE = re.compile(r'\w{3} (\d{1,2})(?:st|nd|rd|th) (\w+) (\d{4}) (\d{1,2}:\d{2}(?:am|pm)) UTC')
-STATUS_RE = re.compile(r'\bStatus\s+([A-Z]{1,5})\b')
+STATUS_RE = re.compile(r'\bStatus\s+(.*?)\s+Location\b')
 ID_RE = re.compile(r'/(?:league|team)/(\d+)-')
+
+# Soccer status codes from the TheSportsDB documentation
+VALID_STATUSES = {
+    "TBD", "NS", "1H", "HT", "2H", "ET", "P", "FT", "AET", "PEN",
+    "BT", "SUSP", "INT", "PST", "CANC", "ABD", "AWD", "WO",
+}
+
+
+def _parse_status(text: str) -> str:
+    m = STATUS_RE.search(text)
+    raw = m.group(1).strip().upper() if m else ""
+    if raw in VALID_STATUSES:
+        return raw
+    Logger.warning(f"Unrecognized status text on event page: {raw!r}")
+    return "UNK"
 
 
 def _badge(img):
@@ -28,7 +43,8 @@ def event_url(event_id: str, slug: str = None) -> str:
 def scrape_event(event_id: str, slug: str = None):
     """Returns (event_dict_or_None, http_status). The dict mirrors the keys of
     lookupevent.php's events[0], plus strSport, channelPaths, leagueUrl, eventUrl.
-    http_status is None on network failure (caller should treat as transient)."""
+    http_status is None on network failure (caller should treat as transient).
+    HTTP 200 with a None dict means the page loaded but could not be parsed."""
     url = event_url(event_id, slug)
     try:
         resp = requests.get(url, headers=HEADERS, timeout=REQUEST_TIMEOUT)
@@ -73,8 +89,7 @@ def scrape_event(event_id: str, slug: str = None):
         event["strTime"] = dt.strftime("%H:%M:%S")
         event["strTimestamp"] = dt.strftime("%Y-%m-%dT%H:%M:%S")
 
-    sm = STATUS_RE.search(text)
-    event["strStatus"] = sm.group(1) if sm else None
+    event["strStatus"] = _parse_status(text)
 
     round_a = soup.find("a", href=re.compile(r'season\.php\?.*[&?]r=\d+'))
     if round_a:
@@ -96,7 +111,7 @@ def scrape_event(event_id: str, slug: str = None):
         a["href"] for a in soup.select("div.event-tv-channel a[href^='/channel/']")
     ))
 
-    missing = [k for k in ("idLeague", "strHomeTeam", "strAwayTeam", "strTimestamp", "strStatus") if not event.get(k)]
+    missing = [k for k in ("idLeague", "strHomeTeam", "strAwayTeam", "strTimestamp") if not event.get(k)]
     if missing:
         Logger.warning(f"Event {event_id}: could not parse {missing} from {url}")
         return None, 200
