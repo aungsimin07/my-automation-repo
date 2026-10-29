@@ -3,6 +3,8 @@ import time
 from datetime import datetime, timezone, timedelta
 
 from api_manager import APIManager, APIError
+from event_scraper import scrape_event
+from channel_path_linker import build_event_url  # not needed; see slug helper below
 from event_store_v2 import (
     load_events, save_events, sort_leagues, prune_empty_leagues,
     build_event_object_any_status, upsert_event, resync_channel_links,
@@ -20,6 +22,9 @@ LIVE_RECHECK_MINUTES = 115
 # recheck within this many minutes after kickoff. Deliberately independent
 # of strStatus — TheSportsDB can lag updating NS -> 1H well past kickoff.
 MATCH_STARTED_WINDOW_MINUTES = 15
+
+def _slug_for(event: dict) -> str:
+    return (event.get("strEvent") or "").strip().lower().replace(" ", "-")
 
 
 def _fcm_enabled() -> bool:
@@ -147,23 +152,17 @@ def run_status_sync(manager: APIManager, start: float, max_runtime_seconds: int)
 
         event_id = event.get("idEvent")
 
-        # Decide BEFORE the API call, using the event's current (pre-refresh)
-        # data — deliberately independent of what the API says strStatus is.
+        # Decide BEFORE the scrape, using the event's current (pre-refresh)
+        # data — deliberately independent of what the page says the status is.
         should_notify = should_notify_match_started(event, now) if fcm_enabled else False
 
-        try:
-            resp = manager.request("lookupevent.php", {"id": event_id})
-        except APIError as e:
-            Logger.error(f"lookupevent.php failed for event {event_id}: {e}")
+        raw_event, http_status = scrape_event(event_id, _slug_for(event))
+        time.sleep(1.5)
+        if raw_event is None:
+            Logger.error(f"Event page scrape failed for {event_id} (HTTP {http_status}), will retry next cycle.")
             continue
 
         processed += 1
-        raw_events = resp.get("events") or []
-        if not raw_events or raw_events[0] is None:
-            Logger.warning(f"No event data found for id {event_id} during status sync.")
-            continue
-
-        raw_event = raw_events[0]
         source = event.get("metadata", {}).get("source", "channel_schedule")
         updated = build_event_object_any_status(raw_event, source=source)
         if updated is None:

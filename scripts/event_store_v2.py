@@ -110,6 +110,17 @@ def fetch_league_entry_via_api(manager, id_league: str):
     return entry
 
 
+def build_league_entry_from_scraped(scraped_event: dict) -> dict:
+    entry = {
+        "idLeague": scraped_event.get("idLeague"),
+        "strLeague": scraped_event.get("strLeague"),
+        "leagueUrl": scraped_event.get("leagueUrl"),
+        "metadata": {"last_sync_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")},
+        "events": [],
+    }
+    return {k: v for k, v in entry.items() if v is not None}
+
+
 def get_or_create_league_entry(data: dict, id_league: str, builder) -> dict:
     for entry in data["leagues"]:
         if entry.get("idLeague") == id_league:
