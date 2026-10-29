@@ -21,6 +21,10 @@ LIVE_RECHECK_MINUTES = 115
 # Backstop for pages stuck on NS / UNK / a live status.
 STALE_HOURS = 4
 
+# Hard cutoff: anything this long past kickoff is removed regardless of
+# status (catches unknown/undocumented codes like "AP").
+HARD_REMOVE_HOURS = 6
+
 # Match-started notification window: only notify if this is the FIRST
 # recheck within this many minutes after kickoff. Deliberately independent
 # of strStatus, since the page can lag updating NS -> 1H well past kickoff.
@@ -114,9 +118,27 @@ def remove_finished_events(data: dict) -> int:
     return removed
 
 
+def remove_stale_events(data: dict, now: datetime) -> int:
+    removed = 0
+    cutoff = timedelta(hours=HARD_REMOVE_HOURS)
+    for league_entry in data["leagues"]:
+        kept = []
+        for e in league_entry.get("events", []):
+            ts = parse_event_timestamp(e)
+            if ts is not None and (now - ts) > cutoff:
+                Logger.info(f"Removing stale event {e.get('idEvent')} (status '{e.get('strStatus')}', {now - ts} past kickoff).")
+                removed += 1
+            else:
+                kept.append(e)
+        league_entry["events"] = kept
+    return removed
+
+
 def _finalize(data: dict) -> int:
-    """Shared cleanup + resync. Returns number of finished events removed."""
-    removed = remove_finished_events(data)
+    """Shared cleanup + resync. Returns number of events removed."""
+    now = datetime.now(timezone.utc)
+    removed = remove_stale_events(data, now)
+    removed += remove_finished_events(data)
     prune_to_dates(data, get_target_dates())
     sort_leagues(data)
     prune_empty_leagues(data)

@@ -28,7 +28,7 @@ LEAGUE_FIELDS = [
 # (here) — a date-window prune must only ever remove an event that has
 # ALSO been confirmed finished, otherwise the midnight date rollover can
 # delete NS/live events before the day's refresh has replaced them.
-FINISHED_STATUSES = {"FT", "AET", "PEN", "AWD", "WO", "PST", "CANC", "ABD"}
+FINISHED_STATUSES = {"FT", "AET", "PEN", "AP", "AWD", "WO", "PST", "CANC", "ABD"}
 
 
 def load_events() -> dict:
