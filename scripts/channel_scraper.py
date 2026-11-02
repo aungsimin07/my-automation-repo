@@ -10,9 +10,19 @@ HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; SportsDataBot/1.0)"}
 EVENT_HREF_RE = re.compile(r'/event/(\d+)-([^/?#]+)')
 
 
+def _channel_url(channel_path: str) -> str:
+    """channelPath is stored without the '/channel' prefix
+    (e.g. '/8115-v-sport-football-tv-schedule'), but the real page lives
+    at /channel/<path>. Accept either form."""
+    path = channel_path if channel_path.startswith("/") else "/" + channel_path
+    if not path.startswith("/channel/"):
+        path = "/channel" + path
+    return f"{BASE_URL}{path}"
+
+
 def scrape_channel_schedule(channel_path: str) -> list:
     """Returns [(event_id, slug), ...] listed under '(today)'/'(tomorrow)'."""
-    url = f"{BASE_URL}{channel_path}"
+    url = _channel_url(channel_path)
     Logger.info(f"Scraping channel schedule: {url}")
     try:
         resp = requests.get(url, headers=HEADERS, timeout=15)
