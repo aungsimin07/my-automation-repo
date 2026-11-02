@@ -134,3 +134,85 @@ def process_channel_lookupevent_queue(manager, data: dict, leagues_by_id: dict, 
     if linked:
         Logger.info(f"Made {linked} channel link(s).")
     return processed
+
+
+def main():
+    manager = APIManager(script_name="fetch_events_from_channels.py")
+    channels = load_channel_entries()
+    if not channels:
+        Logger.warning("No channels found in channels_v2.json. Nothing to do.")
+        return
+
+    eligible = [c for c in channels if c.get("channelPath") and c.get("tvg", {}).get("id")]
+    skipped = len(channels) - len(eligible)
+    if skipped:
+        Logger.info(f"Skipping {skipped} channel entr(y/ies) with no channelPath or tvg.id.")
+    if not eligible:
+        Logger.warning("No channel entries have channelPath set. Nothing to do.")
+        return
+
+    sync_state = load_sync_state()
+
+    current_paths = {c["channelPath"] for c in eligible}
+    stale_paths = [p for p in sync_state["synced"] if p not in current_paths]
+    for p in stale_paths:
+        del sync_state["synced"][p]
+    if stale_paths:
+        Logger.info(f"Pruned {len(stale_paths)} stale channelPath(s) from sync state.")
+
+    force_refresh = _force_refresh_enabled()
+    if force_refresh:
+        Logger.info("FORCE_REFRESH is set (manual trigger), ignoring channel_sync_state.json, rescraping every channel.")
+
+    tasks_by_path = {}
+    skipped_synced = 0
+    for c in eligible:
+        channel_path = c["channelPath"]
+        if not force_refresh and is_synced(sync_state, channel_path):
+            skipped_synced += 1
+            continue
+        tasks_by_path.setdefault(channel_path, c["tvg"]["id"])
+
+    if skipped_synced:
+        Logger.info(f"Skipping {skipped_synced} channel entr(y/ies) whose channelPath is already synced.")
+
+    tasks = [{"tvgId": tvg_id, "channelPath": path} for path, tvg_id in tasks_by_path.items()]
+    manager.enqueue(CHANNEL_SCHEDULE_QUEUE, tasks)
+
+    data = load_events()
+    leagues_by_id = {l["idLeague"]: l for l in load_leagues()}
+
+    start = time.monotonic()
+    schedule_processed = process_channel_schedule_queue(manager, sync_state, start)
+    lookupevent_processed = process_channel_lookupevent_queue(manager, data, leagues_by_id, start)
+
+    prune_to_dates(data, get_target_dates())
+    sort_leagues(data)
+    prune_empty_leagues(data)
+
+    relinked = relink_from_stored_paths(data, channels)
+    if relinked:
+        Logger.info(f"Relinked {relinked} channel(s) from stored scrape paths.")
+
+    summary = resync_channel_links(data, channels)
+    if summary["dead"]:
+        Logger.warning(
+            f"{len(summary['dead'])} referenced tvg-id(s) had no matching channel entries, "
+            f"unlinked from {summary['unlinked_events']} event(s): {', '.join(summary['dead'])}"
+        )
+
+    if prune_channelless_events(data):
+        prune_empty_leagues(data)
+
+    save_events(data)
+    save_sync_state(sync_state)
+
+    Logger.success(
+        f"Processed {schedule_processed} channel schedule task(s), "
+        f"{lookupevent_processed} event lookup(s) this run."
+    )
+    Logger.info(f"Total API requests this run: {manager.request_count}")
+
+
+if __name__ == "__main__":
+    main()
